@@ -36,6 +36,14 @@ gem "ZenTest", :group => :test
 gem "autotest", :group => :test
 gem "autotest-rails", :group => :test
 gem "webrat", :group => [:test, :development]
+gem "capybara"
 gem "cucumber", :group => [:test, :development]
 gem "cucumber-rails", :group => [:test, :development]
 gem "jquery-rails"
+
+gem "mongoid", "~> 2.0"
+gem "bson_ext", "~> 1.3"
+
+gem "haml-rails"
+
+gem "database_cleaner", "~> 0.6.7"
