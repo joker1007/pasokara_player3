@@ -32,6 +32,7 @@ gem "rails3-generators"
 gem "factory_girl_rails", ">= 1.0.1", :group => :test
 gem "rspec", ">= 2.5.0", :group => [:test, :development]
 gem "rspec-rails", ">= 2.5.0", :group => [:test, :development]
+gem "spork", "~> 0.9.0rc", :group => [:test, :development]
 gem "ZenTest", :group => :test
 gem "autotest", :group => :test
 gem "autotest-rails", :group => :test
@@ -47,3 +48,10 @@ gem "bson_ext", "~> 1.3"
 gem "haml-rails"
 
 gem "database_cleaner", "~> 0.6.7"
+
+gem "mechanize"
+gem "pit"
+
+gem "newbamboo-rvideo",  "~> 0.9.6"
+
+gem "solr-ruby"

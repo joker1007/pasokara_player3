@@ -1,14 +1,13 @@
 # _*_ coding: utf-8 _*_
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../db_error_helper')
 
 describe Util::DbStructer do
-  fixtures :directories, :pasokara_files
+  let(:dir) {Factory(:directory)}
 
-  before(:each) do
+  before(:all) do
     @valid_dir_attributes = {
       :name => "subdir",
-      :directory_id => 8480,
+      :directory_id => dir.id,
     }
 
     @valid_pasokara_attributes = {
@@ -40,7 +39,7 @@ describe Util::DbStructer do
     dir_id = Util::DbStructer.new.create_directory(@valid_dir_attributes)
     created = Directory.find(dir_id)
     created.name.should == @valid_dir_attributes[:name]
-    created.directory.should == Directory.find(8480)
+    created.directory.should == Directory.find(dir.id)
   end
 
   it "create_pasokara_file(@valid_pasokara_attributes)でPasokaraFileレコードが作成されること" do

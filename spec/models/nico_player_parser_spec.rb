@@ -1,6 +1,5 @@
 # _*_ coding: utf-8 _*_
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../db_error_helper')
 
 describe NicoParser::NicoPlayerParser do
 

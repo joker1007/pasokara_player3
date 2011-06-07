@@ -1,15 +1,13 @@
 # _*_ coding: utf-8 _*_
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../db_error_helper')
-
-include DbErrorHelper
 
 describe QueuedFile do
-  fixtures :pasokara_files, :computers, :users
+  let(:pasokara) {Factory(:pasokara_file)}
+  let(:pasokara2) {Factory(:pasokara_file, name: "test002.flv")}
 
   before(:each) do
     @valid_attributes = {
-      :pasokara_file_id => 8340,
+      :pasokara_file_id => pasokara.id,
     }
 
     @valid_attributes_user = {
@@ -20,33 +18,36 @@ describe QueuedFile do
     @no_file_attributes = {
       :pasokara_file_id => 1111,
     }
-
-    @just_be_friends = pasokara_files(:just_be_friends)
-    @test_user1 = users(:test_user1)
   end
 
-  it "適切なパラメーターで作成されること" do
-    QueuedFile.create!(@valid_attributes)
-    QueuedFile.create!(@valid_attributes_user)
+  it "適切なパラメーターで作成されること(ユーザーなし)" do
+    queue = QueuedFile.create!(@valid_attributes)
+    queue.pasokara_file.should == pasokara
   end
 
-  it "PasokaraFileをキューに入れられること" do
-    QueuedFile.delete_all
-    QueuedFile.enq(@just_be_friends)
-    QueuedFile.deq.pasokara_file.should == @just_be_friends
-    QueuedFile.enq(@just_be_friends, 11)
+  it "pasokara_fileとのリレーションが無い場合はエラーになること" do
+    queue = QueuedFile.new
+    queue.save.should be_false
+    queue.should have(1).errors_on(:pasokara_file_id)
+  end
+
+  pending "適切なパラメーターで作成されること(ユーザーあり)" do
+    #QueuedFile.create!(@valid_attributes_user)
+  end
+
+  it "PasokaraFileをキューに入れられること(ユーザーなし)" do
+    QueuedFile.enq(pasokara2)
+    QueuedFile.deq.pasokara_file.should == pasokara2
+  end
+
+  pending "PasokaraFileをキューに入れられること(ユーザーあり)" do
+    QueuedFile.enq(pasokara, 11)
     dequeued = QueuedFile.deq
-    dequeued.pasokara_file.should == @just_be_friends
+    dequeued.pasokara_file.should == pasokara
     dequeued.user.should == @test_user1
   end
 
-  it "存在しないファイルIDをキューに入れようとするとエラーになること" do
-    test_for_db_error do
-      QueuedFile.create!(@no_file_attributes)
-    end
-  end
-  
-  it "dequeueされたときに、その曲の再生ログレコードが作成されること" do
+  pending "dequeueされたときに、その曲の再生ログレコードが作成されること" do
     QueuedFile.enq @just_be_friends, 1
     dequeued = QueuedFile.deq
     SingLog.find(:last).pasokara_file.should == dequeued.pasokara_file

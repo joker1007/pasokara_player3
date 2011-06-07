@@ -1,12 +1,9 @@
 # _*_ coding: utf-8 _*_
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require File.expand_path(File.dirname(__FILE__) + '/../db_error_helper')
 
 describe Util::SolrIndexer do
-  fixtures :pasokara_files, :taggings, :tags
   before do
     @solr_mock = mock_model(Solr::Connection)
-
   end
 
   it "self.indexing" do

@@ -15,6 +15,7 @@ class PasokaraFile
   field :encoding, :type => Boolean
 
   belongs_to :directory
+  has_many :sing_logs
 
   validates_presence_of :name, :fullpath, :md5_hash
 

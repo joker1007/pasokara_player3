@@ -1,16 +1,13 @@
 #_*_ coding: utf-8 _*_
-require 'spec_helper'
-require File.expand_path(File.dirname(__FILE__) + '/../db_error_helper')
-
-include DbErrorHelper
+require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe SingLog do
-  fixtures :pasokara_files, :users, :sing_logs
+  let(:pasokara) {Factory(:pasokara_file)}
+  let(:pasokara2) {Factory(:pasokara_file, name: "test002.flv")}
 
   before(:each) do
     @valid_attributes = {
-      :pasokara_file_id => 8362,
-      :user_id => 2,
+      :pasokara_file_id => pasokara.id,
     }
     @no_pasokara_file_id = {
       :user_id => 2,
@@ -26,51 +23,27 @@ describe SingLog do
       :pasokara_file_id => 8362,
       :user_id => 99999,
     }
-
-    @esp_test1_logs = sing_logs(:esp_test1_logs)
-
-    @esp_raging = pasokara_files(:esp_raging)
-    @siawase_gyaku = pasokara_files(:siawase_gyaku)
-    @just_be_friends = pasokara_files(:just_be_friends)
-
-    @test_user1 = users(:test_user1)
-    @test_user2 = users(:test_user2)
   end
 
-  it "適切なパラメーターで作成されること" do
+  it "適切なパラメーターで作成されること(ユーザーなし)" do
     sing_log = SingLog.create!(@valid_attributes)
   end
 
-  it "pasokara_file_idが無いパラメーターはDBエラーになること" do
-    test_for_db_error do
-      sing_log = SingLog.new(@no_pasokara_file_id)
-      sing_log.save_with_validation(false)
-    end
-  end
-  
-  it "存在しないpasokara_file_idパラメーターはDBエラーになること" do
-    test_for_db_error do
-      sing_log = SingLog.new(@no_exist_pasokara_file_id)
-      sing_log.save_with_validation(false)
-    end
+  pending "適切なパラメーターで作成されること(ユーザーあり)" do
+    sing_log = SingLog.create!(@valid_attributes)
   end
 
-  it "user_idパラメーターが無くても作成できること" do
-    sing_log = SingLog.create!(@no_user_id)
-    sing_log.pasokara_file.should == @siawase_gyaku
-  end
-  
-  it "存在しないuser_idパラメーターはDBエラーになること" do
-    test_for_db_error do
-      sing_log = SingLog.new(@no_exist_pasokara_file_id)
-      sing_log.save_with_validation(false)
-    end
+  it "pasokara_fileとのリレーションが無い場合はエラーになること" do
+    sing_log = SingLog.new
+    sing_log.save.should be_false
+    sing_log.should have(1).errors_on(:pasokara_file_id)
   end
 
   it "PasokaraFile, Userクラスと相互参照できること" do
-    @esp_test1_logs.pasokara_file.should == @esp_raging
-    @esp_test1_logs.user.should == @test_user1
-    @esp_raging.sing_logs.include?(@esp_test1_logs).should be_true
-    @test_user1.sing_logs.include?(@esp_test1_logs).should be_true
+    sing_log = SingLog.create!(@valid_attributes)
+    sing_log.pasokara_file.should == pasokara
+    #@esp_test1_logs.user.should == @test_user1
+    pasokara.sing_logs.include?(sing_log).should be_true
+    #@test_user1.sing_logs.include?(@esp_test1_logs).should be_true
   end
 end
