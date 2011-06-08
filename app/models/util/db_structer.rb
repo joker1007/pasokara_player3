@@ -27,7 +27,7 @@ module Util
     def create_pasokara_file(attributes = {}, tags = [])
       already_record = PasokaraFile.first(conditions: {md5_hash: attributes[:md5_hash]})
       pasokara_file = PasokaraFile.new(attributes)
-      pasokara_file.tag_list.add tags
+      pasokara_file.tag_list.add tags if tags.any?
       if already_record
 
         changed = false
@@ -89,6 +89,7 @@ module Util
 
         if changed
           already_record.save
+          p already_record.errors if Rails.env == "test"
           #print_process already_record
         end
         return already_record.id
@@ -97,6 +98,7 @@ module Util
           #print_process pasokara_file
           return pasokara_file.id
         else
+          p pasokara_file.errors if Rails.env == "test"
           return nil
         end
       end

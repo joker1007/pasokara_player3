@@ -156,6 +156,56 @@ describe PasokaraFile do
     end
   end
 
+  describe "Tagに関するメソッド" do
+    let(:pasokara) {Factory(:pasokara_file)}
+    let(:tag1) {Factory(:tag, name: "Tag1")}
+    let(:tag2) {Factory(:tag, name: "Tag2")}
+
+    before(:each) do
+      pasokara.tags << tag1
+      pasokara.tags << tag2
+    end
+
+    describe "#tag_list" do
+      it "自身が持つタグを示すTagListを返すこと" do
+        pasokara.tag_list.should be_a(TagList)
+        pasokara.tag_list.should include(tag1.name)
+        pasokara.tag_list.should include(tag2.name)
+      end
+    end
+
+    describe "after_save #save_tags" do
+      it "tag_listへの追加分のタグを保存する" do
+        expect {
+          new_tag = "Tag3"
+          pasokara.tag_list.add(new_tag)
+          pasokara.save
+          pasokara.tag_list.should include(new_tag)
+          pasokara.tag_list.should have(3).items
+        }.to change{ Tag.count }.from(2).to(3)
+
+        expect {
+          new_tags = ["Tag4", "Tag5"]
+          pasokara.tag_list.should have(3).items
+          pasokara.tag_list.add(new_tags)
+          pasokara.save
+          pasokara.tag_list.should include(*new_tags)
+          pasokara.tag_list.should have(5).items
+        }.to change{ Tag.count }.from(3).to(5)
+      end
+
+      it "tag_listからの削除分のタグを削除する" do
+        expect {
+          pasokara.tag_list.should have(2).items
+          pasokara.tag_list.remove("Tag1")
+          pasokara.save
+          pasokara.tag_list.should_not include("Tag1")
+          pasokara.tag_list.should have(1).items
+        }.to change{ Tag.count }.from(2).to(1)
+      end
+    end
+  end
+
   describe "状態を確認するメソッド " do
     let(:mp4_file) {Factory(:pasokara_file)}
     let(:flv_file) {Factory(:pasokara_file, name: "test002.flv")}
@@ -208,14 +258,7 @@ describe PasokaraFile do
 
   describe "検索するメソッド " do
     describe ".related_tags" do
-      it "引数で与えられたタグと関係するタグの配列を返すこと" do
-        tags = PasokaraFile.related_tags(["COOL&CREATE"])
-        tags[0].name.should == "COOL&CREATE"
-        tags[0].count.should == 2
-        tags[1].name.should == "ニコカラ"
-        tags[1].count.should == 2
-        tags[2].name.should == "あまね"
-        tags[2].count.should == 1
+      pending "引数で与えられたタグと関係するタグの配列を返すこと" do
       end
     end
   end

@@ -10,7 +10,7 @@ module Util
       @agent.open_timeout = 30
       @agent.max_history = 1
       @agent.user_agent_alias = 'Windows Mozilla'
-      @logger = Logger.new(File.join(RAILS_ROOT, "log", "nico_downloader.log"))
+      @logger = Logger.new(File.join(Rails.root.to_s, "log", "nico_downloader.log"))
       account = Pit.get("niconico", :require => {
         "mail" => "you email in niconico",
         "pass" => "your password in niconico"

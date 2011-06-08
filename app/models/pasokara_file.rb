@@ -16,8 +16,11 @@ class PasokaraFile
 
   belongs_to :directory
   has_many :sing_logs
+  has_and_belongs_to_many :tags
 
   validates_presence_of :name, :fullpath, :md5_hash
+
+  after_save :save_tags
 
   VIDEO_PATH = "/video"
   PREVIEW_PATH = "/pasokara/preview"
@@ -79,5 +82,26 @@ class PasokaraFile
 
   def encoded?
     File.exist?(File.join(Rails.root, "public", m3u8_path))
+  end
+
+  def tag_list
+    @tag_list ||= TagList.new(tags.map(&:name))
+    @tag_list
+  end
+
+  protected
+  def save_tags
+    if @tag_list
+      new_tags = @tag_list - tags.map(&:name)
+      old_tags = tags.map(&:name) - @tag_list
+
+      tags.delete_all(conditions: {name: { "$in" => old_tags }}) if old_tags.any?
+
+      new_tags.each do |tag_name|
+        tags.create(name: tag_name)
+      end
+
+      @tag_list = TagList.new(tags.map(&:name))
+    end
   end
 end

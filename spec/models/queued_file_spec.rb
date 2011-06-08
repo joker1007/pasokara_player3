@@ -9,15 +9,6 @@ describe QueuedFile do
     @valid_attributes = {
       :pasokara_file_id => pasokara.id,
     }
-
-    @valid_attributes_user = {
-      :pasokara_file_id => 8340,
-      :user_id => 1,
-    }
-
-    @no_file_attributes = {
-      :pasokara_file_id => 1111,
-    }
   end
 
   it "適切なパラメーターで作成されること(ユーザーなし)" do
@@ -47,10 +38,11 @@ describe QueuedFile do
     dequeued.user.should == @test_user1
   end
 
-  pending "dequeueされたときに、その曲の再生ログレコードが作成されること" do
-    QueuedFile.enq @just_be_friends, 1
+  it "dequeueされたときに、その曲の再生ログレコードが作成されること" do
+    QueuedFile.count.should == 0
+    QueuedFile.enq(pasokara2)
     dequeued = QueuedFile.deq
     SingLog.find(:last).pasokara_file.should == dequeued.pasokara_file
-    SingLog.find(:last).user.should == dequeued.user
+    #SingLog.find(:last).user.should == dequeued.user
   end
 end

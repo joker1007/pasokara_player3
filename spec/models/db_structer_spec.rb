@@ -12,6 +12,7 @@ describe Util::DbStructer do
 
     @valid_pasokara_attributes = {
       :name => "COOL&CREATE - ネココタマツリ.avi",
+      :fullpath => "/data/COOL&CREATE - ネココタマツリ.avi",
       :md5_hash => "asdfjl2asjfasd83jasdkfj",
       :nico_name => "sm111111",
       :duration => 245,
@@ -19,19 +20,16 @@ describe Util::DbStructer do
 
     @no_md5_hash_attributes = {
       :name => "COOL&CREATE - ネココタマツリ.avi",
+      :fullpath => "/data/COOL&CREATE - ネココタマツリ.avi",
       :nico_name => "sm111111",
       :duration => 245,
     }
 
     @no_name_attributes = {
+      :fullpath => "/data/COOL&CREATE - ネココタマツリ.avi",
       :md5_hash => "asdfjl2asjfasd83jasdkfj",
       :nico_name => "sm111111",
       :duration => 245,
-    }
-
-    @valid_already_pasokara = {
-      :name => "esp",
-      :md5_hash => "927c1d8f95b97329f33f903f9e1f6fc5",
     }
   end
 
@@ -52,10 +50,11 @@ describe Util::DbStructer do
   end
 
   it "create_pasokara_file(@valid_already_pasokara)で既存のPasokaraFileレコードが更新されること" do
-    pasokara_id = Util::DbStructer.new.create_pasokara_file(@valid_already_pasokara)
+    siawase_gyaku = Factory(:siawase_gyaku)
+    pasokara_id = Util::DbStructer.new.create_pasokara_file({name: "new_name", md5_hash: siawase_gyaku.md5_hash, fullpath:siawase_gyaku.fullpath})
     created = PasokaraFile.find(pasokara_id)
-    created.name.should == @valid_already_pasokara[:name]
-    created.md5_hash.should == @valid_already_pasokara[:md5_hash]
+    created.name.should == "new_name"
+    created.md5_hash.should == siawase_gyaku.md5_hash
   end
 
   it "nameの無いレコードは作成に失敗すること" do
