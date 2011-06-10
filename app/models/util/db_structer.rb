@@ -135,6 +135,8 @@ module Util
               duration = video.duration ? video.duration / 1000 : nil
             rescue Exception
               puts "File Open Error: #{entity_fullpath}"
+              puts $!
+              puts $@
               next
             end
             attributes = {:name => name, :directory_id => higher_directory_id, :md5_hash => md5_hash, :duration => duration, :fullpath => entity_fullpath}
@@ -147,7 +149,7 @@ module Util
 
             thumb_data = nico_check_thumb(entity_fullpath)
             if thumb_data
-              create_thumbnail_record(pasokara_file_id, thumb_data, force_thumbnail)
+              #create_thumbnail_record(pasokara_file_id, thumb_data, force_thumbnail)
             end
           end
         end
