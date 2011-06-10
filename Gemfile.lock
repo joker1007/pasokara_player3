@@ -97,6 +97,7 @@ GEM
     newbamboo-rvideo (0.9.6)
       activesupport
     nokogiri (1.4.4)
+    open4 (1.0.1)
     pit (0.0.6)
     polyglot (0.3.1)
     rack (1.2.3)
@@ -171,6 +172,7 @@ DEPENDENCIES
   mechanize
   mongoid (~> 2.0)
   newbamboo-rvideo (~> 0.9.6)
+  open4
   pit
   rails (= 3.0.7)
   rails3-generators

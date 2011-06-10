@@ -52,6 +52,7 @@ gem "database_cleaner", "~> 0.6.7"
 gem "mechanize"
 gem "pit"
 
-gem "newbamboo-rvideo",  "~> 0.9.6"
+gem "open4"
+gem "newbamboo-rvideo",  "~> 0.9.6", :require => "rvideo"
 
 gem "solr-ruby"
