@@ -4,7 +4,7 @@ class Directory
   field :name, type: String
   has_many :directories, :order => "name"
   has_many :pasokara_files, :order => "name"
-  belongs_to :directory
+  belongs_to :directory, :index => true
 
   validates_presence_of :name
 

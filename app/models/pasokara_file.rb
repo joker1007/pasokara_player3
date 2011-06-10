@@ -14,9 +14,12 @@ class PasokaraFile
   field :nico_description, :type => String
   field :encoding, :type => Boolean
 
-  belongs_to :directory
+  index :md5_hash, :unique => true
+  index :fullpath, :unique => true
+
+  belongs_to :directory, :index => true
   has_many :sing_logs
-  has_and_belongs_to_many :tags
+  has_and_belongs_to_many :tags, :index => true
 
   validates_presence_of :name, :fullpath, :md5_hash
 
@@ -92,16 +95,26 @@ class PasokaraFile
   protected
   def save_tags
     if @tag_list
+      self.class.skip_callback(:save, :after, :save_tags)
       new_tags = @tag_list - tags.map(&:name)
       old_tags = tags.map(&:name) - @tag_list
 
-      tags.delete_all(conditions: {name: { "$in" => old_tags }}) if old_tags.any?
+      old_tags.each do |tag_name|
+        tag = Tag.first(conditions: {name: tag_name})
 
-      new_tags.each do |tag_name|
-        tags.create(name: tag_name)
+        tag_ids.delete tag.id
+        self.save
+
+        tag.pasokara_file_ids.delete self.id
+        tag.save
       end
 
-      @tag_list = TagList.new(tags.map(&:name))
+      new_tags.each do |tag_name|
+        tag = Tag.find_or_create_by(name: tag_name)
+        tags << tag
+      end
+
+      self.class.set_callback(:save, :after, :save_tags)
     end
   end
 end
