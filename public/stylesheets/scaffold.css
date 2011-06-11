@@ -1,0 +1,138 @@
+div.user_form_box {
+  width: 640px;
+  margin: 10px 8px 0px 8px;
+  padding: 8px 2px 8px 2px;
+  border: 2px solid #00008b;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -moz-box-shadow: 6px 6px 6px #404040;
+  -webkit-box-shadow: 6px 6px 6px #404040;
+}
+
+div.user_form_box p {
+  border-bottom: 1px solid #888888;
+  padding-bottom: 8px;
+}
+
+span.setting_name {
+  border: 2px solid #00008b;
+}
+
+span.setting_value {
+  border: 2px solid #00008b;
+}
+
+#tag_scope {
+  margin-bottom: 20px;
+  border-top: 1px solid #888888;
+  border-bottom: 1px solid #888888;
+  padding-top: 8px;
+  padding-bottom: 5px;
+}
+
+span.tag {
+  font-size: 14px;
+  margin-right: 5px;
+  line-height: 26px;
+}
+
+span img {
+  vertical-align: middle;
+}
+
+span.scoped_tag {
+  border: 1px solid #999999;
+  padding: 2px 4px 2px 4px;
+  background-color: #A0D0E0;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+}
+
+span.duration {
+  color: #EEEEEE;
+  margin-left: 4px;
+}
+
+pre {
+  background-color: #eee;
+  padding: 10px;
+  font-size: 11px;
+}
+
+img.parent_dir {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+img.entity_icon {
+  margin-left: 4px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+a img {
+  border: none;
+}
+
+a { color: #4169E1; text-decoration: none; }
+a:visited { color: #666; }
+a:hover { color: #fff; background-color:#000; }
+a.queue_link { color: #a0cccc; font-weight: bold; }
+a.queue_link:hover { color: #fff; background-color:#000; }
+a.tag_list_link { color: red; }
+a.tag_edit_link { color: red; }
+a.show_info { color: red; margin-left: 10px; }
+a.preview_link { color: #55e000; margin-left: 10px; font-weight: bold; }
+a.related_search_link { color: #D2892E; margin-left: 10px; font-weight: bold; }
+
+a.queue_remove {
+  float: right;
+  margin-top: 2px;
+  margin-right: 20px;
+}
+
+a.add_favorite {
+/*  float: right; */
+  margin-left: 20px;
+  vertical-align: middle;
+}
+
+
+
+
+.fieldWithErrors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+#errorExplanation {
+  width: 400px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#errorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  background-color: #c00;
+  color: #fff;
+}
+
+#errorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#errorExplanation ul li {
+  font-size: 12px;
+  list-style: square;
+}
+

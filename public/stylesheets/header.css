@@ -1,0 +1,131 @@
+header { display: block; }
+
+h1#site_title {
+  font-size: 40px;
+  color: #FFFFFF;
+}
+
+h1#site_title span {
+  font-size: larger;
+  color: #ff6633;
+  letter-spacing: -10px;
+}
+
+div#user_info {
+  font-size: 12px;
+  line-height: 16px;
+  margin-bottom: 20px;
+  color: #FFFFFF;
+}
+
+div#user_info a {
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+
+span.login_user {
+  margin-right: 10px;
+  color: #00ff66;
+}
+
+
+div.search {
+  margin-left: 10px;
+}
+
+div.all_tag_list {
+  margin: 10px;
+  padding: 5px;
+  border: 2px solid #000;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  max-width: 1040px;
+}
+
+/*
+nav ul li {
+  display: inline;
+  padding: 8px 4px 8px 4px;
+}
+  */
+
+/***** Menu *****/
+ul#menu {
+  background: url(../images/menu_bg.png) top left repeat-x;
+  bottom: 0;
+  height: 49px;
+  overflow: hidden;
+  max-width: 1040px;
+}
+ul#menu li {
+  background: url(../images/menu_divider.png) right no-repeat;
+  display: inline;
+  float: left;
+  height: 49px;
+  width: 110px;
+}
+
+ul#menu li a{
+  background: transparent;
+  border: 0;
+  font-size: 100%;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  text-decoration: none;
+  vertical-align: baseline;
+}
+
+/***** Button text position *****/
+ul#menu li a {
+  padding-top: 17px;
+}
+
+ul#menu li a#home {
+  padding-left: 25px;
+}
+ul#menu li a#queue {
+  padding-left: 18px;
+}
+ul#menu li a#history {
+  padding-left: 28px;
+}
+ul#menu li a#favorite {
+  padding-left: 10px;
+}
+ul#menu li a#user_edit {
+  padding-left: 20px;
+}
+ul#menu li a#usage {
+  padding-left: 28px;
+}
+
+
+/***** Button effects *****/
+ul#menu li a {
+  color: #CFCFCF;
+  display: block;
+  font-size: 120%;
+  font-weight: bold;
+  height: 49px;
+  text-transform: uppercase;
+}
+ul#menu li a:visited {
+  color: #CFCFCF;
+  display: block;
+  font-size: 120%;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+ul#menu li a:hover {
+  color: #FFF;
+  text-decoration: none;
+}
+ul#menu li a.active_btn {
+  color: #4E4E4E;
+}
+ul#menu li#active {
+  background: #FFF url(../images/menu_active.png);
+  display: block;
+}
+
