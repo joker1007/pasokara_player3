@@ -54,6 +54,7 @@ gem "pit"
 gem "open4"
 gem "newbamboo-rvideo",  "~> 0.9.6", :require => "rvideo"
 
-gem "rsolr"
+gem "sunspot_mongoid"
+gem "sunspot_with_kaminari", '~> 0.1'
 
 gem "kaminari"
