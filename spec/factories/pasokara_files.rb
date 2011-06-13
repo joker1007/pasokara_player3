@@ -20,6 +20,7 @@ Factory.define :pasokara_file do |f|
   f.nico_mylist_counter 1
   f.duration 245
   f.nico_description "description"
+  f.tags {["Tag1", "Tag2", "Tag3"]}
   f.encoding false
 end
 
@@ -34,6 +35,7 @@ Factory.define :siawase_gyaku, :class => PasokaraFile do |f|
   f.nico_mylist_counter 2
   f.duration 2
   f.nico_description "description"
+  f.tags {["Tag1", "Tag2", "Tag4"]}
   f.encoding false
 end
 

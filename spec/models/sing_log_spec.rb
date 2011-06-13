@@ -7,21 +7,17 @@ describe SingLog do
 
   before(:each) do
     @valid_attributes = {
+      :name => pasokara.name,
+      :pasokara_file_id => pasokara.id,
+    }
+    @no_name_attributes = {
       :pasokara_file_id => pasokara.id,
     }
     @no_pasokara_file_id = {
       :user_id => 2,
     }
-    @no_exist_pasokara_file_id = {
-      :pasokara_file_id => 99999,
-      :user_id => 2,
-    }
     @no_user_id = {
       :pasokara_file_id => 8362,
-    }
-    @no_exist_user_id = {
-      :pasokara_file_id => 8362,
-      :user_id => 99999,
     }
   end
 
@@ -31,6 +27,12 @@ describe SingLog do
 
   pending "適切なパラメーターで作成されること(ユーザーあり)" do
     sing_log = SingLog.create!(@valid_attributes)
+  end
+
+  it "nameが無い場合はエラーになること" do
+    sing_log = SingLog.new(@no_name_attributes)
+    sing_log.save.should be_false
+    sing_log.should have(1).errors_on(:name)
   end
 
   it "pasokara_fileとのリレーションが無い場合はエラーになること" do

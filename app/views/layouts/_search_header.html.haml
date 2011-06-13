@@ -1,0 +1,7 @@
+%nav
+  = render :partial => "layouts/navi_bar"
+%br
+= render :partial => "layouts/solr_search_form"
+- unless @no_tag_load
+  = render :partial => "layouts/header_tag_list", :locals => {:tags => @header_tags}
+%hr

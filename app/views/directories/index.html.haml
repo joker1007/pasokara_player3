@@ -1,0 +1,7 @@
+%h2 Root
+
+%ul.autopagerize_page_element
+  - @directories.each do |directory|
+    = entity_li(directory)
+
+%br

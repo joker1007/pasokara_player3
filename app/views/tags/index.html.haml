@@ -1,0 +1,19 @@
+= image_tag("icon/home.png", :size => "36x36")
+= link_to("Go Top Directory", root_path)
+%h1= image_tag("icon/search.png", :class => "parent_dir", :size => "32x32") + "タグ一覧"
+- form_tag(search_tags_path, :remote => true) do
+  %label{:for=>"tag"} タグを検索する: 
+  = text_field_tag "tag", "", :size => 16
+  = submit_tag "検索"
+
+#entity_list
+  .autopagerize_page_element
+    %ul
+      - @tags.each do |t|
+        = entity_li(t)
+
+= paginate @tags
+%br
+
+= image_tag("icon/home.png", :size => "36x36")
+= link_to("Go Top Directory", root_path)

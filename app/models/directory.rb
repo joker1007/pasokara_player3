@@ -8,6 +8,8 @@ class Directory
 
   validates_presence_of :name
 
+  paginates_per 50
+
   def entities
     (directories + pasokara_files)
   end

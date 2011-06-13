@@ -111,8 +111,8 @@ describe PasokaraFile do
     end
 
     describe "#preview_path" do
-      it "/pasokara/preview/{id}という形式でファイルパスを返すこと" do
-        siawase_gyaku.preview_path.should == "/pasokara/preview/#{siawase_gyaku.id}"
+      it "/pasokaras/preview/{id}という形式でファイルパスを返すこと" do
+        siawase_gyaku.preview_path.should == "/pasokaras/preview/#{siawase_gyaku.id}"
       end
     end
 
@@ -158,50 +158,51 @@ describe PasokaraFile do
 
   describe "Tagに関するメソッド" do
     let(:pasokara) {Factory(:pasokara_file)}
-    let(:tag1) {Factory(:tag, name: "Tag1")}
-    let(:tag2) {Factory(:tag, name: "Tag2")}
-
-    before(:each) do
-      pasokara.tags << tag1
-      pasokara.tags << tag2
-    end
 
     describe "#tag_list" do
       it "自身が持つタグを示すTagListを返すこと" do
         pasokara.tag_list.should be_a(TagList)
-        pasokara.tag_list.should include(tag1.name)
-        pasokara.tag_list.should include(tag2.name)
+        pasokara.tag_list.should include("Tag1")
+        pasokara.tag_list.should include("Tag2")
+        pasokara.tag_list.should include("Tag3")
       end
     end
 
     describe "after_save #save_tags" do
       it "tag_listへの追加分のタグを保存する" do
+        tag1 = Factory(:tag, name: "Tag1", size: 1)
+        tag2 = Factory(:tag, name: "Tag2", size: 1)
+        tag3 = Factory(:tag, name: "Tag3", size: 1)
         expect {
-          new_tag = "Tag3"
+          new_tag = "Tag4"
           pasokara.tag_list.add(new_tag)
           pasokara.save
           pasokara.tag_list.should include(new_tag)
-          pasokara.tag_list.should have(3).items
-        }.to change{ Tag.count }.from(2).to(3)
+          pasokara.tag_list.should have(4).items
+        }.to change{ Tag.count }.from(3).to(4)
 
         expect {
           new_tags = ["Tag4", "Tag5"]
-          pasokara.tag_list.should have(3).items
+          pasokara.tag_list.should have(4).items
           pasokara.tag_list.add(new_tags)
           pasokara.save
           pasokara.tag_list.should include(*new_tags)
           pasokara.tag_list.should have(5).items
-        }.to change{ Tag.count }.from(3).to(5)
+        }.to change{ Tag.count }.from(4).to(5)
       end
 
       it "tag_listからの削除分のタグを削除する" do
+        tag1 = Factory(:tag, name: "Tag1", size: 1)
+        tag2 = Factory(:tag, name: "Tag2", size: 1)
+        tag3 = Factory(:tag, name: "Tag3", size: 1)
         expect {
-          pasokara.tag_list.should have(2).items
+          pasokara.tag_list.should have(3).items
           pasokara.tag_list.remove("Tag1")
           pasokara.save
           pasokara.tag_list.should_not include("Tag1")
-          pasokara.tag_list.should have(1).items
-        }.to change{ Tag.count }.from(2).to(1)
+          pasokara.tag_list.should have(2).items
+          tag1.size.should == 0
+        }
       end
     end
   end

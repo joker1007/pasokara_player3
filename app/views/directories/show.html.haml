@@ -1,0 +1,22 @@
+= image_tag("icon/arrow_up_48.png", :size => "36x36")
+= link_to("上のディレクトリへ", @dir.directory)
+%h1= image_tag("icon/elastic_movie.png", :class => "parent_dir", :size => "36x36") + @dir.name
+
+%ul#entity_list
+  .autopagerize_page_element
+    - @subdir.each do |dir|
+      = entity_li(dir)
+
+    = render :partial => "pasokaras/pasokara_file_list", :locals => {:pasokaras => @pasokaras}
+
+- if @pasokaras.num_pages >= @subdir.num_pages
+  = paginate @pasokaras
+- else
+  = paginate @subdir
+
+%br
+= image_tag("icon/arrow_up_48.png", :size => "36x36")
+= link_to("上のディレクトリへ", @dir.directory)
+%br
+= image_tag("icon/home.png", :size => "36x36")
+= link_to("トップディレクトリへ", root_path)

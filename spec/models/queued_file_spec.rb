@@ -7,6 +7,10 @@ describe QueuedFile do
 
   before(:each) do
     @valid_attributes = {
+      :name => pasokara.name,
+      :pasokara_file_id => pasokara.id,
+    }
+    @no_name_attributes = {
       :pasokara_file_id => pasokara.id,
     }
   end
@@ -14,6 +18,12 @@ describe QueuedFile do
   it "適切なパラメーターで作成されること(ユーザーなし)" do
     queue = QueuedFile.create!(@valid_attributes)
     queue.pasokara_file.should == pasokara
+  end
+
+  it "nameが無い場合はエラーになること" do
+    queue = QueuedFile.new(@no_name_attributes)
+    queue.save.should be_false
+    queue.should have(1).errors_on(:name)
   end
 
   it "pasokara_fileとのリレーションが無い場合はエラーになること" do
@@ -42,7 +52,9 @@ describe QueuedFile do
     QueuedFile.count.should == 0
     QueuedFile.enq(pasokara2)
     dequeued = QueuedFile.deq
-    SingLog.find(:last).pasokara_file.should == dequeued.pasokara_file
+    history = SingLog.find(:last)
+    history.pasokara_file.should == dequeued.pasokara_file
+    history.name.should == dequeued.pasokara_file.name
     #SingLog.find(:last).user.should == dequeued.user
   end
 end

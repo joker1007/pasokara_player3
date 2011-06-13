@@ -1,0 +1,7 @@
+#all_tag_list
+  .all_tag_list
+    %h3 タグ一覧
+    = link_to("[全てのタグ一覧]", tags_path, :class => "tag_list_link")
+    %br
+    - tags.each do |t|
+      %span.tag= link_to(t.value, search_pasokaras_path(:filter => @filters ? @filters.join("+") + "+#{t.value}" : "#{t.value}", :query => params[:query], :field => params[:field])) + "(#{t.count})"
