@@ -42,6 +42,7 @@ gem "cucumber", :group => [:test, :development]
 gem "cucumber-rails", :group => [:test, :development]
 gem "jquery-rails"
 gem "haml-rails"
+gem "erb2haml", "~> 0.1.2", :group => :development
 
 gem "mongoid", "~> 2.0"
 gem "bson_ext", "~> 1.3"
