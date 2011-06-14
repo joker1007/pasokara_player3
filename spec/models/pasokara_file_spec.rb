@@ -257,13 +257,6 @@ describe PasokaraFile do
     end
   end
 
-  describe "検索するメソッド " do
-    describe ".related_tags" do
-      pending "引数で与えられたタグと関係するタグの配列を返すこと" do
-      end
-    end
-  end
-
   describe "#do_encode(host)" do
     it "Resqueオブジェクトにエンコードジョブがenqueueされること" do
       Resque.should_receive(:enqueue).with(Job::VideoEncoder, @esp_raging.id, "host:port")

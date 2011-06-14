@@ -107,6 +107,9 @@ GEM
       activemodel (~> 3.0)
       mongo (~> 1.3)
       tzinfo (~> 0.3.22)
+    mongoid-rspec (1.4.4)
+      mongoid (~> 2.0)
+      rspec (~> 2)
     newbamboo-rvideo (0.9.6)
       activesupport
     nokogiri (1.4.4)
@@ -209,6 +212,7 @@ DEPENDENCIES
   kaminari
   mechanize
   mongoid (~> 2.0)
+  mongoid-rspec (~> 1.4.4)
   newbamboo-rvideo (~> 0.9.6)
   open4
   pit

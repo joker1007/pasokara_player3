@@ -45,6 +45,7 @@ gem "haml-rails"
 gem "erb2haml", "~> 0.1.2", :group => :development
 
 gem "mongoid", "~> 2.0"
+gem "mongoid-rspec", "~> 1.4.4", :group => :test
 gem "bson_ext", "~> 1.3"
 gem "database_cleaner", "~> 0.6.7"
 

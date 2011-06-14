@@ -15,7 +15,7 @@ class QueuedFile
 
   def self.enq(pasokara, user = nil)
     attrs = {name:pasokara.name, pasokara_file_id: pasokara.id}
-    attrs.merge({user_name: user.name, user: user.id}) if user
+    attrs.merge!({user_name: user.nickname, user: user.id}) if user
     QueuedFile.create(attrs)
   end
 

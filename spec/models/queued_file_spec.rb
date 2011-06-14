@@ -4,11 +4,18 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe QueuedFile do
   let(:pasokara) {Factory(:pasokara_file)}
   let(:pasokara2) {Factory(:pasokara_file, name: "test002.flv")}
+  let(:user) {Factory(:user)}
 
   before(:each) do
     @valid_attributes = {
       :name => pasokara.name,
       :pasokara_file_id => pasokara.id,
+    }
+    @valid_attributes_user = {
+      :name => pasokara.name,
+      :pasokara_file_id => pasokara.id,
+      :user_name => user.name,
+      :user_id => user.id
     }
     @no_name_attributes = {
       :pasokara_file_id => pasokara.id,
@@ -32,8 +39,8 @@ describe QueuedFile do
     queue.should have(1).errors_on(:pasokara_file_id)
   end
 
-  pending "適切なパラメーターで作成されること(ユーザーあり)" do
-    #QueuedFile.create!(@valid_attributes_user)
+  it "適切なパラメーターで作成されること(ユーザーあり)" do
+    queue = QueuedFile.create!(@valid_attributes_user)
   end
 
   it "PasokaraFileをキューに入れられること(ユーザーなし)" do
@@ -41,20 +48,22 @@ describe QueuedFile do
     QueuedFile.deq.pasokara_file.should == pasokara2
   end
 
-  pending "PasokaraFileをキューに入れられること(ユーザーあり)" do
-    QueuedFile.enq(pasokara, 11)
+  it "PasokaraFileをキューに入れられること(ユーザーあり)" do
+    QueuedFile.enq(pasokara, user)
     dequeued = QueuedFile.deq
     dequeued.pasokara_file.should == pasokara
-    dequeued.user.should == @test_user1
+    dequeued.name.should == pasokara.name
+    dequeued.user_name.should == user.nickname
   end
 
   it "dequeueされたときに、その曲の再生ログレコードが作成されること" do
     QueuedFile.count.should == 0
-    QueuedFile.enq(pasokara2)
+    QueuedFile.enq(pasokara2, user)
     dequeued = QueuedFile.deq
     history = SingLog.find(:last)
     history.pasokara_file.should == dequeued.pasokara_file
     history.name.should == dequeued.pasokara_file.name
-    #SingLog.find(:last).user.should == dequeued.user
+    history.user.should == dequeued.user
+    history.user_name.should == dequeued.user.nickname
   end
 end

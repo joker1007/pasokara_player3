@@ -1,4 +1,11 @@
 PasokaraPlayerRails3::Application.routes.draw do
+  devise_for :users, :controllers => {:sessions => 'custom_devise/sessions'}, :skip => [:sessions] do
+    get '/users/sign_in' => 'custom_devise/sessions#new', :as => :new_user_session
+    post '/users/sign_in' => 'custom_devise/sessions#create', :as => :user_session
+    get '/users/sign_out' => 'custom_devise/sessions#destroy', :as => :destroy_user_session
+    get '/users/switch/:id' => 'custom_devise/sessions#switch', :as => :switch_user_session
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
   resources :directories, :only => [:index, :show]

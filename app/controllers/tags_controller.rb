@@ -6,12 +6,20 @@ class TagsController < ApplicationController
     @tags = Tag.order_by([[:size, :desc]]).page params[:page]
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html
       format.xml  { render :xml => @tags }
-      format.json  { render :json => @tags }
+      format.json { render :json => @tags }
     end
   end
 
   def search
+    @tags = Tag.order_by([[:size, :desc]]).where(name: /#{Regexp.escape(params[:tag])}/).page params[:page]
+
+    respond_to do |format|
+      format.html
+      format.js   { render :json => @tags }
+      format.xml  { render :xml => @tags }
+      format.json { render :json => @tags }
+    end
   end
 end

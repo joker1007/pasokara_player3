@@ -1,7 +1,7 @@
 class Tag
   include Mongoid::Document
   field :name, :type => String
-  field :size, :type => Integer
+  field :size, :type => Integer, :default => 0
   index :name, :unique => true
   index :size
 

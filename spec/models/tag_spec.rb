@@ -2,8 +2,5 @@
 require 'spec_helper'
 
 describe Tag do
-  it "name無しでは保存できない" do
-    tag = Tag.new
-    tag.save.should be_false
-  end
+  it {should validate_presence_of(:name)}
 end
