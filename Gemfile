@@ -52,9 +52,11 @@ gem "mechanize"
 gem "pit"
 
 gem "open4"
-gem "newbamboo-rvideo",  "~> 0.9.6", :require => "rvideo"
+gem "newbamboo-rvideo", "~> 0.9.6", :require => "rvideo"
 
 gem "sunspot_mongoid"
 gem "sunspot_with_kaminari", '~> 0.1'
 
 gem "kaminari"
+
+gem "devise", "~> 1.3.4"
