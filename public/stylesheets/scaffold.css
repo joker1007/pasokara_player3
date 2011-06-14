@@ -1,7 +1,7 @@
 div.user_form_box {
   width: 640px;
   margin: 10px 8px 0px 8px;
-  padding: 8px 2px 8px 2px;
+  padding: 8px 6px 8px 6px;
   border: 2px solid #00008b;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -11,7 +11,7 @@ div.user_form_box {
 
 div.user_form_box p {
   border-bottom: 1px solid #888888;
-  padding-bottom: 8px;
+  padding-bottom: 10px;
 }
 
 span.setting_name {
