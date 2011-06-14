@@ -29,7 +29,7 @@ describe DirectoriesController do
 
   describe "GET index" do
     it "assigns all directories as @directories" do
-      directory = Directory.create! valid_attributes
+      directory = Factory(:directory)
       get :index
       assigns(:directories).should eq([directory])
     end
@@ -37,120 +37,9 @@ describe DirectoriesController do
 
   describe "GET show" do
     it "assigns the requested directory as @directory" do
-      directory = Directory.create! valid_attributes
+      directory = Factory(:directory)
       get :show, :id => directory.id.to_s
-      assigns(:directory).should eq(directory)
-    end
-  end
-
-  describe "GET new" do
-    it "assigns a new directory as @directory" do
-      get :new
-      assigns(:directory).should be_a_new(Directory)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested directory as @directory" do
-      directory = Directory.create! valid_attributes
-      get :edit, :id => directory.id.to_s
-      assigns(:directory).should eq(directory)
-    end
-  end
-
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Directory" do
-        expect {
-          post :create, :directory => valid_attributes
-        }.to change(Directory, :count).by(1)
-      end
-
-      it "assigns a newly created directory as @directory" do
-        post :create, :directory => valid_attributes
-        assigns(:directory).should be_a(Directory)
-        assigns(:directory).should be_persisted
-      end
-
-      it "redirects to the created directory" do
-        post :create, :directory => valid_attributes
-        response.should redirect_to(Directory.last)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved directory as @directory" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Directory.any_instance.stub(:save).and_return(false)
-        post :create, :directory => {}
-        assigns(:directory).should be_a_new(Directory)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Directory.any_instance.stub(:save).and_return(false)
-        post :create, :directory => {}
-        response.should render_template("new")
-      end
-    end
-  end
-
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested directory" do
-        directory = Directory.create! valid_attributes
-        # Assuming there are no other directories in the database, this
-        # specifies that the Directory created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Directory.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => directory.id, :directory => {'these' => 'params'}
-      end
-
-      it "assigns the requested directory as @directory" do
-        directory = Directory.create! valid_attributes
-        put :update, :id => directory.id, :directory => valid_attributes
-        assigns(:directory).should eq(directory)
-      end
-
-      it "redirects to the directory" do
-        directory = Directory.create! valid_attributes
-        put :update, :id => directory.id, :directory => valid_attributes
-        response.should redirect_to(directory)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns the directory as @directory" do
-        directory = Directory.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Directory.any_instance.stub(:save).and_return(false)
-        put :update, :id => directory.id.to_s, :directory => {}
-        assigns(:directory).should eq(directory)
-      end
-
-      it "re-renders the 'edit' template" do
-        directory = Directory.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Directory.any_instance.stub(:save).and_return(false)
-        put :update, :id => directory.id.to_s, :directory => {}
-        response.should render_template("edit")
-      end
-    end
-  end
-
-  describe "DELETE destroy" do
-    it "destroys the requested directory" do
-      directory = Directory.create! valid_attributes
-      expect {
-        delete :destroy, :id => directory.id.to_s
-      }.to change(Directory, :count).by(-1)
-    end
-
-    it "redirects to the directories list" do
-      directory = Directory.create! valid_attributes
-      delete :destroy, :id => directory.id.to_s
-      response.should redirect_to(directories_url)
+      assigns(:dir).should eq(directory)
     end
   end
 

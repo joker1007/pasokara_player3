@@ -16,7 +16,7 @@ class TagsController < ApplicationController
     @tags = Tag.order_by([[:size, :desc]]).where(name: /#{Regexp.escape(params[:tag])}/).page params[:page]
 
     respond_to do |format|
-      format.html
+      format.html { render :action => "index" }
       format.js   { render :json => @tags }
       format.xml  { render :xml => @tags }
       format.json { render :json => @tags }
