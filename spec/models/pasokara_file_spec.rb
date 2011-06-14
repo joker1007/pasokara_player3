@@ -2,6 +2,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe PasokaraFile do
+  it {should have_field(:name, :fullpath, :md5_hash, :nico_name, :nico_post, :nico_view_counter, :nico_comment_num, :nico_mylist_counter, :nico_description, :tags, :duration, :encoding)}
+  it {should validate_presence_of(:name)}
+  it {should validate_presence_of(:fullpath)}
+  it {should validate_presence_of(:md5_hash)}
 
   before(:each) do
     @valid_attributes = {

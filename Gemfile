@@ -49,6 +49,13 @@ gem "mongoid-rspec", "~> 1.4.4", :group => :test
 gem "bson_ext", "~> 1.3"
 gem "database_cleaner", "~> 0.6.7"
 
+group :test do
+  gem "rb-fsevent"
+  gem "guard-spork"
+  gem "growl"
+  gem "guard-rspec"
+  gem "guard-cucumber"
+end
 
 gem "mechanize"
 gem "pit"
