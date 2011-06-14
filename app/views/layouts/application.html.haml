@@ -1,0 +1,58 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html;charset=UTF-8", "http-equiv" => "content-type"}/
+    %meta{:content => "noindex,nofollow", :name => "robots"}/
+    = stylesheet_link_tag :all
+    = javascript_include_tag :defaults
+    = javascript_include_tag("jquery.min")
+    = javascript_include_tag("jquery_ujs")
+    = javascript_include_tag("jquery.lazyload.mini.js")
+    = javascript_include_tag("jquery-fonteffect-1.0.0.min.js")
+    = javascript_include_tag("jquery.linkwrapper-1.0.3.js")
+    = csrf_meta_tag
+    - if request.mobile
+      - if request.mobile.iphone?
+        %meta{:content => "width=640, initial-scale=0.5", :name => "viewport"}/
+      - elsif request.mobile.ipad?
+        %meta{:content => "width=640, initial-scale=1.0", :name => "viewport"}/
+    %title Pasokara Player
+    :javascript
+      $(document).ready(function() {
+        $("img.thumb").lazyload({
+          placeholder : "/images/gray.gif",
+          effect : "fadeIn"
+        });
+
+        $('div.title a.queue_link').linkwrapper();
+        $('li.queue a').linkwrapper();
+
+        $('#site_title').FontEffect({
+           mirror: true,
+           mirrorColor: "#FFFFFF",
+           mirrorOffset: -15,
+           mirrorHeight: 70,
+           gradient: true,
+           gradientFromTop: true,
+           gradientColor: "#AAA",
+           gradientPosition: 20,
+           gradientLength: 50,
+           gradientSteps: 20
+        });
+      });
+    %body
+    %header
+    %h1#site_title
+      %span> P
+      asokara Player
+    #user_info
+        \:
+        .clearfix
+    - if flash[:notice]
+      .notification= flash[:notice]
+    - if flash[:error]
+      .error_notification= flash[:error]
+    #main
+      = render 'layouts/search_header'
+      %article
+      = yield
