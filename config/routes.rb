@@ -10,10 +10,9 @@ PasokaraPlayerRails3::Application.routes.draw do
   # first created -> highest priority.
   resources :directories, :only => [:index, :show]
   resources :history, :only => [:index]
-  resources :queue, :only => [:index] do
-    member do
+  resources :queue, :only => [:index, :destroy] do
+    collection do
       get 'deque'
-      get 'remove'
       get 'last'
     end
   end
@@ -28,6 +27,7 @@ PasokaraPlayerRails3::Application.routes.draw do
     member do
       get 'thumb'
       get 'queue'
+      get 'preview'
     end
 
     collection do

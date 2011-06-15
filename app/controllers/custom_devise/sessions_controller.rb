@@ -5,7 +5,7 @@ class CustomDevise::SessionsController < Devise::SessionsController
     session["warden.user.user.key"] = nil
     super
     session[:logined_users] ||= [] 
-    session[:logined_users] << current_user unless session[:logined_users].include?(user)
+    session[:logined_users] << current_user unless session[:logined_users].include?(current_user)
   end
 
   def switch

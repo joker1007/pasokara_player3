@@ -13,6 +13,8 @@ class QueuedFile
   validates_presence_of :name
   validates_presence_of :pasokara_file_id
 
+  paginates_per 50
+
   def self.enq(pasokara, user = nil)
     attrs = {name:pasokara.name, pasokara_file_id: pasokara.id}
     attrs.merge!({user_name: user.nickname, user: user.id}) if user

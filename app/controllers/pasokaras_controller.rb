@@ -15,13 +15,12 @@ class PasokarasController < ApplicationController
     if params[:id] =~ /sm\d+/
       @pasokara = PasokaraFile.only(:id, :name, :nico_name, :duration, :fullpath).first(conditions: {nico_name: params[:id]})
     elsif params[:id] =~ /^[\w\d]+$/
-      @pasokara = PasokaraFile.find(params[:id]).only(:id, :name, :nico_name, :duration, :fullpath)
+      @pasokara = PasokaraFile.only(:id, :name, :nico_name, :duration, :fullpath).find(params[:id])
     else
       render :text => "パラメーターが不正です。", :status => 404 and return
     end
-    @pasokara.stream_path(request.raw_host_with_port, params[:force])
-    #QueuedFile.enq @pasokara, current_user.id
-    QueuedFile.enq @pasokara, nil
+    #@pasokara.stream_path(request.raw_host_with_port, params[:force])
+    QueuedFile.enq @pasokara, current_user
     
 
     @message = "#{@pasokara.name} の予約が完了しました"
@@ -85,7 +84,7 @@ class PasokarasController < ApplicationController
         tag_filter = with(:tags).all_of filters
       end
       order_by sort_order[0], sort_order[1]
-      facet :tags
+      facet :tags, :limit => 50
     end
   end
 
@@ -99,7 +98,7 @@ class PasokarasController < ApplicationController
         tag_filter = with(:tags).all_of filters
       end
       order_by sort_order[0], sort_order[1]
-      facet :tags
+      facet :tags, :limit => 50
     end
   end
 
@@ -113,7 +112,7 @@ class PasokarasController < ApplicationController
       end
       paginate(:page => params[:page], :per_page => per_page)
       order_by sort_order[0], sort_order[1]
-      facet :tags
+      facet :tags, :limit => 50
     end
   end
 
@@ -127,7 +126,7 @@ class PasokarasController < ApplicationController
         tag_filter = with(:tags).all_of filters
       end
       order_by sort_order[0], sort_order[1]
-      facet :tags
+      facet :tags, :limit => 50
     end
   end
 
@@ -143,7 +142,7 @@ class PasokarasController < ApplicationController
         tag_filter = with(:tags).all_of filters
       end
       order_by sort_order[0], sort_order[1]
-      facet :tags
+      facet :tags, :limit => 50
     end
   end
 
@@ -164,7 +163,7 @@ class PasokarasController < ApplicationController
         tag_filter = with(:tags).all_of filters
       end
       order_by sort_order[0], sort_order[1]
-      facet :tags
+      facet :tags, :limit => 50
     end
   end
 

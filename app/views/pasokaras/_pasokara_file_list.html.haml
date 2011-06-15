@@ -2,10 +2,14 @@
   %li.pasokara_file
     .title
       = image_tag("icon/music_48x48.png", :size => @icon_size, :class => "entity_icon")
-      = link_to(pasokara.name, queue_pasokara_path(pasokara), :remote => true, :confirm => "#{pasokara.name}を予約に追加しますか？", :class => "queue_link")
-      = link_to("[プレビュー]", pasokara.preview_path, :class => "preview_link", :target => "_blank")
-      %span.duration= pasokara.duration_str
-      = link_to(image_tag("icon/star_off_48.png", :size => "24x24"), root_path, :remote => true, :confirm => "#{pasokara.name}をお気に入りに追加しますか？", :class => "add_favorite")
+      - if current_user
+        = link_to(pasokara.name, queue_pasokara_path(pasokara), :remote => true, :confirm => "#{pasokara.name}を予約に追加しますか？", :class => "queue_link")
+        = link_to("[プレビュー]", pasokara.preview_path, :class => "preview_link", :target => "_blank")
+        %span.duration= pasokara.duration_str
+        = link_to(image_tag("icon/star_off_48.png", :size => "24x24"), root_path, :remote => true, :confirm => "#{pasokara.name}をお気に入りに追加しますか？", :class => "add_favorite")
+      - else
+        %span.title= pasokara.name
+        %span.preview [プレビュー]
 
     %div{:id => "info-box-#{pasokara.id}", :class => "info_box"}
       %h3 タグ
