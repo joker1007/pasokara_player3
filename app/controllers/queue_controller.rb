@@ -6,8 +6,8 @@ class QueueController < ApplicationController
     respond_to do |format|
       format.html
       format.js
-      format.xml { render :xml => @message.to_xml }
-      format.json { render :json => {:message => @message}.to_json }
+      format.xml { render :xml => @queue_list }
+      format.json { render :json => @queue_list }
     end
   end
 

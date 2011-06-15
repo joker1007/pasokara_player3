@@ -10,11 +10,11 @@
       - @sing_logs.each do |s|
         %li.queue
           %span.clearfix{:style => "float: right"}
-            - if sing_log.user
-              = sing_log.user.name + " | "
-            = sing_log.created_at.strftime("%Y/%m/%d %H:%M")
+            - if s.user
+              = s.user_name + " | "
+            = s.created_at.strftime("%Y/%m/%d %H:%M")
           %div{:style => "display: inline-block; max-width: 550px;"}
             = image_tag("icon/music_48x48.png", :size => "24x24", :class=> "entity_icon")
-            = link_to_if(true, sing_log.pasokara_files.name, queue_pasokara_path(sing_log.pasokara_file))
+            = link_to_if(current_user, s.name, queue_pasokara_path(s.pasokara_file))
 
     = paginate @sing_logs
