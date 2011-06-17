@@ -6,6 +6,10 @@ PasokaraPlayerRails3::Application.routes.draw do
     get '/users/switch/:id' => 'custom_devise/sessions#switch', :as => :switch_user_session
   end
 
+  authenticate :user do
+    mount Resque::Server.new, :at => "/resque"
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
   resources :directories, :only => [:index, :show]

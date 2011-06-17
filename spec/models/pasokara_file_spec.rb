@@ -262,9 +262,10 @@ describe PasokaraFile do
   end
 
   describe "#do_encode(host)" do
+    let(:flv_file) {Factory(:pasokara_file, name: "test002.flv")}
     it "Resqueオブジェクトにエンコードジョブがenqueueされること" do
-      Resque.should_receive(:enqueue).with(Job::VideoEncoder, @esp_raging.id, "host:port")
-      @esp_raging.do_encode("host:port")
+      Resque.should_receive(:enqueue).with(Job::VideoEncoder, flv_file.id, "host:port")
+      flv_file.do_encode("host:port")
     end
   end
 

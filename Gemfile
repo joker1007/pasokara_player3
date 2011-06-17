@@ -69,3 +69,5 @@ gem "sunspot_with_kaminari", '~> 0.1'
 gem "kaminari"
 
 gem "devise", "~> 1.3.4"
+
+gem "resque", :require => "resque/server"

@@ -1,4 +1,5 @@
 # coding: utf-8
+require "job/video_encoder"
 class PasokaraFile
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -131,6 +132,10 @@ class PasokaraFile
   def tag_list
     @tag_list ||= TagList.new(tags)
     @tag_list
+  end
+
+  def do_encode(host)
+    Resque.enqueue(Job::VideoEncoder, id, host)
   end
 
   protected
