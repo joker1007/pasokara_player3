@@ -1,5 +1,6 @@
 # coding: utf-8
 require "job/video_encoder"
+require "carrierwave/orm/mongoid"
 class PasokaraFile
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -21,6 +22,8 @@ class PasokaraFile
   index :md5_hash, :unique => true
   index :fullpath, :unique => true
   index :tags
+
+  mount_uploader :thumbnail, ThumbnailUploader
 
   belongs_to :directory, :index => true
   has_many :sing_logs

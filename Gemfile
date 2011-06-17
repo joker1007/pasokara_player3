@@ -72,3 +72,5 @@ gem "kaminari"
 gem "devise", "~> 1.3.4"
 
 gem "resque", :require => "resque/server"
+
+gem "carrierwave"

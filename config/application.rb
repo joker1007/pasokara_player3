@@ -6,6 +6,7 @@ require "action_controller/railtie"
 require "action_mailer/railtie"
 require "active_resource/railtie"
 require "rails/test_unit/railtie"
+require File.expand_path('../../lib/serve_gridfs_image', __FILE__)
 
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
@@ -50,6 +51,8 @@ module PasokaraPlayerRails3
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password, :password_confirmation]
+
+    config.middleware.use "ServeGridfsImage"
 
     ### Part of a Spork hack. See http://bit.ly/arY19y
     if Rails.env.test? && defined?(Spork) && Spork.using_spork?
