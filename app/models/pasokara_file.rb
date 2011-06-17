@@ -138,6 +138,19 @@ class PasokaraFile
     Resque.enqueue(Job::VideoEncoder, id, host)
   end
 
+  def stream_path(host, force = false)
+    if !force and mp4?
+      path = movie_path
+    else
+      path = m3u8_path
+      unless encoded?
+        do_encode(host)
+        sleep 1
+      end
+    end
+    path
+  end
+
   protected
   def save_tags
     if @tag_list
