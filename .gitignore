@@ -10,6 +10,7 @@ capybara-*.html
 .rspec
 .rvmrc
 config/database.yml
+config/deploy.rb
 config/*.yml
 db/schema.rb
 vendor/bundle
