@@ -1,6 +1,7 @@
 # coding: utf-8
 class PasokarasController < ApplicationController
   before_filter :top_tag_load, :except => [:search, :thumb]
+  before_filter :authenticate_user!, :only => [:queue, :preview, :add_favorite, :favorite_list]
 
   def index
     @pasokaras = PasokaraFile.only(:id, :name, :nico_name, :duration).all
@@ -21,7 +22,6 @@ class PasokarasController < ApplicationController
     end
     #@pasokara.stream_path(request.raw_host_with_port, params[:force])
     QueuedFile.enq @pasokara, current_user
-    
 
     @message = "#{@pasokara.name} の予約が完了しました"
     respond_to do |format|
@@ -35,11 +35,57 @@ class PasokarasController < ApplicationController
     end
   end
 
+  def preview
+  end
+
+  def favorite
+    @pasokaras = current_user.favorites.order_by(mongoid_order_options).page params[:page]
+
+    respond_to do |format|
+      format.html
+      format.js
+      format.xml { render :xml => @search.results.to_xml }
+      format.json { render :json => @search.results.to_json }
+    end
+  end
+
+  def add_favorite
+    @pasokara = PasokaraFile.find(params[:id])
+    current_user.favorites << @pasokara
+
+    @message = "#{@pasokara.name}を#{current_user.nickname}のお気に入りに追加しました"
+    respond_to do |format|
+      format.html {
+        flash[:notice] = @message
+        redirect_to root_path
+      }
+      format.js {render :action => 'queue'}
+      format.xml { render :xml => @message.to_xml }
+      format.json { render :json => {:message => @message}.to_json }
+    end
+  end
+
+  def remove_favorite
+    @pasokara = PasokaraFile.find(params[:id])
+    current_user.favorite_ids.delete @pasokara.id
+    current_user.save!
+
+    @message = "#{@pasokara.name}を#{current_user.nickname}のお気に入りから削除しました"
+    respond_to do |format|
+      format.html {
+        flash[:notice] = @message
+        redirect_to root_path
+      }
+      format.js
+      format.xml { render :xml => @message.to_xml }
+      format.json { render :json => {:message => @message}.to_json }
+    end
+  end
 
   def search
     @query = params[:query]
     @filters = params[:filter] ? params[:filter].split(/\+/) : nil
-    
+
     if @query
       queries = @query.split(/\s+/)
       case params[:field]
@@ -207,6 +253,24 @@ class PasokarasController < ApplicationController
       order = [:nico_post, :asc]
     when "mylist_count"
       order = [:nico_mylist_counter, :desc]
+    end
+
+    order
+  end
+
+  def mongoid_order_options
+    order = [[:name, :asc]]
+    case params[:sort]
+    when "view_count"
+      order = [[:nico_view_counter, :desc], [:name, :asc]]
+    when "view_count_r"
+      order = [[:nico_view_counter, :asc], [:name, :asc]]
+    when "post_new"
+      order = [[:nico_post, :desc], [:name, :asc]]
+    when "post_old"
+      order = [[:nico_post, :asc], [:name, :asc]]
+    when "mylist_count"
+      order = [[:nico_mylist_counter, :desc], [:name, :asc]]
     end
 
     order

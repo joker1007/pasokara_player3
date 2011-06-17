@@ -28,11 +28,15 @@ PasokaraPlayerRails3::Application.routes.draw do
       get 'thumb'
       get 'queue'
       get 'preview'
+      get 'add_favorite'
+      get 'remove_favorite'
     end
 
     collection do
       get 'search'
       post 'search'
+      get 'favorite'
+      post 'favorite'
     end
   end
 
