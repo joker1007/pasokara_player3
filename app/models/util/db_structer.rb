@@ -87,9 +87,9 @@ module Util
           changed = true
         end
 
-        thumb_data = nico_check_thumb(pasokara_file.fullpath)
-        if thumb_data && pasokara_file.thumbnail.nil?
-          pasokara_file.thumbnail = thumb_data
+        thumb_data = nico_check_thumb(already_record.fullpath)
+        if thumb_data && already_record.thumbnail.size == 0
+          already_record.thumbnail = thumb_data
           changed = true
         end
 
@@ -100,6 +100,11 @@ module Util
         end
         return already_record.id
       else
+        thumb_data = nico_check_thumb(pasokara_file.fullpath)
+        if thumb_data
+          pasokara_file.thumbnail = thumb_data
+        end
+
         if pasokara_file.save
           #print_process pasokara_file
           return pasokara_file.id
