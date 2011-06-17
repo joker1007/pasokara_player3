@@ -20,7 +20,7 @@
       %h3 動画情報
       %div{:id => "info-list-#{pasokara.id}", :class => "info_list"}
         %div{:class => ["thumb", "clearfix"]}
-          = image_tag(thumb_pasokara_path(pasokara.id), :size => "160x120", :class => "thumb")
+          = image_tag(pasokara.thumbnail.url, :size => "160x120", :class => "thumb")
         %div{:class => ["nico_info", "clearfix"]}
           %span.info_key> ニコニコID:
           %span.info_value>= link_to(pasokara.nico_name, pasokara.nico_url) if pasokara.nico_name

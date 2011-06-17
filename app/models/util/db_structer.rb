@@ -87,6 +87,12 @@ module Util
           changed = true
         end
 
+        thumb_data = nico_check_thumb(pasokara_file.fullpath)
+        if thumb_data && pasokara_file.thumbnail.nil?
+          pasokara_file.thumbnail = thumb_data
+          changed = true
+        end
+
         if changed
           already_record.save
           p already_record.errors if Rails.env == "test"
@@ -101,14 +107,6 @@ module Util
           p pasokara_file.errors if Rails.env == "test"
           return nil
         end
-      end
-    end
-
-    def create_thumbnail_record(id, thumb_data, force = false)
-      key = id.to_s
-      if force or CACHE[key].nil?
-        puts "load thumb"
-        CACHE[key] = thumb_data
       end
     end
 
@@ -147,10 +145,6 @@ module Util
 
             pasokara_file_id = create_pasokara_file(attributes, tags)
 
-            thumb_data = nico_check_thumb(entity_fullpath)
-            if thumb_data
-              #create_thumbnail_record(pasokara_file_id, thumb_data, force_thumbnail)
-            end
           end
         end
       rescue Errno::ENOENT
@@ -171,19 +165,10 @@ module Util
       end
     end
 
-    def nico_check_comment(fullpath)
-      comment = fullpath.gsub(/\.[a-zA-Z0-9]+$/, ".xml")
-      if File.exist?(comment)
-        {:comment_file => NKF.nkf("-Sw --cp932", comment)}
-      else
-        {}
-      end
-    end
-
     def nico_check_thumb(fullpath)
-      thumb = fullpath.gsub(/\.[a-zA-Z0-9]+$/, ".jpg")
+      thumb = fullpath.gsub(/#{Regexp.escape(File.extname(fullpath))}$/, ".jpg")
       if File.exist?(thumb)
-        data = File.open(thumb, "rb") {|f| f.read}
+        File.open(thumb)
       else
         nil
       end
