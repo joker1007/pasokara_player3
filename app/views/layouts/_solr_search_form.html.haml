@@ -1,6 +1,6 @@
 #solr_search
   .search
-    - form_tag search_pasokaras_path do
+    = form_tag search_pasokaras_path do
       %label Solr検索
       = text_field_tag("query", params[:query], :size => 56) 
       = select_tag("field", options_for_select([["全て", "a"], ["名前", "n"], ["タグ", "t"], ["説明", "d"], ["Raw", "r"]], params[:field]))
