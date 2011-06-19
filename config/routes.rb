@@ -1,9 +1,16 @@
 PasokaraPlayerRails3::Application.routes.draw do
-  devise_for :users, :controllers => {:sessions => 'custom_devise/sessions'}, :skip => [:sessions] do
+  devise_for :users, :controllers => {:sessions => 'custom_devise/sessions', :registrations => 'custom_devise/registrations'}, :skip => [:sessions, :registrations] do
     get '/users/sign_in' => 'custom_devise/sessions#new', :as => :new_user_session
     post '/users/sign_in' => 'custom_devise/sessions#create', :as => :user_session
     get '/users/sign_out' => 'custom_devise/sessions#destroy', :as => :destroy_user_session
     get '/users/switch/:id' => 'custom_devise/sessions#switch', :as => :switch_user_session
+
+    get '/users/cancel' => 'custom_devise/registrations#cancel', :as => :cancel_user_registration
+    get '/users/sign_up' => 'custom_devise/registrations#new', :as => :new_user_registration
+    post '/users' => 'custom_devise/registrations#create', :as => :user_registration
+    get '/users/edit' => 'custom_devise/registrations#edit', :as => :edit_user_registration
+    put '/users' => 'custom_devise/registrations#update'
+    delete '/users' => 'custom_devise/registrations#destroy'
   end
 
   authenticate :user do
