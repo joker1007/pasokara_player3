@@ -1,0 +1,2 @@
+module NicoListsHelper
+end

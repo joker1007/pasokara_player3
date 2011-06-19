@@ -39,6 +39,4 @@ describe Util::NicoDownloader do
     File.unlink("/tmp/nicomovie/#{@nico_name1}/#{@nico_name1}.mp4")
     File.unlink("/tmp/nicomovie/#{@nico_name1}/#{@nico_name1}_info.xml")
   end
-  
-  
 end

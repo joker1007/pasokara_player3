@@ -21,6 +21,7 @@ PasokaraPlayerRails3::Application.routes.draw do
   # first created -> highest priority.
   resources :directories, :only => [:index, :show]
   resources :history, :only => [:index]
+  resources :nico_lists
   resources :queue, :only => [:index, :destroy] do
     collection do
       get 'deque'

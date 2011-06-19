@@ -1,0 +1,9 @@
+%p#notice= notice
+
+%p
+  %b Url:
+  = @nico_list.url
+
+= link_to 'Edit', edit_nico_list_path(@nico_list)
+\|
+= link_to 'Back', nico_lists_path
