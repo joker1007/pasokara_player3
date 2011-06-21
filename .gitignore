@@ -19,4 +19,4 @@ coverage/
 spec/tmp/*
 **.orig
 rerun.txt
-
+solr/data
