@@ -4,7 +4,6 @@
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
 
-require 'rubygems'
 require 'spork'
 
 Spork.prefork do
