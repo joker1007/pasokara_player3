@@ -2,20 +2,21 @@
 %h1 Listing nico_lists
 
 %table
-  %tr
-    %th Url
-    %th Download
-    %th
-    %th
-    %th
-
-  - @nico_lists.each do |nico_list|
+  %tbody
     %tr
+      %th Url
+      %th Download
+      %th
+      %th
+      %th
+
+    - @nico_lists.each do |nico_list|
       = form_for nico_list, :format => :json, :remote => true do |f|
-        %td= f.text_field :url, :class => "nico_list_url", :id => "nico_list_url_#{nico_list.id}", :size => 40
-        %td= f.check_box :download, :class => "nico_list_download", :id => "nico_list_download_#{nico_list.id}"
-        %td= submit_tag "Update"
-        %td= link_to 'Destroy', nico_list, :confirm => 'Are you sure?', :method => :delete
+        %tr
+          %td= f.text_field :url, :class => "nico_list_url", :id => "nico_list_url_#{nico_list.id}", :size => 40
+          %td= f.check_box :download, :class => "nico_list_download", :id => "nico_list_download_#{nico_list.id}"
+          %td= submit_tag "Update"
+          %td= link_to 'Destroy', nico_list, :confirm => 'Are you sure?', :method => :delete
 
 %br
 
