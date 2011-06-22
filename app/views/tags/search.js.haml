@@ -1,0 +1,4 @@
+- entities = @tags.inject(""){ |str, t| str += j(entity_li(t)) }
+$("#entity_list ul").empty().append("#{entities}");
+
+$("nav.pagination").replaceWith("#{j(paginate(@tags))}");

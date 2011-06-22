@@ -17,7 +17,7 @@ class TagsController < ApplicationController
 
     respond_to do |format|
       format.html { render :action => "index" }
-      format.js   { render :json => @tags }
+      format.js
       format.xml  { render :xml => @tags }
       format.json { render :json => @tags }
     end
