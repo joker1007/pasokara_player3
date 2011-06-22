@@ -16,6 +16,7 @@ config/*.yml
 db/schema.rb
 vendor/bundle
 public/system/*
+public/video/*
 coverage/
 spec/tmp/*
 **.orig

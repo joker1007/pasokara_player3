@@ -13,7 +13,7 @@ module ApplicationHelper
 
   def tag_li(tag_obj)
     image_tag("icon/search.png", :size => "36x36", :class => "tag_icon") +
-    link_to(tag_obj.name, root_path) +
+    link_to(tag_obj.name, search_pasokaras_path(:filter => t.value)) +
     "(#{tag_obj.count})"
   end
 
