@@ -15,6 +15,6 @@ class User
   has_many :sing_logs
 
   validates_presence_of :name, :nickname
-  validates_uniqueness_of :name, :email, :case_sensitive => false
+  validates_uniqueness_of :name, :case_sensitive => false
   attr_accessible :name, :nickname, :email, :password, :password_confirmation, :remember_me, :tweeting, :twitter_access_token, :twitter_access_secret
 end
