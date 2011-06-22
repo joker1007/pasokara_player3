@@ -36,6 +36,17 @@ class PasokarasController < ApplicationController
   end
 
   def preview
+    @pasokara = PasokaraFile.find(params[:id])
+    if request.smart_phone?
+      @movie_path = @pasokara.stream_path(request.raw_host_with_port, params[:force])
+      render :action => "preview"
+    else
+      if @pasokara.mp4? or @pasokara.flv?
+        render :action => "preview"
+      else
+        render :text => "Not Flash Movie", :status => 404
+      end
+    end
   end
 
   def favorite
@@ -114,10 +125,6 @@ class PasokarasController < ApplicationController
       format.xml { render :xml => @search.results.to_xml }
       format.json { render :json => @search.results.to_json }
     end
-  end
-
-  def thumb
-    send_file("#{Rails.root}/public/images/noimg-1_3.gif", :disposition => "inline", :type => "image/gif")
   end
 
   protected
