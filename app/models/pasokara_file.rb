@@ -82,6 +82,7 @@ class PasokaraFile
   end
 
   def duration_str
+    return "00:00" unless duration
     min = sprintf("%02d", duration / 60)
     sec = sprintf("%02d", duration % 60)
     "#{min}:#{sec}"

@@ -124,6 +124,11 @@ describe PasokaraFile do
       it "mm:ss形式で曲の長さを返すこと" do
         pasokara_test.duration_str.should == "04:05"
       end
+
+      it "durationがnilの場合は00:00を返すこと" do
+        pasokara_test.duration = nil
+        pasokara_test.duration_str.should == "00:00"
+      end
     end
 
     describe "#nico_post_str" do
