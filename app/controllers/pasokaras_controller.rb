@@ -35,6 +35,14 @@ class PasokarasController < ApplicationController
     end
   end
 
+  def get_stream
+    @pasokara = PasokaraFile.find(params[:id])
+    @movie_path = @pasokara.stream_path(request.raw_host_with_port, params[:force])
+    respond_to do |format|
+      format.json {render :json => {:path => @movie_path, :type => @pasokara.extname}.to_json}
+    end
+  end
+
   def preview
     @pasokara = PasokaraFile.find(params[:id])
     if request.smart_phone?
@@ -97,7 +105,7 @@ class PasokarasController < ApplicationController
     @query = params[:query]
     @filters = params[:filter] ? params[:filter].split(/\+/) : nil
 
-    if @query
+    if !@query.blank?
       queries = @query.split(/\s+/)
       case params[:field]
       when "n"
