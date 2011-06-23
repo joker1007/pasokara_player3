@@ -11,10 +11,14 @@ module NavigationHelpers
 
     when /^the home\s?page$/
       '/'
+    when /トップ/
+      root_path
     when /ログイン/
       new_user_session_path
     when /ユーザー登録/
       new_user_registration_path
+    when /お気に入り/
+      favorite_pasokaras_path
 
 
     # Add more mappings here.

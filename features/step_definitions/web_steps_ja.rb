@@ -43,6 +43,20 @@ end
   When %{I follow "#{link}" within "#{parent}"}
 end
 
+もし /^"([^"]*)"に一致する要素をクリックする$/ do |selector|
+  find(selector).click
+end
+
+# Selenium-driver
+もし /^ポップアップダイアログを承認する$/ do
+  page.driver.browser.switch_to.alert.accept
+end
+
+# Selenium-driver
+もし /^ポップアップダイアログを拒否する$/ do
+  page.driver.browser.switch_to.alert.dismiss
+end
+
 もし /^"([^"]*)"に"([^"]*)"と入力する$/ do |field, value|
   When %{I fill in "#{field}" with "#{value}"}
 end
@@ -95,6 +109,10 @@ end
 
 もし /^"([^"]*)"としてファイル"([^"]*)"を選択する$/ do |field, path|
   When %{I attach the file "#{path}" to "#{field}"}
+end
+
+もし /^"([\d]*)"秒待つ$/ do |num|
+  sleep num.to_i
 end
 
 ならば /^"([^"]*)"と表示されていること$/ do |text|

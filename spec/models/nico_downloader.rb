@@ -30,7 +30,7 @@ describe Util::NicoDownloader do
     url.should =~ /^http.*nicovideo/
   end
 
-  it "#downloadで引数で与えたIDの動画ファイルをDLする" do
+  it "#downloadで引数で与えたIDの動画ファイルをDLする", :slow => true do
     @nico_downloader.login
     @nico_downloader.login?.should be_true
     @nico_downloader.download(@nico_name1, "/tmp/nicomovie")

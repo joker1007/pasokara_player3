@@ -1,6 +1,8 @@
 # encoding:utf-8
 # Read about factories at http://github.com/thoughtbot/factory_girl
 
+require "digest/md5"
+
 Factory.sequence :mp4_name do |n|
   "test#{n}.mp4"
 end
@@ -12,7 +14,7 @@ end
 Factory.define :pasokara_file do |f|
   f.name "test001.mp4"
   f.fullpath {|p| File.join(File.expand_path(File.dirname(__FILE__)), "..", "datas", p.name)}
-  f.md5_hash "asdfjl2asjfasd83jasdkfj"
+  f.md5_hash {|a| Digest::MD5.hexdigest a.name }
   f.nico_name "sm999999"
   f.nico_post "2011-06-04 02:31:01"
   f.nico_view_counter 1
@@ -27,7 +29,7 @@ end
 Factory.define :siawase_gyaku, :class => PasokaraFile do |f|
   f.name "【ニコカラ】シアワセうさぎ（逆）(夏) OnVocal.flv"
   f.fullpath {|p| File.join(File.expand_path(File.dirname(__FILE__)), "..", "datas", p.name)}
-  f.md5_hash "1386b49d7fb897823a21b8ec9a9b48fd"
+  f.md5_hash {|a| Digest::MD5.hexdigest a.name }
   f.nico_name "sm4601746"
   f.nico_post "2011-06-04 02:31:01"
   f.nico_view_counter 2

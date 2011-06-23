@@ -2,6 +2,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe PasokaraFile do
+  include SolrSpecHelper
+
   it {should have_field(:name, :fullpath, :md5_hash, :nico_name, :nico_post, :nico_view_counter, :nico_comment_num, :nico_mylist_counter, :nico_description, :tags, :duration, :encoding)}
   it {should validate_presence_of(:name)}
   it {should validate_presence_of(:fullpath)}
@@ -271,6 +273,29 @@ describe PasokaraFile do
     it "Resqueオブジェクトにエンコードジョブがenqueueされること" do
       Resque.should_receive(:enqueue).with(Job::VideoEncoder, flv_file.id, "host:port")
       flv_file.do_encode("host:port")
+    end
+  end
+
+  describe "Sunspotによる検索" do
+    it "nameによる全文検索が出来ること", :slow => true do
+      solr_setup
+      PasokaraFile.remove_all_from_index!
+
+      pasokara = Factory(:pasokara_file)
+      pasokara2 = Factory(:pasokara_file, name: "sunspot.mp4")
+      Sunspot.commit
+
+      search = Sunspot.search PasokaraFile
+      search.results.should be_include(pasokara)
+      search.results.should be_include(pasokara2)
+
+      search = Sunspot.search PasokaraFile do
+        keywords "sunspot.mp4"
+      end
+      search.results.should_not be_include(pasokara)
+      search.results.should be_include(pasokara2)
+
+      PasokaraFile.remove_all_from_index!
     end
   end
 
