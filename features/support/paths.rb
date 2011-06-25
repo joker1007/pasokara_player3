@@ -19,6 +19,8 @@ module NavigationHelpers
       new_user_registration_path
     when /お気に入り/
       favorite_pasokaras_path
+    when /予約確認/
+      queue_index_path
 
 
     # Add more mappings here.
