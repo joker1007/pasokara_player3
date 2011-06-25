@@ -1,5 +1,5 @@
 # coding: utf-8
-class QueueController < ApplicationController
+class QueuesController < ApplicationController
   def index
     @queue_list = QueuedFile.order_by([[:created_at, :desc]]).page params[:page]
 

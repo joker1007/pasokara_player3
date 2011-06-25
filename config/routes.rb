@@ -22,7 +22,7 @@ PasokaraPlayerRails3::Application.routes.draw do
   resources :directories, :only => [:index, :show]
   resources :history, :only => [:index]
   resources :nico_lists
-  resources :queue, :only => [:index, :destroy] do
+  resources :queues, :only => [:index, :destroy] do
     collection do
       get 'deque'
       get 'last'

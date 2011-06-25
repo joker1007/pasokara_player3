@@ -20,7 +20,7 @@ module NavigationHelpers
     when /お気に入り/
       favorite_pasokaras_path
     when /予約確認/
-      queue_index_path
+      queues_path
 
 
     # Add more mappings here.
