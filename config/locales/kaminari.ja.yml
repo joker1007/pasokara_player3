@@ -1,0 +1,8 @@
+ja:
+  views:
+    pagination:
+      previous: "«"
+      next: "»"
+      truncate: "..."
+      first: "最初のページ"
+      last: "最後のページ"
