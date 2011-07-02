@@ -1,0 +1,29 @@
+.usage
+  %h1 使い方
+  %br/
+  %p
+  %h2 1. 検索フォーム、またはタグリストから楽曲を検索できます。
+  = image_tag "explain1.png", :width => 500
+  %br/
+  タグ一覧には、検索結果に含まれるタグのみが表示されるようになります。
+  %br/
+  一覧に表示されているタグをクリックすることで、検索結果をさらに絞り込むことが可能です。
+  %p
+  %h2 2. フォームからの検索では、検索対象の属性を指定できます。
+  = image_tag "explain2.png", :width => 500
+  %br/
+  %ul{:style => "padding-left: 15px"}
+    %li{:style => "list-style: square"} 名前: 動画のタイトル
+    %li{:style => "list-style: square"} タグ: タグ名(完全一致じゃないと駄目)
+    %li{:style => "list-style: square"} 説明: UP主のコメント
+    %li{:style => "list-style: square"} 全て: ↑3つの全てから検索
+  %p
+  %h2 3. 全てのタグを一覧できます、タグの検索も可能です。
+  = image_tag "explain3.png"
+  %br/
+  = image_tag "explain3-2.png"
+  %br/
+  %p
+  %h2 4. 動画のタイトルをクリックすることで楽曲の再生予約ができます。
+  = image_tag "explain4.png"
+  %br/

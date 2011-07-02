@@ -52,6 +52,8 @@ PasokaraPlayerRails3::Application.routes.draw do
     end
   end
 
+  match 'help/usage' => 'help#usage'
+
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
