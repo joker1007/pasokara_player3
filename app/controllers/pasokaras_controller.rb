@@ -58,7 +58,10 @@ class PasokarasController < ApplicationController
   end
 
   def favorite
-    @pasokaras = current_user.favorites.order_by(mongoid_order_options).page params[:page]
+    unless current_user.favorite
+      current_user.create_favorite
+    end
+    @pasokaras = current_user.favorite.pasokara_files.order_by(mongoid_order_options).page params[:page]
 
     respond_to do |format|
       format.html
@@ -70,9 +73,13 @@ class PasokarasController < ApplicationController
 
   def add_favorite
     @pasokara = PasokaraFile.find(params[:id])
-    current_user.favorites << @pasokara
+    if current_user.favorite? @pasokara
+      @message = "#{@pasokara.name}は既に#{current_user.nickname}のお気に入りに登録済みです"
+    else
+      current_user.add_favorite @pasokara
+      @message = "#{@pasokara.name}を#{current_user.nickname}のお気に入りに追加しました"
+    end
 
-    @message = "#{@pasokara.name}を#{current_user.nickname}のお気に入りに追加しました"
     respond_to do |format|
       format.html {
         flash[:notice] = @message
@@ -86,8 +93,8 @@ class PasokarasController < ApplicationController
 
   def remove_favorite
     @pasokara = PasokaraFile.find(params[:id])
-    current_user.favorite_ids.delete @pasokara.id
-    current_user.save!
+    current_user.favorite.pasokara_file_ids.delete @pasokara.id
+    current_user.favorite.save!
 
     @message = "#{@pasokara.name}を#{current_user.nickname}のお気に入りから削除しました"
     respond_to do |format|

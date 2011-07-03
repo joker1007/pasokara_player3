@@ -1,6 +1,7 @@
 # coding: utf-8
 前提 /^登録済みユーザーが存在する$/ do
   Factory.create(:user)
+  User.first.add_favorite(Factory(:pasokara_file))
 end
 
 前提 /^ユーザーID:"([^"]*)"、パスワード:"([^"]*)"でログインしている$/ do |login, password|

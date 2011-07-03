@@ -8,5 +8,4 @@ Factory.define :user do |f|
   f.tweeting false
   f.password "password"
   f.password_confirmation "password"
-  f.favorites {[Factory(:pasokara_file)]}
 end

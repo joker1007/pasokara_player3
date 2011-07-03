@@ -38,5 +38,5 @@
           %span.info_value>= number_with_delimiter(pasokara.nico_mylist_counter)
           %br
 
-        - if current_user && current_user.favorite_ids.include?(pasokara.id)
+        - if current_user && current_user.favorite?(pasokara)
           = link_to "お気に入りから削除する", remove_favorite_pasokara_path(pasokara), :remote => true, :confirm => "#{pasokara.name}を#{current_user.nickname}のお気に入りから削除しますか？", :style => "color: red;"
