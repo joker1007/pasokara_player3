@@ -22,3 +22,4 @@ spec/tmp/*
 **.orig
 rerun.txt
 solr/data
+pasokara_player_setting.txt

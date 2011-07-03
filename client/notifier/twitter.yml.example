@@ -1,0 +1,4 @@
+consumer_key: "consumer_key"
+consumer_secret: "consumer_secret"
+auth_key: "auth_key"
+auth_secret: "auth_secret"
