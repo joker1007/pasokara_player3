@@ -12,7 +12,6 @@ class User
   field :twitter_access_token
   field :twitter_access_secret
   has_one :favorite
-  has_and_belongs_to_many :favorites, :class_name => "PasokaraFile"
   has_many :sing_logs
 
   validates_presence_of :name, :nickname
