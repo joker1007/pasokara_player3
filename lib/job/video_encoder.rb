@@ -1,6 +1,6 @@
 module Job
   class VideoEncoder
-    @queue = :default
+    @queue = :pp3
 
     def self.perform(id, host)
       segmenter_duration = "5"
