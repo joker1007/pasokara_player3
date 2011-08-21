@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protected
   def top_tag_load
     tag_limit = 50
+
     @tag_list_cache_key = "top_tags_#{tag_limit}"
     @header_tags = Tag.order_by([[:size, :desc], [:name, :asc]]).limit(tag_limit)
     @header_tags.each do |tag|
