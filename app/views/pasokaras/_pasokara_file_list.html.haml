@@ -15,7 +15,7 @@
       %h3 タグ
       %div{:id => "tag-list-#{pasokara.id}", :class => "tag_list"}
         - pasokara.tag_list.each do |tag_name|
-          %span.tag= link_to(tag_name, search_pasokaras_path)
+          %span.tag= link_to(tag_name, search_pasokaras_path(:query => tag_name, :field => "t"))
       %hr
       %h3 動画情報
       %div{:id => "info-list-#{pasokara.id}", :class => "info_list"}
