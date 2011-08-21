@@ -9,7 +9,6 @@ tmp/
 .sass-cache
 capybara-*.html
 .rspec
-.rvmrc
 config/database.yml
 config/deploy.rb
 config/*.yml
