@@ -2,5 +2,6 @@ bundler_args: "--without development"
 before_script:
   - "cp config/mongoid.yml.example config/mongoid.yml"
   - "cp config/resque.yml.example config/resque.yml"
+  - "cp config/sunspot.yml.example config/sunspot.yml"
 rvm:
   - 1.9.2
