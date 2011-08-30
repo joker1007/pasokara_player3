@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  include Jpmobile::ViewSelector
 
   protected
   def top_tag_load
