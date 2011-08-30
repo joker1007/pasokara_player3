@@ -59,6 +59,10 @@ class PasokaraFile
 
   paginates_per 50
 
+  def self.saved_file?(fullpath)
+    only(:fullpath).where(:fullpath => fullpath).first
+  end
+
   alias _name name
   def name(utf8 = true)
     utf8 ? _name : _name.encode("CP932")
@@ -144,6 +148,24 @@ class PasokaraFile
       end
     end
     path
+  end
+
+  def parse_info_file
+    api_xml_file = fullpath.gsub(/\.[0-9a-zA-Z]+$/, "_info.xml")
+    nico_player_info_file = fullpath.gsub(/\.[0-9a-zA-Z]+$/, ".txt")
+
+    if File.exists?(api_xml_file)
+      parser = NicoParser::ApiXmlParser.new
+      info_file = api_xml_file
+    elsif File.exists?(nico_player_info_file)
+      parser = NicoParser::NicoPlayerParser.new
+      info_file = nico_player_info_file
+    end
+
+    if parser
+      self.attributes = parser.parse_info(info_file)
+      self.tag_list.add parser.parse_tag(info_file)
+    end
   end
 
   protected

@@ -14,7 +14,7 @@ end
 Factory.define :pasokara_file do |f|
   f.name "test001.mp4"
   f.fullpath {|p| File.join(File.expand_path(File.dirname(__FILE__)), "..", "datas", p.name)}
-  f.md5_hash {|a| Digest::MD5.hexdigest a.name }
+  f.md5_hash {|p| Digest::MD5.hexdigest p.name }
   f.nico_name "sm999999"
   f.nico_post "2011-06-04 02:31:01"
   f.nico_view_counter 1
@@ -24,6 +24,12 @@ Factory.define :pasokara_file do |f|
   f.nico_description "description"
   f.tags {["Tag1", "Tag2", "Tag3"]}
   f.encoding false
+end
+
+Factory.define :pasokara_file2, :class => PasokaraFile do |f|
+  f.name "test002.mp4"
+  f.fullpath {|p| File.join(File.expand_path(File.dirname(__FILE__)), "..", "datas", "testdir1", p.name)}
+  f.md5_hash {|p| Digest::MD5.hexdigest p.name }
 end
 
 Factory.define :siawase_gyaku, :class => PasokaraFile do |f|
