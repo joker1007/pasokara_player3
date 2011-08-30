@@ -131,7 +131,7 @@ module Util
 
             dir_id = create_directory(attributes)
             crowl_dir(entity_fullpath, dir_id, force_thumbnail)
-          elsif File.extname(entity) =~ /(mpg|avi|flv|ogm|mkv|mp4|wmv|swf)/i
+          elsif File.extname(entity) =~ /(mpg|avi|flv|ogm|mkv|mp4|wmv)/i
             begin
               md5_hash = File.open(entity_fullpath) {|file| file.binmode; head = file.read(300*1024); Digest::MD5.hexdigest(head)}
               video = RVideo::Inspector.new(:file => entity_fullpath)
