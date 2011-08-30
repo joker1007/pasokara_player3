@@ -276,6 +276,30 @@ describe PasokaraFile do
     end
   end
 
+  describe "infoファイルのパース" do
+    let(:pasokara_file) {Factory.build(:pasokara_file2)}
+    it "同じディレクトリにある、(ファイル名)_info.xmlをパースして情報を取得できること" do
+      pasokara_file.nico_name.should be_nil
+      pasokara_file.nico_post.should be_nil
+      pasokara_file.nico_view_counter.should be_nil
+      pasokara_file.nico_comment_num.should be_nil
+      pasokara_file.nico_mylist_counter.should be_nil
+      pasokara_file.nico_description.should be_nil
+      pasokara_file.tag_list.should be_empty
+
+      pasokara_file.parse_info_file
+
+      pasokara_file.nico_name.should == "sm99999999"
+      pasokara_file.nico_post.should == Time.local(2011, 7, 21, 3, 29, 1)
+      pasokara_file.nico_view_counter.should == 7
+      pasokara_file.nico_comment_num.should == 3
+      pasokara_file.nico_mylist_counter.should == 2
+      pasokara_file.nico_description.should == "test description"
+      pasokara_file.tag_list.should be_include "VOCALOID"
+      pasokara_file.tag_list.should be_include "tag2"
+    end
+  end
+
   describe "Sunspotによる検索" do
     it "nameによる全文検索が出来ること", :slow => true do
       solr_setup
