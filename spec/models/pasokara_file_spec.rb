@@ -308,7 +308,8 @@ describe PasokaraFile do
       pasokara_file.parse_info_file
 
       pasokara_file.nico_name.should == "sm99999999"
-      pasokara_file.nico_post.should == Time.local(2011, 7, 21, 3, 29, 1)
+      post_time = Time.xmlschema("2011-07-21T03:29:01+09:00")
+      pasokara_file.nico_post.should == post_time
       pasokara_file.nico_view_counter.should == 7
       pasokara_file.nico_comment_num.should == 3
       pasokara_file.nico_mylist_counter.should == 2
