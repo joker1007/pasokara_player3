@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/thoughtbot/capybara-webkit.git
+  revision: 578e5c758ef840c91531685319cfdfffd7ccedeb
+  specs:
+    capybara-webkit (0.6.1)
+      capybara (~> 1.0.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -47,7 +54,7 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
-    capybara (1.1.0)
+    capybara (1.0.1)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
@@ -109,7 +116,6 @@ GEM
     hike (1.2.1)
     hpricot (0.8.4)
     i18n (0.6.0)
-    jpmobile (2.0.0)
     jquery-rails (1.0.13)
       railties (~> 3.0)
       thor (~> 0.14)
@@ -270,7 +276,8 @@ DEPENDENCIES
   autotest-rails
   bson_ext (~> 1.3)
   capistrano
-  capybara
+  capybara (~> 1.0.0)
+  capybara-webkit!
   carrierwave (= 0.5.4)
   cucumber
   cucumber-rails
@@ -284,7 +291,6 @@ DEPENDENCIES
   guard-rspec
   guard-spork
   haml-rails
-  jpmobile
   jquery-rails
   kaminari
   launchy
