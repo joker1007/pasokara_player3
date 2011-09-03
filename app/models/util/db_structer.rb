@@ -32,7 +32,7 @@ module Util
         if pasokara_file.save
           #print_process pasokara_file
         else
-          p pasokara_file.errors if Rails.env == "test"
+          p pasokara_file.errors.messages if Rails.env == "test"
           return nil
         end
       end
