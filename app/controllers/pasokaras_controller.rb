@@ -2,6 +2,7 @@
 class PasokarasController < ApplicationController
   before_filter :top_tag_load, :except => [:search, :thumb]
   before_filter :authenticate_user!, :only => [:queue, :preview, :add_favorite, :favorite_list]
+  stream :only => [:favorite, :search]
 
   def index
     @pasokaras = PasokaraFile.only(:id, :name, :nico_name, :duration).all
