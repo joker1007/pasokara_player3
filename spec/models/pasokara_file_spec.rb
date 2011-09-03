@@ -75,13 +75,15 @@ describe PasokaraFile do
   end
 
   it "ディレクトリに含まれることができる" do
-    pasokara = Factory(:pasokara_file)
-    directory = Factory(:directory)
-    directory.pasokara_files << pasokara
-    directory.should have(1).pasokara_files
-    pasokara2 = Factory(:pasokara_file, name: Factory.next(:mp4_name))
-    directory.pasokara_files << pasokara2
-    directory.should have(2).pasokara_files
+    directory = FactoryGirl.create(:directory)
+    pasokara = FactoryGirl.create(:pasokara_file)
+    pasokara2 = FactoryGirl.create(:pasokara_file, name: "test002.mp4")
+
+    expect {
+      directory.pasokara_files << pasokara
+      directory.pasokara_files << pasokara2
+      p directory.pasokara_files
+    }.to change { directory.pasokara_files.length }.from(0).to(2)
   end
 
   describe "値を取得するメソッド " do
