@@ -3,13 +3,8 @@
   %head
     %meta{:content => "text/html;charset=UTF-8", "http-equiv" => "content-type"}/
     %meta{:content => "noindex,nofollow", :name => "robots"}/
-    = stylesheet_link_tag :all
-    = javascript_include_tag :defaults
-    = javascript_include_tag("jquery.min")
-    = javascript_include_tag("jquery_ujs")
-    = javascript_include_tag("jquery.lazyload.mini.js")
-    = javascript_include_tag("jquery-fonteffect-1.0.0.min.js")
-    = javascript_include_tag("jquery.linkwrapper-1.0.3.js")
+    = stylesheet_link_tag "application"
+    = javascript_include_tag "application"
     = csrf_meta_tag
     - if request.iphone?
       %meta{:content => "width=640, initial-scale=0.5", :name => "viewport"}/
