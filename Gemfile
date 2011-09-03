@@ -5,6 +5,11 @@ gem 'rails', '3.1.0'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+group :assets do
+  gem 'sass-rails', "  ~> 3.1.0"
+  gem 'coffee-rails', "~> 3.1.0"
+  gem 'uglifier'
+end
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -57,6 +62,9 @@ group :test do
   gem "growl"
   gem "guard-rspec"
   gem "guard-cucumber"
+
+  # Pretty printed test output
+  gem 'turn', :require => false
 end
 
 gem "mechanize"
