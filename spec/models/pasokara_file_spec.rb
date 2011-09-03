@@ -266,6 +266,23 @@ describe PasokaraFile do
         end
       end
     end
+
+    describe "self.saved_file?(fullpath)" do
+      context "fullpathが存在する時" do
+        let(:pasokara_file) {Factory(:pasokara_file)}
+
+        it "trueを返すこと" do
+          PasokaraFile.saved_file?(pasokara_file.fullpath).should be_true
+        end
+      end
+
+      context "fullpathが存在しない時" do
+        it "falseを返すこと" do
+          fullpath = "/tmp/nofile.mp4"
+          PasokaraFile.saved_file?(fullpath).should be_false
+        end
+      end
+    end
   end
 
   describe "#do_encode(host)" do
