@@ -11,11 +11,10 @@
     = javascript_include_tag("jquery-fonteffect-1.0.0.min.js")
     = javascript_include_tag("jquery.linkwrapper-1.0.3.js")
     = csrf_meta_tag
-    - if request.mobile
-      - if request.mobile.iphone?
-        %meta{:content => "width=640, initial-scale=0.5", :name => "viewport"}/
-      - elsif request.mobile.ipad?
-        %meta{:content => "width=640, initial-scale=1.0", :name => "viewport"}/
+    - if request.iphone?
+      %meta{:content => "width=640, initial-scale=0.5", :name => "viewport"}/
+    - elsif request.ipad?
+      %meta{:content => "width=640, initial-scale=1.0", :name => "viewport"}/
     %title Pasokara Player
     :javascript
       $(document).ready(function() {
