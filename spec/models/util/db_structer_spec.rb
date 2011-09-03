@@ -69,8 +69,8 @@ describe Util::DbStructer do
 
   it "crowl_dirでディレクトリから動画ファイルをオブジェクトに登録する" do
     expect {
-      Util::DbStructer.new.crowl_dir("/Users/joker/Movies")
-    }.to change{ PasokaraFile.count }.from(0).to(2)
+      Util::DbStructer.new.crowl_dir File.join(Rails.root, "spec", "datas")
+    }.to change{ PasokaraFile.count }.from(0).to(3)
   end
 
 end

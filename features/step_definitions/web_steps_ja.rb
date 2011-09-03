@@ -47,6 +47,16 @@ end
   find(selector).click
 end
 
+# capybara-webkit
+もし /^ポップアップダイアログを承認すると仮定する$/ do
+  page.evaluate_script('window.confirm = function() { return true; }')
+end
+
+# capybara-webkit
+もし /^ポップアップダイアログを拒否すると仮定する$/ do
+  page.evaluate_script('window.confirm = function() { return false; }')
+end
+
 # Selenium-driver
 もし /^ポップアップダイアログを承認する$/ do
   page.driver.browser.switch_to.alert.accept

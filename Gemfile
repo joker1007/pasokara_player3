@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.7'
+gem 'rails', '3.1.0'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -37,7 +37,8 @@ gem "ZenTest", :group => :test
 gem "autotest", :group => :test
 gem "autotest-rails", :group => :test
 gem "webrat", :group => [:test, :development]
-gem "capybara"
+gem "capybara", '~> 1.0.0'
+gem "capybara-webkit", :git => 'git://github.com/thoughtbot/capybara-webkit.git'
 gem "cucumber", :group => [:test, :development]
 gem "cucumber-rails", :group => [:test, :development]
 gem "launchy", :group => [:test, :development]
@@ -70,10 +71,10 @@ gem "sunspot_with_kaminari", '~> 0.1'
 
 gem "kaminari"
 
-gem "devise", "~> 1.3.4"
+gem "devise"
 
 gem "resque", :require => "resque/server"
 
-gem "carrierwave"
+gem "carrierwave", '= 0.5.4'
 
 gem "eventmachine"
