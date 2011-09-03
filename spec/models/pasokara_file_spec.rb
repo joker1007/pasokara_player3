@@ -255,10 +255,9 @@ describe PasokaraFile do
     describe "#encoded?" do
       context "エンコードが開始され、m3u8ファイルが存在している時" do
         it "trueを返すこと" do
+          mp4_file.stub!(:id).and_return("0000")
           m3u8_file = File.join(Rails.root, "public", mp4_file.m3u8_path)
-          system("touch #{m3u8_file}")
           mp4_file.encoded?.should be_true
-          File.delete(m3u8_file)
         end
       end
 
