@@ -1,5 +1,5 @@
 %h1 予約確認
-= image_tag("icon/home.png", :size => "24x24")
+= image_tag("icon/home.png", :class=> "icon", :size => "24x24")
 = link_to("Go Top Directory", root_path)
 %br
 %br
@@ -9,4 +9,4 @@
   - else
     %ol
       - @queue_list.each do |queue|
-        %li.queue[queue]= image_tag("icon/music_48x48.png", :size => "36x36", :class=> "entity_icon") + queue.pasokara_file.name + link_to("取消", queue_path(queue), :remote => true, :confirm => "本当に予約から削除しますか？", :method => :delete, :class => "queue_remove clearfix")
+        %li.queue[queue]= image_tag("icon/music_48x48.png", :size => "36x36", :class=> "icon") + queue.pasokara_file.name + link_to("取消", queue_path(queue), :remote => true, :confirm => "本当に予約から削除しますか？", :method => :delete, :class => "queue_remove clearfix")

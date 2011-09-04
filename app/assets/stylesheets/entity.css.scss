@@ -1,5 +1,13 @@
 #entity_list {
+  max-width: 1024px;
+}
+
+@mixin longbox {
+  margin-left: 10px;
+  margin-top: 4px;
+  margin-bottom: 3px;
   max-width: 800px;
+  border: 1px solid #000; 
 }
 
 ul.entity {
@@ -53,32 +61,20 @@ div.title span.title {
 }
 
 li.directory {
-  margin-left: 10px;
-  margin-top: 4px;
-  margin-bottom: 3px;
-  max-width: 800px;
-  border: 1px solid #000; 
+  @include longbox;
   background-color: #B0E0E6;
   line-height: 30px;
 }
 
 li.queue {
-  margin-left: 10px;
-  margin-top: 4px;
-  margin-bottom: 3px;
-  max-width: 800px;
-  border: 1px solid #000; 
+  @include longbox;
   padding-right: 10px;
   background-color: #BDFF7F;
 }
 
 
 li.tag {
-  margin-left: 10px;
-  margin-top: 4px;
-  margin-bottom: 3px;
-  max-width: 800px;
-  border: 1px solid #000; 
+  @include longbox;
   background-color: #B0E0E6;
   width: 320px;
   display: inline-table;

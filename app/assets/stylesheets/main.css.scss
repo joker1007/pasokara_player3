@@ -1,0 +1,248 @@
+/* Base Setting */
+body { 
+  background-image: url(../images/sitebg.jpg);
+  color: #333; 
+}
+
+body, p, ol, ul, td {
+  font-family:'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif;
+  font-size:   16px;
+  line-height: 20px;
+}
+
+h3 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+
+ul, li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+label {
+  font-weight: bold;
+}
+
+/* Mixin Definition */
+@mixin padding-4-3 {
+  padding-top: 4px;
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-bottom: 4px;
+}
+
+@mixin padding-left-10 {
+  padding-left: 10px;
+  padding-bottom: 30px;
+}
+
+@mixin flash-message {
+  max-width: 1040px;
+  margin-top: 20px;
+  @include padding-4-3;
+}
+
+@mixin icon-image {
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+
+.notification {
+  border: 2px solid #32CD32;
+  background-color: #ADFF2F;
+  @include flash-message;
+}
+.error_notification {
+  border: 2px solid #B22222;
+  background-color: #FFC0CB;
+  @include flash-message;
+}
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  height: 0.1px;
+  font-size: 0.1em;
+  line-height: 0;
+  visibility: hidden;
+}
+
+article {
+  @include padding-left-10;
+}
+
+div#main {
+  background-color: #EEEEEE;
+  max-width: 1040px;
+  padding: 0;
+  border: 2px solid #333;
+  border-top: 0px;
+  -moz-box-shadow: 6px 6px 6px #666666;
+  -webkit-box-shadow: 6px 6px 6px #666666;
+}
+
+div.usage {
+  padding-left: 10px;
+  padding-bottom: 30px;
+
+  p{
+    margin-bottom: 60px;
+  }
+
+  img {
+    border: 4px solid #a00;
+  }
+}
+
+div.login {
+  @include padding-left-10;
+}
+div.dl_feed {
+  @include padding-left-10;
+}
+
+table#dl_feed_table {
+  tr.even {
+    background-color: #BBBBEE;
+  }
+  th,td {
+    padding: 8px;
+  }
+}
+
+
+div.user_form_box {
+  width: 640px;
+  margin: 10px 8px 0px 8px;
+  padding: 8px 6px 8px 6px;
+  border: 2px solid #00008b;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -moz-box-shadow: 6px 6px 6px #404040;
+  -webkit-box-shadow: 6px 6px 6px #404040;
+
+  p {
+    border-bottom: 1px solid #888888;
+    padding-bottom: 10px;
+  }
+}
+
+
+#tag_scope {
+  margin-bottom: 20px;
+  border-top: 1px solid #888888;
+  border-bottom: 1px solid #888888;
+  padding-top: 8px;
+  padding-bottom: 5px;
+}
+
+span {
+  &.tag {
+    font-size: 14px;
+    margin-right: 5px;
+    line-height: 26px;
+  }
+
+  &.scoped_tag {
+    border: 1px solid #999999;
+    padding: 2px 4px 2px 4px;
+    background-color: #A0D0E0;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+  }
+
+  &.duration {
+    color: #EEEEEE;
+    margin-left: 4px;
+  }
+
+}
+
+img {
+  &.icon {
+    @include icon-image;
+  }
+
+  a & {
+    border: none;
+  }
+
+  span & {
+    vertical-align: middle;
+  }
+}
+
+a {
+  color: #4169E1;
+  text-decoration: none;
+  &:visited { color: #666; }
+  &:hover { color: #fff; background-color:#000; }
+
+  &.queue_link {
+    color: #a0cccc;
+    font-weight: bold;
+
+    &:hover { color: #fff; background-color:#000; }
+  }
+  &.tag_list_link, &.tag_edit_link { color: red; }
+  &.show_info { color: red; margin-left: 10px; }
+  &.preview_link { color: #55e000; margin-left: 10px; font-weight: bold; }
+  &.related_search_link { color: #D2892E; margin-left: 10px; font-weight: bold; }
+
+  &.queue_remove {
+    float: right;
+    margin-top: 2px;
+    margin-right: 20px;
+  }
+
+  &.add_favorite {
+    /*  float: right; */
+    margin-left: 20px;
+    vertical-align: middle;
+  }
+}
+
+.fieldWithErrors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+#errorExplanation {
+  width: 400px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+
+  h2 {
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 5px 5px 15px;
+    font-size: 12px;
+    margin: -7px;
+    background-color: #c00;
+    color: #fff;
+  }
+
+  p {
+    color: #333;
+    margin-bottom: 0;
+    padding: 5px;
+  }
+
+  ul {
+    li {
+      font-size: 12px;
+      list-style: square;
+    }
+  }
+}
+
