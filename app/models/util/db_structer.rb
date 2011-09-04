@@ -30,9 +30,9 @@ module Util
 
       if pasokara_file.new_record? or pasokara_file.changed?
         if pasokara_file.save
-          p pasokara_file.errors if Rails.env == "test"
           #print_process pasokara_file
         else
+          p pasokara_file.errors.messages if Rails.env == "test"
           return nil
         end
       end
@@ -59,12 +59,21 @@ module Util
           elsif File.extname(entity) =~ /(mpg|avi|flv|ogm|mkv|mp4|wmv)/i
             begin
               unless PasokaraFile.saved_file?(entity_fullpath)
-                md5_hash = File.open(entity_fullpath) {|file| file.binmode; head = file.read(300*1024); Digest::MD5.hexdigest(head)}
-                video = RVideo::Inspector.new(:file => entity_fullpath)
-                duration = video.duration ? video.duration / 1000 : nil
-                attributes = {:name => name, :directory_id => higher_directory_id, :md5_hash => md5_hash, :duration => duration, :fullpath => entity_fullpath}
+                EM.run do
+                  ope = proc do
+                    md5_hash = File.open(entity_fullpath) {|file| file.binmode; head = file.read(300*1024); Digest::MD5.hexdigest(head)}
+                    video = RVideo::Inspector.new(:file => entity_fullpath)
+                    duration = video.duration ? video.duration / 1000 : nil
+                    attributes = {:name => name, :directory_id => higher_directory_id, :md5_hash => md5_hash, :duration => duration, :fullpath => entity_fullpath}
+                  end
 
-                pasokara_file_id = create_pasokara_file(attributes)
+                  callback = proc do
+                    pasokara_file_id = create_pasokara_file(attributes)
+                    EM.stop_event_loop
+                  end
+
+                  EM.defer(ope, callback)
+                end
               end
             rescue Exception
               puts "File Open Error: #{entity_fullpath}"

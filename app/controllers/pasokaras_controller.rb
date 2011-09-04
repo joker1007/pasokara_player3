@@ -2,6 +2,7 @@
 class PasokarasController < ApplicationController
   before_filter :top_tag_load, :except => [:search, :thumb]
   before_filter :authenticate_user!, :only => [:queue, :preview, :add_favorite, :favorite_list]
+  stream :only => [:favorite, :search]
 
   def index
     @pasokaras = PasokaraFile.only(:id, :name, :nico_name, :duration).all
@@ -47,7 +48,7 @@ class PasokarasController < ApplicationController
     @pasokara = PasokaraFile.find(params[:id])
     if request.smart_phone?
       @movie_path = @pasokara.stream_path(request.raw_host_with_port, params[:force])
-      render :action => "preview"
+      render :action => "preview_smart_phone"
     else
       if @pasokara.mp4? or @pasokara.flv?
         render :action => "preview"

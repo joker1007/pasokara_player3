@@ -75,13 +75,15 @@ describe PasokaraFile do
   end
 
   it "ディレクトリに含まれることができる" do
-    pasokara = Factory(:pasokara_file)
-    directory = Factory(:directory)
-    directory.pasokara_files << pasokara
-    directory.should have(1).pasokara_files
-    pasokara2 = Factory(:pasokara_file, name: Factory.next(:mp4_name))
-    directory.pasokara_files << pasokara2
-    directory.should have(2).pasokara_files
+    directory = FactoryGirl.create(:directory)
+    pasokara = FactoryGirl.create(:pasokara_file)
+    pasokara2 = FactoryGirl.create(:pasokara_file, name: "test002.mp4")
+
+    expect {
+      directory.pasokara_files << pasokara
+      directory.pasokara_files << pasokara2
+      p directory.pasokara_files
+    }.to change { directory.pasokara_files.length }.from(0).to(2)
   end
 
   describe "値を取得するメソッド " do
@@ -253,16 +255,32 @@ describe PasokaraFile do
     describe "#encoded?" do
       context "エンコードが開始され、m3u8ファイルが存在している時" do
         it "trueを返すこと" do
+          mp4_file.stub!(:id).and_return("0000")
           m3u8_file = File.join(Rails.root, "public", mp4_file.m3u8_path)
-          system("touch #{m3u8_file}")
           mp4_file.encoded?.should be_true
-          File.delete(m3u8_file)
         end
       end
 
       context "m3u8ファイルが存在しない時" do
         it "falseを返すこと" do
           mp4_file.encoded?.should be_false
+        end
+      end
+    end
+
+    describe "self.saved_file?(fullpath)" do
+      context "fullpathが存在する時" do
+        let(:pasokara_file) {Factory(:pasokara_file)}
+
+        it "trueを返すこと" do
+          PasokaraFile.saved_file?(pasokara_file.fullpath).should be_true
+        end
+      end
+
+      context "fullpathが存在しない時" do
+        it "falseを返すこと" do
+          fullpath = "/tmp/nofile.mp4"
+          PasokaraFile.saved_file?(fullpath).should be_false
         end
       end
     end
@@ -290,7 +308,8 @@ describe PasokaraFile do
       pasokara_file.parse_info_file
 
       pasokara_file.nico_name.should == "sm99999999"
-      pasokara_file.nico_post.should == Time.local(2011, 7, 21, 3, 29, 1)
+      post_time = Time.xmlschema("2011-07-21T03:29:01+09:00")
+      pasokara_file.nico_post.should == post_time
       pasokara_file.nico_view_counter.should == 7
       pasokara_file.nico_comment_num.should == 3
       pasokara_file.nico_mylist_counter.should == 2

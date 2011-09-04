@@ -22,10 +22,9 @@ class QueuedFile
   end
 
   def self.deq
-    queue = QueuedFile.all.order_by("created_at desc").limit(1)[0]
+    queue = QueuedFile.order_by("created_at desc").first
     if queue and !(queue.pasokara_file.encoding)
       SingLog.create(name:queue.name, user_name:queue.user_name, pasokara_file_id: queue.pasokara_file_id, user: queue.user_id)
-      queue.destroy
       queue
     else
       nil
