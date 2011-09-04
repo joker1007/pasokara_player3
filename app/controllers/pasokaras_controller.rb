@@ -2,7 +2,6 @@
 class PasokarasController < ApplicationController
   before_filter :top_tag_load, :except => [:search, :thumb]
   before_filter :authenticate_user!, :only => [:queue, :preview, :add_favorite, :favorite_list]
-  stream :only => [:favorite, :search]
 
   def index
     @pasokaras = PasokaraFile.only(:id, :name, :nico_name, :duration).all
@@ -65,7 +64,7 @@ class PasokarasController < ApplicationController
     @pasokaras = current_user.favorite.pasokara_files.order_by(mongoid_order_options).page params[:page]
 
     respond_to do |format|
-      format.html
+      format.html { render :stream => true }
       format.js
       format.xml { render :xml => @search.results.to_xml }
       format.json { render :json => @search.results.to_json }
@@ -136,7 +135,7 @@ class PasokarasController < ApplicationController
     @header_tags = @search.facet(:tags).rows
 
     respond_to do |format|
-      format.html
+      format.html { render :stream => true }
       format.js
       format.xml { render :xml => @search.results.to_xml }
       format.json { render :json => @search.results.to_json }
