@@ -1,5 +1,5 @@
 %h1 歌ログ
-= image_tag("icon/home.png", :size => "24x24")
+= image_tag("icon/home.png", :class=> "icon", :size => "24x24")
 = link_to("トップページに戻る", root_path)
 %br
 #sing_log_table
@@ -14,7 +14,7 @@
               = s.user_name + " | "
             = s.created_at.strftime("%Y/%m/%d %H:%M")
           %div{:style => "display: inline-block; max-width: 550px;"}
-            = image_tag("icon/music_48x48.png", :size => "24x24", :class=> "entity_icon")
+            = image_tag("icon/music_48x48.png", :size => "24x24", :class=> "icon")
             = link_to_if(current_user, s.name, queue_pasokara_path(s.pasokara_file))
 
     = paginate @sing_logs

@@ -7,12 +7,12 @@ module ApplicationHelper
   end
 
   def directory_li(directory)
-    image_tag("icon/elastic_movie.png", :size => "36x36", :class => "entity_icon") +
+    image_tag("icon/elastic_movie.png", :size => "36x36", :class => "icon") +
     link_to(directory.name, directory)
   end
 
   def tag_li(tag_obj)
-    image_tag("icon/search.png", :size => "36x36", :class => "tag_icon") +
+    image_tag("icon/search.png", :size => "36x36", :class => "icon") +
     link_to(tag_obj.value, search_pasokaras_path(:filter => tag_obj.value)) +
     "(#{tag_obj.count})"
   end
