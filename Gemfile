@@ -58,6 +58,7 @@ gem "bson_ext", "~> 1.3"
 gem "database_cleaner", "~> 0.6.7"
 
 group :test do
+  gem "simplecov", ">=0.3.8", :require => false
   gem "rb-fsevent"
   gem "guard-spork"
   gem "growl"
