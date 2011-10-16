@@ -8,25 +8,34 @@ describe User do
   it {should validate_presence_of(:name)}
   it {should validate_uniqueness_of(:name)}
 
-  describe "#add_favorite" do
-    it "PasokaraFileをお気に入り登録できること" do
-      user = Factory(:user, :favorite => nil)
-      pasokara = Factory(:siawase_gyaku)
-      user.add_favorite pasokara
+  before do
+    @user = create(:user, :favorite => nil)
+    @pasokara = create(:siawase_gyaku)
+  end
 
-      user.favorite.pasokara_files.first.should == pasokara
+  describe "#add_favorite(pasokara)" do
+    subject {@user}
+    before {subject.add_favorite @pasokara}
+
+    it "お気に入りに登録できること" do
+      subject.favorite.pasokara_files.first.should == @pasokara
     end
   end
 
-  describe "#favorite?" do
-    it "PasokaraFileがお気に入り登録されているかをBooleanで返すこと" do
-      user = Factory(:user, :favorite => nil)
-      pasokara = Factory(:siawase_gyaku)
-      no_favorite = Factory(:pasokara_file)
-      user.add_favorite pasokara
+  describe "#favorite?(pasokara)" do
+    context "お気に入りが登録されている時" do
+      subject {@user}
+      before {subject.add_favorite @pasokara}
 
-      user.favorite?(pasokara).should be_true
-      user.favorite?(no_favorite).should be_false
+      it {subject.favorite?(@pasokara).should be_true}
     end
+
+    context "お気に入りが登録されていない時" do
+      subject {@user}
+      before {@no_favored = create(:pasokara_file)}
+
+      it {subject.favorite?(@no_favored).should be_false}
+    end
+
   end
 end
