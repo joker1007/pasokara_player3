@@ -1,4 +1,7 @@
 require 'spork'
+require 'simplecov'
+
+SimpleCov.start 'rails'
 
 # --- Instructions ---
 # Sort the contents of this file into a Spork.prefork and a Spork.each_run
