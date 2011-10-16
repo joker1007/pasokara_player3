@@ -80,6 +80,8 @@ Spork.prefork do
     config.after(:each) do
       DatabaseCleaner.clean
     end
+
+    config.include Factory::Syntax::Methods
   end
 
   ActiveSupport::Dependencies.clear

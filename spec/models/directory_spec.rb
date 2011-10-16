@@ -21,10 +21,7 @@ describe Directory do
   end
 
   describe "Method Test" do
-    before do
-      @dir = FactoryGirl.create(:directory)
-    end
-    subject {@dir}
+    subject {create(:directory)}
 
     it {should have(4).entities}
   end
