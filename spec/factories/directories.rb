@@ -1,13 +1,25 @@
 # Read about factories at http://github.com/thoughtbot/factory_girl
 
-Factory.sequence :dir_name_seq do |n|
-  "Directory#{n}"
-end
+FactoryGirl.define do
+  sequence :name do |n|
+    "Directory#{n}"
+  end
 
-Factory.define :child_dir, :class => Directory do |f|
-  f.name { Factory.next(:dir_name_seq) }
-end
+  factory :child_directory, :class => Directory do
+    name
+  end
 
-Factory.define :directory do |f|
-  f.name "MyDirectory"
+  factory :directory do
+    name
+
+    after_build do |dir|
+      3.times do
+        child = Factory.build(:child_directory)
+        dir.directories << child
+      end
+
+      pasokara_file = Factory.build(:pasokara_file)
+      dir.directories << pasokara_file
+    end
+  end
 end
