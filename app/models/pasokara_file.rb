@@ -132,9 +132,9 @@ class PasokaraFile
     File.exist?(fullpath.gsub(/#{Regexp.escape(File.extname(fullpath))}$/, ".jpg"))
   end
 
-  def update_thumbnail
-    if exist_thumbnail?
-      thumbnail = File.open(thumbnail_path)
+  def update_thumbnail(force = false)
+    if exist_thumbnail? && (force or self.thumbnail.size == 0)
+      self.thumbnail = File.open(thumbnail_path)
       save
     else
       false
