@@ -23,12 +23,14 @@ module Util
       pasokara_file.attributes = attributes
       pasokara_file.parse_info_file
 
+      changed = pasokara_file.changed?
       thumb_data = nico_check_thumb(pasokara_file.fullpath)
       if thumb_data && pasokara_file.thumbnail.size == 0
         pasokara_file.thumbnail = thumb_data
+        changed = true
       end
 
-      if pasokara_file.new_record? or pasokara_file.changed?
+      if pasokara_file.new_record? or changed
         if pasokara_file.save
           #print_process pasokara_file
         else
