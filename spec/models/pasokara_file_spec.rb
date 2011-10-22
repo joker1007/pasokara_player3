@@ -45,33 +45,31 @@ describe PasokaraFile do
       :name => "COOL&CREATE - ネココタマツリ.avi",
       :fullpath => "/data/pasokara/COOL&CREATE - ネココタマツリ.avi",
     }
-
-    #@cool_and_create = directories(:cool_and_create_dir)
-    #@esp_raging = pasokara_files(:esp_raging)
-    #@siawase_gyaku = pasokara_files(:siawase_gyaku)
-    #@just_be_friends = pasokara_files(:just_be_friends)
   end
 
-  it "適切なパラメーターで作成されること" do
-    PasokaraFile.create!(@valid_attributes)
-  end
+  describe "オブジェクトの作成" do
+    context "name, fullpath, md5_hashが与えられた時" do
+      subject {PasokaraFile.new(@valid_attributes)}
+      it {subject.save!.should be_true}
+    end
 
-  it "nameが無い場合DBエラーになること" do
-    pasokara = PasokaraFile.new(@no_name_attributes)
-    pasokara.save.should be_false
-    pasokara.errors[:name].should_not be_nil
-  end
+    context "nameが無い時" do
+      subject {PasokaraFile.new(@no_name_attributes)}
+      it {subject.save.should be_false}
+      it {subject.errors[:name].should_not be_nil}
+    end
 
-  it "fullpathが無い場合DBエラーになること" do
-    pasokara = PasokaraFile.new(@no_fullpath_attributes)
-    pasokara.save.should be_false
-    pasokara.errors[:fullpath].should_not be_nil
-  end
+    context "fullpathが無い時" do
+      subject {PasokaraFile.new(@no_fullpath_attributes)}
+      it {subject.save.should be_false}
+      it {subject.errors[:fullpath].should_not be_nil}
+    end
 
-  it "md5_hashが無い場合エラーになること" do
-    pasokara = PasokaraFile.new(@no_md5_hash_attributes)
-    pasokara.save.should be_false
-    pasokara.errors[:md5_hash].should_not be_nil
+    context "md5_hashが無い時" do
+      subject {PasokaraFile.new(@no_md5_hash_attributes)}
+      it {subject.save.should be_false}
+      it {subject.errors[:md5_hash].should_not be_nil}
+    end
   end
 
   it "ディレクトリに含まれることができる" do
@@ -87,135 +85,132 @@ describe PasokaraFile do
   end
 
   describe "値を取得するメソッド " do
+    subject {FactoryGirl.create(:siawase_gyaku)}
     let(:pasokara_test) {Factory(:pasokara_file)}
-    let(:siawase_gyaku) {Factory(:siawase_gyaku)}
 
     describe "#name()" do
+
       context "引数無し、または引数がtrueの時" do
         it "UTF-8でnameを返すこと" do
-          siawase_gyaku.name.should == "【ニコカラ】シアワセうさぎ（逆）(夏) OnVocal.flv"
-          siawase_gyaku.name(true).should == "【ニコカラ】シアワセうさぎ（逆）(夏) OnVocal.flv"
+          subject.name.should == "【ニコカラ】シアワセうさぎ（逆）(夏) OnVocal.flv"
+          subject.name(true).should == "【ニコカラ】シアワセうさぎ（逆）(夏) OnVocal.flv"
         end
       end
 
       context "引数がfalseの時" do
         it "CP932でnameを返すこと" do
-          siawase_gyaku.name(false).encoding.should == Encoding::Windows_31J
+          subject.name(false).encoding.should == Encoding::Windows_31J
         end
       end
     end
 
     describe "#extname" do
-      it "fullpathの拡張子を返すこと" do
-        pasokara_test.extname.should == ".mp4"
-        siawase_gyaku.extname.should == ".flv"
-      end
+      its(:extname) {should == ".flv"}
+      it {pasokara_test.extname.should == ".mp4"}
     end
 
     describe "#movie_path" do
       it "/video/{id}という形式でファイルパスを返すこと" do
-        siawase_gyaku.movie_path.should == "/video/#{siawase_gyaku.id}.flv"
+        subject.movie_path.should == "/video/#{subject.id}.flv"
       end
     end
 
     describe "#preview_path" do
       it "/pasokaras/preview/{id}という形式でファイルパスを返すこと" do
-        siawase_gyaku.preview_path.should == "/pasokaras/preview/#{siawase_gyaku.id}"
+        subject.preview_path.should == "/pasokaras/preview/#{subject.id}"
       end
     end
 
     describe "#duration_str" do
       it "mm:ss形式で曲の長さを返すこと" do
-        pasokara_test.duration_str.should == "04:05"
+        subject.duration_str.should == "04:05"
       end
 
-      it "durationがnilの場合は00:00を返すこと" do
-        pasokara_test.duration = nil
-        pasokara_test.duration_str.should == "00:00"
+      context "durationがnilの場合" do
+        before {subject.duration = nil}
+        its(:duration_str) {should == "00:00"}
       end
     end
 
     describe "#nico_post_str" do
-      it "yyyy/mm/ddのフォーマットで投稿日時を返すこと" do
-        pasokara_test.nico_post_str.should == "2011/06/04"
-      end
+      its(:nico_post_str) {should == "2011/06/04"}
     end
 
     describe "#nico_url" do
       it "ニコニコ動画へのリンクURLを返すこと" do
-        pasokara_test.nico_url.should == "http://www.nicovideo.jp/watch/" + pasokara_test.nico_name
+        subject.nico_url.should == "http://www.nicovideo.jp/watch/" + subject.nico_name
       end
     end
 
     describe "#stream_prefix" do
       it "\"{id}-stream\"という文字列を返すこと" do
-        id = siawase_gyaku.id
-        siawase_gyaku.stream_prefix.should == "#{id}-stream"
+        subject.stream_prefix.should == "#{subject.id}-stream"
       end
     end
 
     describe "#m3u8_filename" do
       it "\"{stream_prefix}.m3u8\"という文字列を返すこと" do
-        stream_prefix = siawase_gyaku.stream_prefix
-        siawase_gyaku.m3u8_filename.should == "#{stream_prefix}.m3u8"
+        subject.m3u8_filename.should == "#{subject.stream_prefix}.m3u8"
       end
     end
 
     describe "#m3u8_path" do
       it "\"/video/{m3u8_filename}\"という文字列を返すこと" do
-        m3u8_filename = siawase_gyaku.m3u8_filename
-        siawase_gyaku.m3u8_path.should == "/video/#{m3u8_filename}"
+        subject.m3u8_path.should == "/video/#{subject.m3u8_filename}"
       end
     end
   end
 
   describe "Tagに関するメソッド" do
-    let(:pasokara) {Factory(:pasokara_file)}
+    subject {Factory(:pasokara_file)}
+    before do
+      @tag1 = Factory(:tag, name: "Tag1", size: 1)
+      @tag2 = Factory(:tag, name: "Tag2", size: 1)
+      @tag3 = Factory(:tag, name: "Tag3", size: 1)
+    end
 
     describe "#tag_list" do
       it "自身が持つタグを示すTagListを返すこと" do
-        pasokara.tag_list.should be_a(TagList)
-        pasokara.tag_list.should include("Tag1")
-        pasokara.tag_list.should include("Tag2")
-        pasokara.tag_list.should include("Tag3")
+        subject.tag_list.should be_a(TagList)
+        subject.tag_list.should include("Tag1")
+        subject.tag_list.should include("Tag2")
+        subject.tag_list.should include("Tag3")
       end
     end
 
     describe "after_save #save_tags" do
       it "tag_listへの追加分のタグを保存する" do
-        tag1 = Factory(:tag, name: "Tag1", size: 1)
-        tag2 = Factory(:tag, name: "Tag2", size: 1)
-        tag3 = Factory(:tag, name: "Tag3", size: 1)
         expect {
           new_tag = "Tag4"
-          pasokara.tag_list.add(new_tag)
-          pasokara.save
-          pasokara.tag_list.should include(new_tag)
-          pasokara.tag_list.should have(4).items
+          subject.tag_list.add(new_tag)
+          subject.save
+          subject.tag_list.should include(new_tag)
+          subject.tag_list.should have(4).items
         }.to change{ Tag.count }.from(3).to(4)
+      end
 
+      it "重複したタグは追加されない" do
+        new_tag = "Tag4"
+        subject.tag_list.add(new_tag)
+        subject.save
         expect {
           new_tags = ["Tag4", "Tag5"]
-          pasokara.tag_list.should have(4).items
-          pasokara.tag_list.add(new_tags)
-          pasokara.save
-          pasokara.tag_list.should include(*new_tags)
-          pasokara.tag_list.should have(5).items
-        }.to change{ Tag.count }.from(4).to(5)
+          subject.tag_list.should have(4).items
+          subject.tag_list.add(new_tags)
+          subject.save
+          subject.tag_list.should include(*new_tags)
+          subject.tag_list.should have(5).items
+        }.to change{ subject.tag_list.count }.from(4).to(5)
       end
 
       it "tag_listからの削除分のタグを削除する" do
-        tag1 = Factory(:tag, name: "Tag1", size: 1)
-        tag2 = Factory(:tag, name: "Tag2", size: 1)
-        tag3 = Factory(:tag, name: "Tag3", size: 1)
         expect {
-          pasokara.tag_list.should have(3).items
-          pasokara.tag_list.remove("Tag1")
-          pasokara.save
-          pasokara.tag_list.should_not include("Tag1")
-          pasokara.tag_list.should have(2).items
-          tag1.size.should == 0
-        }
+          subject.tag_list.should have(3).items
+          subject.tag_list.remove("Tag1")
+          subject.save
+          subject.tag_list.should_not include("Tag1")
+          subject.tag_list.should have(2).items
+        }.to change {subject.tag_list.count}.from(3).to(2)
       end
     end
   end
@@ -228,117 +223,112 @@ describe PasokaraFile do
 
     describe "#mp4?" do
       context "ファイルが存在し、拡張子がmp4のファイルである時" do
-        it "trueを返すこと" do
-          mp4_file.mp4?.should be_true
-        end
+        subject {mp4_file}
+        its(:mp4?) {should be_true}
       end
       context "ファイルが存在しない時" do
-        it "falseを返すこと" do
-          no_exist_mp4_file.mp4?.should be_false
-        end
+        subject {no_exist_mp4_file}
+        its(:mp4?) {should be_false}
       end
     end
 
     describe "#flv?" do
       context "ファイルが存在し、拡張子がflvのファイルである時" do
-        it "trueを返すこと" do
-          flv_file.flv?.should be_true
-        end
+        subject {flv_file}
+        its(:flv?) {should be_true}
       end
       context "ファイルが存在しない時" do
-        it "falseを返すこと" do
-          no_exist_flv_file.flv?.should be_false
-        end
+        subject {no_exist_flv_file}
+        its(:flv?) {should be_false}
       end
     end
 
     describe "#encoded?" do
+      subject {mp4_file}
       context "エンコードが開始され、m3u8ファイルが存在している時" do
-        it "trueを返すこと" do
-          mp4_file.stub!(:id).and_return("0000")
-          m3u8_file = File.join(Rails.root, "public", mp4_file.m3u8_path)
-          mp4_file.encoded?.should be_true
+        before do
+          subject.stub!(:id).and_return("0000")
         end
+
+        its(:encoded?) {should be_true}
       end
 
       context "m3u8ファイルが存在しない時" do
-        it "falseを返すこと" do
-          mp4_file.encoded?.should be_false
-        end
+        its(:encoded?) {should be_false}
       end
     end
 
     describe "self.saved_file?(fullpath)" do
+      subject {PasokaraFile}
       context "fullpathが存在する時" do
-        let(:pasokara_file) {Factory(:pasokara_file)}
+        before {@pasokara_file = create(:pasokara_file)}
 
-        it "trueを返すこと" do
-          PasokaraFile.saved_file?(pasokara_file.fullpath).should be_true
-        end
+        it {subject.saved_file?(@pasokara_file.fullpath).should be_true}
       end
 
       context "fullpathが存在しない時" do
-        it "falseを返すこと" do
-          fullpath = "/tmp/nofile.mp4"
-          PasokaraFile.saved_file?(fullpath).should be_false
-        end
+        let(:fullpath) {"/tmp/nofile.mp4"}
+        it {subject.saved_file?(fullpath).should be_false}
       end
     end
   end
 
   describe "#do_encode(host)" do
-    let(:flv_file) {Factory(:pasokara_file, name: "test002.flv")}
-    it "Resqueオブジェクトにエンコードジョブがenqueueされること" do
-      Resque.should_receive(:enqueue).with(Job::VideoEncoder, flv_file.id, "host:port")
-      flv_file.do_encode("host:port")
+    before {@flv_file = Factory(:pasokara_file, name: "test002.flv")}
+    it "Resqueクラスにエンコードジョブがenqueueされること" do
+      Resque.should_receive(:enqueue).with(Job::VideoEncoder, @flv_file.id, "host:port")
+      @flv_file.do_encode("host:port")
     end
   end
 
   describe "infoファイルのパース" do
-    let(:pasokara_file) {Factory.build(:pasokara_file2)}
+    subject {Factory.build(:pasokara_file2)}
     it "同じディレクトリにある、(ファイル名)_info.xmlをパースして情報を取得できること" do
-      pasokara_file.nico_name.should be_nil
-      pasokara_file.nico_post.should be_nil
-      pasokara_file.nico_view_counter.should be_nil
-      pasokara_file.nico_comment_num.should be_nil
-      pasokara_file.nico_mylist_counter.should be_nil
-      pasokara_file.nico_description.should be_nil
-      pasokara_file.tag_list.should be_empty
+      subject.nico_name.should be_nil
+      subject.nico_post.should be_nil
+      subject.nico_view_counter.should be_nil
+      subject.nico_comment_num.should be_nil
+      subject.nico_mylist_counter.should be_nil
+      subject.nico_description.should be_nil
+      subject.tag_list.should be_empty
 
-      pasokara_file.parse_info_file
+      subject.parse_info_file
 
-      pasokara_file.nico_name.should == "sm99999999"
+      subject.nico_name.should == "sm99999999"
       post_time = Time.xmlschema("2011-07-21T03:29:01+09:00")
-      pasokara_file.nico_post.should == post_time
-      pasokara_file.nico_view_counter.should == 7
-      pasokara_file.nico_comment_num.should == 3
-      pasokara_file.nico_mylist_counter.should == 2
-      pasokara_file.nico_description.should == "test description"
-      pasokara_file.tag_list.should be_include "VOCALOID"
-      pasokara_file.tag_list.should be_include "tag2"
+      subject.nico_post.should == post_time
+      subject.nico_view_counter.should == 7
+      subject.nico_comment_num.should == 3
+      subject.nico_mylist_counter.should == 2
+      subject.nico_description.should == "test description"
+      subject.tag_list.should be_include "VOCALOID"
+      subject.tag_list.should be_include "tag2"
     end
   end
 
-  describe "Sunspotによる検索" do
-    it "nameによる全文検索が出来ること", :slow => true do
+  describe "Sunspotによる検索", :slow => true do
+    before do
       solr_setup
       PasokaraFile.remove_all_from_index!
-
-      pasokara = Factory(:pasokara_file)
-      pasokara2 = Factory(:pasokara_file, name: "sunspot.mp4")
+      @pasokara = create(:pasokara_file)
+      @pasokara2 = create(:pasokara_file, name: "sunspot.mp4")
       Sunspot.commit
+    end
 
+    after do
+      PasokaraFile.remove_all_from_index!
+    end
+
+    it "nameによる全文検索が出来ること" do
       search = Sunspot.search PasokaraFile
-      search.results.should be_include(pasokara)
-      search.results.should be_include(pasokara2)
+      search.results.should be_include(@pasokara)
+      search.results.should be_include(@pasokara2)
 
       search = Sunspot.search PasokaraFile do
         keywords "sunspot.mp4"
       end
-      search.results.should_not be_include(pasokara)
-      search.results.should be_include(pasokara2)
-
-      PasokaraFile.remove_all_from_index!
+      search.results.should_not be_include(@pasokara)
+      search.results.should be_include(@pasokara2)
     end
   end
 

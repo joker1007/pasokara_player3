@@ -20,27 +20,53 @@ describe QueuedFile do
     @no_name_attributes = {
       :pasokara_file_id => pasokara.id,
     }
+    @no_pasokara_id_attributes = {
+      :name => pasokara.name,
+    }
   end
 
-  it "適切なパラメーターで作成されること(ユーザーなし)" do
-    queue = QueuedFile.create!(@valid_attributes)
-    queue.pasokara_file.should == pasokara
-  end
+  describe "オブジェクトの作成" do
+    context "name, pasokara_file_idが与えられた時" do
+      subject {QueuedFile.new(@valid_attributes)}
 
-  it "nameが無い場合はエラーになること" do
-    queue = QueuedFile.new(@no_name_attributes)
-    queue.save.should be_false
-    queue.should have(1).errors_on(:name)
-  end
+      it "DB保存に成功すること" do 
+        subject.save.should be_true
+      end
 
-  it "pasokara_fileとのリレーションが無い場合はエラーになること" do
-    queue = QueuedFile.new
-    queue.save.should be_false
-    queue.should have(1).errors_on(:pasokara_file_id)
-  end
+      its(:pasokara_file) {should == pasokara}
+    end
 
-  it "適切なパラメーターで作成されること(ユーザーあり)" do
-    queue = QueuedFile.create!(@valid_attributes_user)
+    context "name, pasokara_file_id, user_idが与えられた時" do
+      subject {QueuedFile.new(@valid_attributes_user)}
+
+      it "DB保存に成功すること" do 
+        subject.save.should be_true
+      end
+
+      its(:pasokara_file) {should == pasokara}
+      its(:user) {should == user}
+    end
+
+    context "nameが与えられなかった場合" do
+      subject {QueuedFile.new(@no_name_attributes)}
+
+      it "DB保存に失敗すること" do 
+        subject.save.should be_false
+      end
+
+      it {should have(1).errors_on(:name)}
+    end
+
+    context "pasokara_file_idが与えられなかった場合" do
+      subject {QueuedFile.new(@no_pasokara_id_attributes)}
+
+      it "DB保存に失敗すること" do 
+        subject.save.should be_false
+      end
+
+      it {should have(1).errors_on(:pasokara_file_id)}
+    end
+
   end
 
   it "PasokaraFileをキューに入れられること(ユーザーなし)" do
