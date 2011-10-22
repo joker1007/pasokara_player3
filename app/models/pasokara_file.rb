@@ -124,6 +124,23 @@ class PasokaraFile
     exist? && extname == ".flv"
   end
 
+  def thumbnail_path
+    fullpath.gsub(/#{Regexp.escape(File.extname(fullpath))}$/, ".jpg")
+  end
+
+  def exist_thumbnail?
+    File.exist?(fullpath.gsub(/#{Regexp.escape(File.extname(fullpath))}$/, ".jpg"))
+  end
+
+  def update_thumbnail
+    if exist_thumbnail?
+      thumbnail = File.open(thumbnail_path)
+      save
+    else
+      false
+    end
+  end
+
   def encoded?
     File.exist?(File.join(Rails.root, "public", m3u8_path))
   end

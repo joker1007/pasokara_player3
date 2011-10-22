@@ -306,6 +306,23 @@ describe PasokaraFile do
     end
   end
 
+  describe "サムネイルを更新する" do
+    context "サムネイルが存在する時" do
+      subject {create(:pasokara_file)}
+
+      its(:thumbnail_path) {should == File.join(Rails.root, "spec", "factories", "..", "datas", "test001.jpg")}
+      its(:exist_thumbnail?) {should be_true}
+      its(:update_thumbnail) {should be_true}
+    end
+
+    context "サムネイルが存在しない時" do
+      subject {create(:pasokara_file2)}
+      its(:thumbnail_path) {should == File.join(Rails.root, "spec", "factories", "..", "datas", "testdir1", "test002.jpg")}
+      its(:exist_thumbnail?) {should be_false}
+      its(:update_thumbnail) {should be_false}
+    end
+  end
+
   describe "Sunspotによる検索", :slow => true do
     before do
       solr_setup
