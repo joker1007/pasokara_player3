@@ -1,4 +1,7 @@
 require 'spork'
+require 'simplecov'
+
+SimpleCov.start 'rails'
 
 # --- Instructions ---
 # Sort the contents of this file into a Spork.prefork and a Spork.each_run
@@ -80,6 +83,8 @@ Spork.prefork do
     config.after(:each) do
       DatabaseCleaner.clean
     end
+
+    config.include Factory::Syntax::Methods
   end
 
   ActiveSupport::Dependencies.clear
@@ -88,8 +93,7 @@ end
 
 Spork.each_run do
   # This code will be run each time you run your specs.
-  #Factory.factories.clear
-  #Dir[Rails.root.join("spec/factories/**/*.rb")].each{|f| load f}
+  FactoryGirl.reload
 end
 
 if Spork.using_spork?

@@ -2,31 +2,28 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Directory do
-  before(:each) do
-    @valid_attributes = {
-      :name => "SOUND HOLIC",
-    }
-
-    @no_name_attributes = {
-    }
+  context "nameが与えられた時" do
+    subject {FactoryGirl.build(:directory)}
+    it "DB保存が成功すること" do
+      subject.save.should be_true
+    end
   end
 
-  it "適切なパラメーターで作成されること" do
-    dir = Directory.new(@valid_attributes)
-    dir.save!.should be_true
+  context "nameが与えられない時" do
+    subject {FactoryGirl.build(:directory, :name => nil)}
+    it "DB保存に失敗すること" do
+      subject.save.should be_false
+    end
+
+    it "nameにエラーが存在すること" do
+      subject.should have(1).errors_on(:name)
+    end
   end
 
-  it "nameが無い場合バリデーションエラーになること" do
-    dir = Directory.new(@no_name_attributes)
-    dir.save.should be_false
-    dir.should have(1).errors_on(:name)
-  end
+  describe "Method Test" do
+    subject {create(:directory)}
 
-  it "entitiesメソッドで、下位ディレクトリ、ファイルのリストを返すこと" do
-    dir = Factory.create(:directory)
-    dir.stub(:directories) {[Factory(:child_dir), Factory(:child_dir), Factory(:child_dir)]}
-    dir.stub(:pasokara_files) {[Factory(:pasokara_file)]}
-    dir.should have(4).entities
+    it {should have(4).entities}
   end
 
 end
