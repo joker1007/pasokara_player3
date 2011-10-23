@@ -14,7 +14,7 @@ class PasokarasController < ApplicationController
 
   def queue
     if params[:id] =~ /sm\d+/
-      @pasokara = PasokaraFile.only(:id, :name, :nico_name, :duration, :fullpath).first(conditions: {nico_name: params[:id]})
+      @pasokara = PasokaraFile.only(:id, :name, :nico_name, :duration, :fullpath).where(nico_name: params[:id])[0]
     elsif params[:id] =~ /^[\w\d]+$/
       @pasokara = PasokaraFile.only(:id, :name, :nico_name, :duration, :fullpath).find(params[:id])
     else
