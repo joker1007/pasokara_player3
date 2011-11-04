@@ -86,7 +86,6 @@ describe PasokaraFile do
 
   describe "値を取得するメソッド " do
     subject {FactoryGirl.create(:siawase_gyaku)}
-    let(:pasokara_test) {Factory(:pasokara_file)}
 
     describe "#name()" do
 
@@ -106,7 +105,6 @@ describe PasokaraFile do
 
     describe "#extname" do
       its(:extname) {should == ".flv"}
-      it {pasokara_test.extname.should == ".mp4"}
     end
 
     describe "#movie_path" do
@@ -148,15 +146,33 @@ describe PasokaraFile do
       end
     end
 
-    describe "#m3u8_filename" do
-      it "\"{stream_prefix}.m3u8\"という文字列を返すこと" do
-        subject.m3u8_filename.should == "#{subject.stream_prefix}.m3u8"
+    describe "#encode_prefix" do
+      context "引数が無い場合" do
+        it { subject.encode_prefix.should == "#{subject.id}-safari" }
+      end
+      context "引数が'stream'の場合" do
+        it { subject.encode_prefix(:stream).should == "#{subject.id}-stream" }
       end
     end
 
-    describe "#m3u8_path" do
-      it "\"/video/{m3u8_filename}\"という文字列を返すこと" do
-        subject.m3u8_path.should == "/video/#{subject.m3u8_filename}"
+    describe "#encode_filename" do
+      context "引数が無い場合" do
+        it { subject.encode_filename.should == "#{subject.id}-safari.mp4" }
+      end
+      context "引数が'stream'の場合" do
+        it { subject.encode_filename(:stream).should == "#{subject.id}-stream.m3u8" }
+      end
+      context "引数が'firefox'の場合" do
+        it { subject.encode_filename(:firefox).should == "#{subject.id}-firefox.ogg" }
+      end
+      context "引数が'chrome'の場合" do
+        it { subject.encode_filename(:chrome).should == "#{subject.id}-chrome.webm" }
+      end
+    end
+
+    describe "#encode_filepath" do
+      it "\"/video/{encode_filename}\"という文字列を返すこと" do
+        subject.encode_filepath.should == "/video/#{subject.encode_filename}"
       end
     end
   end
@@ -274,10 +290,20 @@ describe PasokaraFile do
   end
 
   describe "#do_encode(host)" do
-    before {@flv_file = Factory(:pasokara_file, name: "test002.flv")}
-    it "Resqueクラスにエンコードジョブがenqueueされること" do
-      Resque.should_receive(:enqueue).with(Job::VideoEncoder, @flv_file.id, "host:port")
-      @flv_file.do_encode("host:port")
+    context "ファイル形式の指定が無い時" do
+      subject { create(:pasokara_file, name: "test002.flv") }
+      it "Resqueクラスにエンコードジョブがenqueueされること" do
+        Resque.should_receive(:enqueue).with(Job::VideoEncoder, subject.id, "host:port", :safari)
+        subject.do_encode("host:port")
+      end
+    end
+
+    context "ファイル形式の指定がある時" do
+      subject { create(:pasokara_file, name: "test002.flv") }
+      it "Resqueクラスにエンコードジョブがenqueueされること" do
+        Resque.should_receive(:enqueue).with(Job::VideoEncoder, subject.id, "host:port", :chrome)
+        subject.do_encode("host:port", :chrome)
+      end
     end
   end
 

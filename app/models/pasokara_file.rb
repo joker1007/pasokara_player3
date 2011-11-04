@@ -104,6 +104,28 @@ class PasokaraFile
     "#{id}-stream"
   end
 
+  def encode_prefix(type = :safari)
+    "#{id}-#{type}"
+  end
+
+  def encode_filename(type = :safari)
+    prefix = encode_prefix(type)
+    case type
+    when :safari
+      prefix + ".mp4"
+    when :chrome
+      prefix + ".webm"
+    when :firefox
+      prefix + ".ogg"
+    when :stream
+      prefix + ".m3u8"
+    end
+  end
+
+  def encode_filepath(type = :safari)
+    VIDEO_PATH + "/" + encode_filename(type)
+  end
+
   def m3u8_filename
     "#{stream_prefix}.m3u8"
   end
@@ -150,8 +172,8 @@ class PasokaraFile
     @tag_list
   end
 
-  def do_encode(host)
-    Resque.enqueue(Job::VideoEncoder, id, host)
+  def do_encode(host, type = :safari)
+    Resque.enqueue(Job::VideoEncoder, id, host, type)
   end
 
   def stream_path(host, force = false)
