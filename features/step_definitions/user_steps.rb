@@ -1,7 +1,12 @@
 # coding: utf-8
 前提 /^登録済みユーザーが存在する$/ do
-  Factory.create(:user)
-  User.first.add_favorite(Factory(:pasokara_file))
+  u = Factory.create(:user)
+  u.add_favorite(Factory(:pasokara_file))
+end
+
+前提 /^登録済みユーザー2が存在する$/ do
+  u = Factory.create(:user, :name => "login2", :nickname => "ニックネーム2")
+  u.add_favorite(Factory(:pasokara_file))
 end
 
 前提 /^ユーザーID:"([^"]*)"、パスワード:"([^"]*)"でログインしている$/ do |login, password|
