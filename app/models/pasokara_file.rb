@@ -116,7 +116,7 @@ class PasokaraFile
     when :chrome
       prefix + ".webm"
     when :firefox
-      prefix + ".ogg"
+      prefix + ".webm"
     when :stream
       prefix + ".m3u8"
     end
@@ -163,8 +163,8 @@ class PasokaraFile
     end
   end
 
-  def encoded?
-    File.exist?(File.join(Rails.root, "public", m3u8_path))
+  def encoded?(type = :safari)
+    File.exist?(File.join(Rails.root, "public", encode_filepath(type)))
   end
 
   def tag_list

@@ -163,7 +163,7 @@ describe PasokaraFile do
         it { subject.encode_filename(:stream).should == "#{subject.id}-stream.m3u8" }
       end
       context "引数が'firefox'の場合" do
-        it { subject.encode_filename(:firefox).should == "#{subject.id}-firefox.ogg" }
+        it { subject.encode_filename(:firefox).should == "#{subject.id}-firefox.webm" }
       end
       context "引数が'chrome'の場合" do
         it { subject.encode_filename(:chrome).should == "#{subject.id}-chrome.webm" }
@@ -261,16 +261,22 @@ describe PasokaraFile do
 
     describe "#encoded?" do
       subject {mp4_file}
-      context "エンコードが開始され、m3u8ファイルが存在している時" do
+      context "エンコードが開始され、ファイルが存在している時" do
         before do
           subject.stub!(:id).and_return("0000")
         end
 
-        its(:encoded?) {should be_true}
+        context "引数が無い時" do
+          its(:encoded?) {should be_true}
+        end
+        context "引数が:firefoxの時" do
+          it {subject.encoded?(:firefox).should be_true}
+        end
       end
 
-      context "m3u8ファイルが存在しない時" do
+      context "ファイルが存在しない時" do
         its(:encoded?) {should be_false}
+        it {subject.encoded?(:firefox).should be_false}
       end
     end
 
