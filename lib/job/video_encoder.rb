@@ -11,6 +11,10 @@ module Job
         stream_encode(pasokara, host)
       when "safari"
         safari_encode(pasokara)
+      when "firefox"
+        webm_encode(pasokara)
+      when "chrome"
+        webm_encode(pasokara)
       end
       pasokara.encoding = false
       pasokara.save
@@ -28,6 +32,12 @@ module Job
       input_file = pasokara.fullpath
       aspect = `#{Rails.root}/lib/job/get_info.sh "#{input_file}"`.chomp
       system("#{Rails.root}/lib/job/safari_encoder.sh", input_file, "#{Rails.root}/public/video", aspect.to_s, aspect.to_s, pasokara.encode_prefix(:safari))
+    end
+
+    def self.webm_encode(pasokara)
+      input_file = pasokara.fullpath
+      aspect = `#{Rails.root}/lib/job/get_info.sh "#{input_file}"`.chomp
+      system("#{Rails.root}/lib/job/webm_encoder.sh", input_file, "#{Rails.root}/public/video", aspect.to_s, aspect.to_s, pasokara.encode_prefix(:webm))
     end
   end
 end
