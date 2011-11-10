@@ -4,18 +4,20 @@ module Job
 
     def self.perform(id, host, type)
       pasokara = PasokaraFile.find(id)
-      pasokara.encoding = true
-      pasokara.save
-      case type
-      when "stream"
-        stream_encode(pasokara, host)
-      when "safari"
-        safari_encode(pasokara)
-      when "webm"
-        webm_encode(pasokara)
+      unless pasokara.encoding
+        pasokara.encoding = true
+        pasokara.save
+        case type
+        when "stream"
+          stream_encode(pasokara, host)
+        when "safari"
+          safari_encode(pasokara)
+        when "webm"
+          webm_encode(pasokara)
+        end
+        pasokara.encoding = false
+        pasokara.save
       end
-      pasokara.encoding = false
-      pasokara.save
     end
 
     def self.stream_encode(pasokara, host)
