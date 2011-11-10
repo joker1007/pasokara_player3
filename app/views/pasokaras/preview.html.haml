@@ -1,5 +1,45 @@
-%h1= h @pasokara.name
-#video
-  = embed_player(@pasokara)
+:javascript
+  var throbber;
+  function throbber_init() {
+    throbber = new ThrobberA({size: 64});
+    throbber.show(document.getElementById("throbber"));
+  }
 
-/ END OF THE PLAYER EMBEDDING
+  function add_video_tag(id, path) {
+    var video = $("<video>").attr("id", "video-" + id).attr("width", 640).attr("height", 480).attr("controls", "controls").attr("src", path);
+    $("#video").append(video);
+  }
+
+  function check_video(id, path, count) {
+    count = count + 1;
+    if (count > 150) {
+      alert("Video Loading Failed");
+      return false;
+    }
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "/pasokaras/#{@pasokara.id}/encode_status.json",
+      success: function(data){
+        if (data) {
+          add_video_tag(id, path);
+          throbber.hide();
+        } else {
+          setTimeout(function(){check_video(id, path, count)}, 2000);
+        }
+      },
+      error: function(xhr){
+        setTimeout(function(){check_video(id, path, count)}, 2000);
+      }
+    })
+  }
+
+  $(document).ready(function() {
+    throbber_init();
+    check_video("#{@pasokara.id}", "#{@movie_path}", 0);
+  });
+
+%h1= h @pasokara.name
+%span#throbber{:style => "margin-left: 220px;"}
+#video{:style => "margin-left: 30px;"}
+

@@ -20,8 +20,10 @@ class PasokarasController < ApplicationController
     else
       render :text => "パラメーターが不正です。", :status => 404 and return
     end
-    @pasokara.stream_path(request.raw_host_with_port, params[:force]) if Rails.env == "production"
     QueuedFile.enq @pasokara, current_user
+    unless @pasokara.encoded?(:webm)
+      @pasokara.do_encode(request.raw_host_with_port, :webm) if Rails.env != "test"
+    end
 
     @message = "#{@pasokara.name} の予約が完了しました"
     respond_to do |format|
@@ -35,25 +37,39 @@ class PasokarasController < ApplicationController
     end
   end
 
-  def get_stream
+  def movie_path
     @pasokara = PasokaraFile.find(params[:id])
-    @movie_path = @pasokara.stream_path(request.raw_host_with_port, params[:force])
+    type = params[:type] ? params[:type].to_sym : :webm
+    @movie_path = type == :raw ? @pasokara.movie_path : @pasokara.encode_filepath(type)
     respond_to do |format|
-      format.json {render :json => {:path => @movie_path, :type => @pasokara.extname}.to_json}
+      format.json {render :json => {:path => @movie_path, :type => type}.to_json}
+    end
+  end
+
+  def encode_status
+    @pasokara = PasokaraFile.find(params[:id])
+    type = params[:type] ? params[:type].to_sym : :webm
+    status = type == :raw ? true : @pasokara.encoded?(type)
+    respond_to do |format|
+      format.json {render :json => status.to_json}
     end
   end
 
   def preview
     @pasokara = PasokaraFile.find(params[:id])
     if request.smart_phone?
-      @movie_path = @pasokara.stream_path(request.raw_host_with_port, params[:force])
+      unless @pasokara.encoded?(:safari)
+        @pasokara.do_encode(nil, :safari)
+      end
+      @movie_path = @pasokara.encode_filepath(:safari)
       render :action => "preview_smart_phone"
     else
-      if @pasokara.mp4? or @pasokara.flv?
-        render :action => "preview"
-      else
-        render :text => "Not Flash Movie", :status => 404
+      unless @pasokara.encoded?(:webm)
+        @pasokara.do_encode(nil, :webm)
       end
+      @movie_path = @pasokara.encode_filepath(:webm)
+      @type = :webm
+      render :action => "preview"
     end
   end
 
