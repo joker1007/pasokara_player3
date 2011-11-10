@@ -113,9 +113,7 @@ class PasokaraFile
     case type
     when :safari
       prefix + ".mp4"
-    when :chrome
-      prefix + ".webm"
-    when :firefox
+    when :webm
       prefix + ".webm"
     when :stream
       prefix + ".m3u8"
@@ -164,7 +162,7 @@ class PasokaraFile
   end
 
   def encoded?(type = :safari)
-    File.exist?(File.join(Rails.root, "public", encode_filepath(type)))
+    !encoding && File.exist?(File.join(Rails.root, "public", encode_filepath(type)))
   end
 
   def tag_list

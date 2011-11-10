@@ -11,9 +11,7 @@ module Job
         stream_encode(pasokara, host)
       when "safari"
         safari_encode(pasokara)
-      when "firefox"
-        webm_encode(pasokara)
-      when "chrome"
+      when "webm"
         webm_encode(pasokara)
       end
       pasokara.encoding = false
