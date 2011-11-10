@@ -1,7 +1,7 @@
 # coding: utf-8
 class QueuesController < ApplicationController
   def index
-    @queue_list = QueuedFile.order_by([[:created_at, :desc]]).page params[:page]
+    @queue_list = QueuedFile.order_by([[:created_at, :asc]]).page params[:page]
 
     respond_to do |format|
       format.html
