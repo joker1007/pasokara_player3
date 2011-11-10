@@ -1,6 +1,7 @@
 bundler_args: "--without development"
 script: "bundle exec rake spec cucumber"
 before_script:
+  - "cp .rspec.example .rspec"
   - "cp config/mongoid.yml.example config/mongoid.yml"
   - "cp config/resque.yml.example config/resque.yml"
   - "cp config/sunspot.yml.example config/sunspot.yml"
