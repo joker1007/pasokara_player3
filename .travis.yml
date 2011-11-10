@@ -1,4 +1,5 @@
 bundler_args: "--without development"
+script: "bundle exec rake spec cucumber"
 before_script:
   - "cp config/mongoid.yml.example config/mongoid.yml"
   - "cp config/resque.yml.example config/resque.yml"
@@ -6,3 +7,9 @@ before_script:
   - "cp -f solr/conf/schema_for_test.xml solr/conf/schema.xml"
 rvm:
   - 1.9.2
+  - 1.9.3
+branches:
+  only:
+    - master
+notifications:
+  email: false
