@@ -24,7 +24,7 @@
         video.bind("ended", function() {
           $(this).remove();
           throbber.show(document.getElementById("throbber"));
-          check_next(true);
+          setTimeout(check_next(true), 5000);
         });
         $("#video").append(video);
       }
