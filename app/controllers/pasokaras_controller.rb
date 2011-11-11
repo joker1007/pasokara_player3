@@ -68,7 +68,6 @@ class PasokarasController < ApplicationController
         @pasokara.do_encode(nil, :webm)
       end
       @movie_path = @pasokara.encode_filepath(:webm)
-      @type = :webm
       render :action => "preview"
     end
   end
