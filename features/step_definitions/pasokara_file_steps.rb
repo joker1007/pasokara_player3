@@ -3,7 +3,7 @@
 include SolrSpecHelper
 
 前提 /登録済みのパソカラが存在する/ do
-  Factory(:pasokara_file)
+  @pasokara = Factory(:pasokara_file)
   Factory(:siawase_gyaku)
 end
 
@@ -17,9 +17,12 @@ end
   Sunspot.commit
 end
 
+前提 /webmエンコード済みのパソカラが存在する/ do
+  system("touch #{File.join(Rails.root, "public", "video", @pasokara.encode_filename(:webm))}")
+end
+
 もし /^プレビューページを表示する$/ do
-  pasokara = Factory(:pasokara_file)
-  visit preview_pasokara_path(pasokara)
+  visit preview_pasokara_path(@pasokara)
 end
 
 ならば /^フラッシュプレーヤーが表示されていること$/ do
@@ -28,4 +31,18 @@ end
   else
     assert page.has_xpath?('//embed')
   end
+end
+
+ならば /^videoのファイルパスが表示されていること$/ do
+  Then %{I should see "#{@pasokara.encode_filepath(:webm)}"}
+  system("rm #{File.join(Rails.root, "public", "video", @pasokara.encode_filename(:webm))}")
+end
+
+ならば /^videoタグが表示されていること$/ do
+  if page.respond_to? :should
+    page.should have_xpath('//video')
+  else
+    assert page.has_xpath?('//video')
+  end
+  system("rm #{File.join(Rails.root, "public", "video", @pasokara.encode_filename(:webm))}")
 end
