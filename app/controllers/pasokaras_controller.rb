@@ -72,6 +72,30 @@ class PasokarasController < ApplicationController
     end
   end
 
+  def play
+    if params[:deque]
+      QueuedFile.first.destroy
+    end
+    @queue = QueuedFile.deq
+    if @queue
+      @pasokara = @queue.pasokara_file
+      unless @pasokara.encoded?(:webm)
+        @pasokara.do_encode(nil, :webm)
+      end
+      @movie_path = @pasokara.encode_filepath(:webm)
+
+      respond_to do |format|
+        format.html { render :action => "play", :layout => false }
+        format.json { render :json => {:id => @pasokara.id, :path => @movie_path}.to_json }
+      end
+    else
+      respond_to do |format|
+        format.html { render :action => "play", :layout => false }
+        format.json { render :json => {}.to_json, :status => 404 }
+      end
+    end
+  end
+
   def favorite
     unless current_user.favorite
       current_user.create_favorite

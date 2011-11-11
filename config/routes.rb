@@ -51,6 +51,7 @@ PasokaraPlayerRails3::Application.routes.draw do
       post 'search'
       get 'favorite'
       post 'favorite'
+      get 'play'
     end
   end
 

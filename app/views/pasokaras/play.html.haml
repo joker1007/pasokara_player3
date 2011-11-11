@@ -1,0 +1,92 @@
+!!! 5
+%html
+  %head
+    %meta{:content => "text/html;charset=UTF-8", "http-equiv" => "content-type"}/
+    %meta{:content => "noindex,nofollow", :name => "robots"}/
+    = stylesheet_link_tag "video"
+    = javascript_include_tag "application"
+    = csrf_meta_tag
+    - if request.iphone?
+      %meta{:content => "width=640, initial-scale=0.5", :name => "viewport"}/
+    - elsif request.ipad?
+      %meta{:content => "width=640, initial-scale=1.0", :name => "viewport"}/
+    %title PasokaraPlayer - Play
+    :javascript
+      var throbber;
+      function throbber_init() {
+        throbber = new ThrobberA({size: 64});
+        throbber.show(document.getElementById("throbber"));
+      }
+
+      function add_video_tag(id, path) {
+        var video = $("<video>").attr("id", "video-" + id).attr("width", 640).attr("height", 480).attr("controls", "controls").attr("autoplay", "autoplay").attr("src", path);
+        video.addClass("fullscreen");
+        video.bind("ended", function() {
+          $(this).remove();
+          throbber.show(document.getElementById("throbber"));
+          check_next(true);
+        });
+        $("#video").append(video);
+      }
+
+      function check_video(id, path, count) {
+        count = count + 1;
+        if (count > 150) {
+          alert("Video Loading Failed");
+          return false;
+        }
+        $.ajax({
+          type: "GET",
+          dataType: "json",
+          url: "/pasokaras/" + id + "/encode_status.json",
+          success: function(data){
+            if (data) {
+              add_video_tag(id, path);
+              throbber.hide();
+            } else {
+              setTimeout(function(){check_video(id, path, count)}, 2000);
+            }
+          },
+          error: function(xhr){
+            setTimeout(function(){check_video(id, path, count)}, 2000);
+          }
+        });
+      }
+
+      function check_next(deque) {
+        var url;
+        if (typeof deque !== "undefined" && deque === true) {
+          url = "/pasokaras/play.json?deque=1";
+        } else {
+          url = "/pasokaras/play.json";
+        }
+
+        $.ajax({
+          type: "GET",
+          dataType: "json",
+          url: url,
+          success: function(data){
+            check_video(data["id"], data["path"]);
+          },
+          error: function(xhr){
+            setTimeout(function(){check_next()}, 2000);
+          }
+        });
+      }
+
+    - if @pasokara
+      :javascript
+        $(document).ready(function() {
+          throbber_init();
+          check_video("#{@pasokara.id}", "#{@movie_path}", 0);
+        });
+    - else
+      :javascript
+        $(document).ready(function() {
+          throbber_init();
+          check_next();
+        });
+    %body
+      %span#throbber{:style => "margin-left: 220px;"}
+      #video
+
