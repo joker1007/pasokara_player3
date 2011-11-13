@@ -100,10 +100,6 @@ class PasokaraFile
     "http://www.nicovideo.jp/watch/" + nico_name
   end
 
-  def stream_prefix
-    "#{id}-stream"
-  end
-
   def encode_prefix(type = :safari)
     "#{id}-#{type}"
   end
@@ -122,14 +118,6 @@ class PasokaraFile
 
   def encode_filepath(type = :safari)
     VIDEO_PATH + "/" + encode_filename(type)
-  end
-
-  def m3u8_filename
-    "#{stream_prefix}.m3u8"
-  end
-
-  def m3u8_path
-    File.join(VIDEO_PATH, m3u8_filename)
   end
 
   def exist?
@@ -172,19 +160,6 @@ class PasokaraFile
 
   def do_encode(host, type = :safari)
     Resque.enqueue(Job::VideoEncoder, id, host, type)
-  end
-
-  def stream_path(host, force = false)
-    if !force and mp4?
-      path = movie_path
-    else
-      path = m3u8_path
-      unless encoded?
-        do_encode(host)
-        sleep 1
-      end
-    end
-    path
   end
 
   def parse_info_file

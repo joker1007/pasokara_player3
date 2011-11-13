@@ -140,12 +140,6 @@ describe PasokaraFile do
       end
     end
 
-    describe "#stream_prefix" do
-      it "\"{id}-stream\"という文字列を返すこと" do
-        subject.stream_prefix.should == "#{subject.id}-stream"
-      end
-    end
-
     describe "#encode_prefix" do
       context "引数が無い場合" do
         it { subject.encode_prefix.should == "#{subject.id}-safari" }
