@@ -2,7 +2,7 @@
 //= require jquery_ujs
 //= require video_util
 //= require jquery-fonteffect-1.0.0.min
-//= require throbberA
+//= require canvas_indicator
 
 @add_video_tag = (id, path, size...) ->
   size[0] = 640 unless size[0]?

@@ -11,8 +11,8 @@
     success: (data) ->
       if data
         callback(id, path) if callback
-        if window.throbber?
-          window.throbber.hide()
+        if window.canvas_indicator?
+          window.canvas_indicator.hide()
       else
         setTimeout(->
           check_encode_status(id, path, count)
@@ -23,6 +23,6 @@
       , 2000)
   }
 
-@throbber_init = ->
-  window.throbber = new ThrobberA({size: 64})
-  window.throbber.show(document.getElementById("throbber"))
+@indicator_init = ->
+  window.canvas_indicator = new CanvasIndicator({size: 80})
+  window.canvas_indicator.show(document.getElementById("indicator"))

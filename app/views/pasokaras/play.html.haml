@@ -4,6 +4,7 @@
     %meta{:content => "text/html;charset=UTF-8", "http-equiv" => "content-type"}/
     %meta{:content => "noindex,nofollow", :name => "robots"}/
     = stylesheet_link_tag "video"
+    = stylesheet_link_tag "canvas_indicator"
     = javascript_include_tag "pasokaras/play"
     = csrf_meta_tag
     - if request.iphone?
@@ -15,16 +16,16 @@
     - if @pasokara
       :javascript
         $(document).ready(function() {
-          throbber_init();
+          indicator_init();
           check_encode_status("#{@pasokara.id}", "#{@movie_path}", 0, add_video_tag);
         });
     - else
       :javascript
         $(document).ready(function() {
-          throbber_init();
+          indicator_init();
           check_next();
         });
     %body
-      %span#throbber{:style => "margin-left: 220px;"}
+      %div#indicator{:style => "padding-left: 220px;"}
       #video
 

@@ -1,11 +1,11 @@
 = javascript_include_tag "pasokaras/preview"
 :javascript
   $(document).ready(function() {
-    throbber_init();
+    indicator_init();
     check_encode_status("#{@pasokara.id}", "#{@movie_path}", 0, add_video_tag);
   });
 
 %h1= h @pasokara.name
-%span#throbber{:style => "margin-left: 220px;"}
+%div#indicator{:style => "padding-left: 220px;"}
 #video{:style => "margin-left: 30px;"}
 
