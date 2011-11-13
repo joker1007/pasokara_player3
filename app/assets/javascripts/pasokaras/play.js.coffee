@@ -1,7 +1,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require video_util
-//= require throbberA
+//= require canvas_indicator
 
 @check_next = (deque) ->
   if deque?
@@ -28,7 +28,7 @@
   video.addClass("fullscreen")
   video.bind("ended", ->
     $(this).remove()
-    window.throbber.show(document.getElementById("throbber"))
+    window.canvas_indicator.reshow()
     setTimeout(->
       check_next(true)
     , 5000)

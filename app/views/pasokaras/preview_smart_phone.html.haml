@@ -1,45 +1,15 @@
 :javascript
-  var throbber;
-  function throbber_init() {
-    throbber = new ThrobberA({size: 64});
-    throbber.show(document.getElementById("throbber"));
-  }
-
   function add_video_tag(id, path) {
     var video = $("<video>").attr("id", "video-" + id).attr("width", 480).attr("height", 320).attr("controls", "controls").attr("src", path);
     $("#video").append(video);
   }
 
-  function check_video(id, path, count) {
-    count = count + 1;
-    if (count > 150) {
-      alert("Video Loading Failed");
-      return false;
-    }
-    $.ajax({
-      type: "GET",
-      dataType: "json",
-      url: "/pasokaras/#{@pasokara.id}/encode_status.json?type=safari",
-      success: function(data){
-        if (data) {
-          add_video_tag(id, path);
-          throbber.hide();
-        } else {
-          setTimeout(function(){check_video(id, path, count)}, 2000);
-        }
-      },
-      error: function(){
-        setTimeout(function(){check_video(id, path, count)}, 2000);
-      }
-    });
-  }
-
   $(document).ready(function() {
-    throbber_init();
-    check_video("#{@pasokara.id}", "#{@movie_path}", 0);
+    indicator_init();
+    check_video("#{@pasokara.id}", "#{@movie_path}", add_video_tag);
   });
 
 %h1= h @pasokara.name
-%span#throbber{:style => "margin-left: 220px;"}
+%div#indicator{:style => "padding-left: 220px;"}
 #video
 
