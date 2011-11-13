@@ -13,7 +13,7 @@ end
 gem 'therubyracer'
 
 # Use unicorn as the web server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Deploy with Capistrano
 gem 'capistrano'
@@ -22,18 +22,6 @@ gem 'capistrano'
 # gem 'ruby-debug'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
-# Bundle the extra gems:
-# gem 'bj'
-# gem 'nokogiri'
-# gem 'sqlite3-ruby', :require => 'sqlite3'
-# gem 'aws-s3', :require => 'aws/s3'
-
-# Bundle gems for the local environment. Make sure to
-# put test-only gems in this group so their generators
-# and rake tasks are available in development mode:
-# group :development, :test do
-#   gem 'webrat'
-# end
 gem "rails3-generators"
 gem "factory_girl_rails", ">= 1.0.1", :group => :test
 gem "rspec", ">= 2.5.0", :group => [:test, :development]
