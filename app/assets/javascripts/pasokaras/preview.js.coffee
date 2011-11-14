@@ -1,9 +1,3 @@
-#= require jquery
-#= require jquery_ujs
-#= require video_util
-#= require jquery-fonteffect-1.0.0.min
-#= require canvas_indicator
-
 @add_video_tag = (id, path, size...) ->
   size[0] = 640 unless size[0]?
   size[1] = 480 unless size[1]?

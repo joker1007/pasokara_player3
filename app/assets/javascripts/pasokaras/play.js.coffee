@@ -1,8 +1,3 @@
-#= require jquery
-#= require jquery_ujs
-#= require video_util
-#= require canvas_indicator
-
 @check_next = (deque) ->
   if deque?
     url = "/pasokaras/play.json?deque=1"
