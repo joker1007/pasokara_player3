@@ -4,7 +4,7 @@
     %meta{:content => "text/html;charset=UTF-8", "http-equiv" => "content-type"}/
     %meta{:content => "noindex,nofollow", :name => "robots"}/
     = stylesheet_link_tag "application"
-    = javascript_include_tag "pasokaras_play"
+    = javascript_include_tag "application"
     = csrf_meta_tag
     - if request.iphone?
       %meta{:content => "width=640, initial-scale=0.5", :name => "viewport"}/
@@ -16,7 +16,7 @@
       :javascript
         $(document).ready(function() {
           indicator_init();
-          check_encode_status("#{@pasokara.id}", "#{@movie_path}", 0, add_video_tag);
+          check_encode_status("#{@pasokara.id}", "#{@movie_path}", 0, add_play_video_tag);
         });
     - else
       :javascript

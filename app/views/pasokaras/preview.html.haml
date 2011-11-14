@@ -1,8 +1,7 @@
-= javascript_include_tag "pasokaras_preview"
 :javascript
   $(document).ready(function() {
     indicator_init();
-    check_encode_status("#{@pasokara.id}", "#{@movie_path}", 0, add_video_tag);
+    check_encode_status("#{@pasokara.id}", "#{@movie_path}", 0, add_preview_video_tag);
   });
 
 %h1= h @pasokara.name
