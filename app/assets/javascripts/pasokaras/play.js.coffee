@@ -1,7 +1,7 @@
-//= require jquery
-//= require jquery_ujs
-//= require video_util
-//= require canvas_indicator
+#= require jquery
+#= require jquery_ujs
+#= require video_util
+#= require canvas_indicator
 
 @check_next = (deque) ->
   if deque?
