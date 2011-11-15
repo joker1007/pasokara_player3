@@ -75,14 +75,14 @@ class PasokarasController < ApplicationController
         @pasokara.do_encode(nil, :safari)
       end
       @movie_path = @pasokara.encode_filepath(:safari)
-      render :action => "preview_smart_phone"
     else
       unless @pasokara.encoded?(:webm)
         @pasokara.do_encode(nil, :webm)
       end
       @movie_path = @pasokara.encode_filepath(:webm)
-      render :action => "preview"
     end
+
+    render :action => "preview"
   end
 
   def play
