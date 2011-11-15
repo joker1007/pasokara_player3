@@ -1,4 +1,4 @@
-@check_encode_status = (id, path, count, callback) ->
+@check_encode_status = (id, path, type, count, callback) ->
   count = count + 1
   if count > 150
     alert "Video Loading Failed"
@@ -7,7 +7,7 @@
   $.ajax {
     type: "GET"
     dataType: "json"
-    url: "/pasokaras/" + id + "/encode_status.json"
+    url: "/pasokaras/" + id + "/encode_status.json?type=#{type}"
     success: (data) ->
       if data
         callback(id, path) if callback
