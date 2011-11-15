@@ -251,12 +251,8 @@ describe PasokaraFile do
     end
 
     describe "#encoded?" do
-      subject {mp4_file}
+      subject {create(:pasokara_file, :id => "000000000000000000000000")}
       context "エンコードが開始され、ファイルが存在している時" do
-        before do
-          subject.stub!(:id).and_return("0000")
-        end
-
         context "引数が無い時" do
           its(:encoded?) {should be_true}
         end
@@ -266,6 +262,7 @@ describe PasokaraFile do
       end
 
       context "ファイルが存在しない時" do
+        subject {create(:pasokara_file, :id => "000000000000000000000001")}
         its(:encoded?) {should be_false}
         it {subject.encoded?(:webm).should be_false}
       end
