@@ -55,6 +55,19 @@ class PasokarasController < ApplicationController
     end
   end
 
+  def raw_file
+    @pasokara = PasokaraFile.find(params[:id])
+    case @pasokara.extname
+    when ".mp4"
+      type = "video/mp4"
+    when ".flv"
+      type = "video/x-flv"
+    else
+      type = "application/octet-stream"
+    end
+    send_file(@pasokara.fullpath, :filename => "#{@pasokara.name}#{@pasokara.extname}")
+  end
+
   def preview
     @pasokara = PasokaraFile.find(params[:id])
     if request.smart_phone?
