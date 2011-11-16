@@ -12,16 +12,18 @@
       %meta{:content => "width=640, initial-scale=1.0", :name => "viewport"}/
     %title PasokaraPlayer - Play
 
+    %script{:id => "videoTemplate", :type => "text/x-jquery-tmpl"}
+      %video{:id => "videoPlayer", :width => "640", :height => "480", :controls => "controls", :autoplay => "autoplay", :src => "{{=path}}"}
     - if @pasokara
       :javascript
         $(document).ready(function() {
-          indicator_init();
+          indicator_init(true);
           check_encode_status({id: "#{@pasokara.id}", path: "#{@movie_path}", type: "#{@type}"}, 0, add_play_video_tag);
         });
     - else
       :javascript
         $(document).ready(function() {
-          indicator_init();
+          indicator_init(true);
           check_next(false);
         });
     %body

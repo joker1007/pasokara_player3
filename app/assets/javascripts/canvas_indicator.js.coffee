@@ -22,7 +22,7 @@ class CanvasIndicator
     box_padding = Math.round((@size * 1.1 - @size) / 2)
     box_style = "width: #{box_size}px; height: #{box_size}px; padding-left: #{box_padding}px; padding-top: #{box_padding}px;"
     if @options?.position?
-      window_center = {x: Math.round(document.body.clientWidth / 2), y: Math.round(document.body.clientHeight / 2)}
+      window_center = {x: Math.round(document.body.clientWidth / 2), y: Math.round(window.outerHeight / 2)}
       box_top = @options.position.top ? window_center.y - (box_size / 2)
       box_left = @options.position.left ? window_center.x - (box_size / 2)
       box_style += "z-index: 1000; position: fixed; top: #{box_top}px; left: #{box_left}px"

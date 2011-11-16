@@ -42,9 +42,9 @@
   }
 
 @add_play_video_tag = (pasokara) ->
-  width = 640
-  height = 480
-  video = $("<video>").attr("id", "video-#{pasokara.id}").attr("width", width).attr("height", height).attr("controls", "controls").attr("autoplay", "autoplay").attr("src", pasokara.path)
+  video = $(
+    $("#videoTemplate").render(pasokara)
+  )
   video.addClass("fullscreen")
   video.bind("ended", ->
     $(this).remove()
@@ -58,9 +58,13 @@
 @add_preview_video_tag = (pasokara) ->
   width = 640
   height = 480
-  video = $("<video>").attr("id", "video-#{pasokara.id}").attr("width", width).attr("height", height).attr("controls", "controls").attr("autoplay", "autoplay").attr("src", pasokara.path)
-  $("#video").append(video)
+  $("#video").html(
+    $("#videoTemplate").render(pasokara)
+  )
 
-@indicator_init = ->
-  window.canvas_indicator = new CanvasIndicator({size: 80})
+@indicator_init = (position) ->
+  console.log position
+  options = if position? then {size: 80, position: position} else {size: 80}
+  console.log options
+  window.canvas_indicator = new CanvasIndicator(options)
   window.canvas_indicator.show(document.getElementById("indicator"))

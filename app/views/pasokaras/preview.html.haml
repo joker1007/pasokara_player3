@@ -1,3 +1,6 @@
+%script{:id => "videoTemplate", :type => "text/x-jquery-tmpl"}
+  %video{:id => "videoPlayer", :width => "640", :height => "480", :controls => "controls", :autoplay => "autoplay", :src => "{{=path}}"}
+
 :javascript
   $(document).ready(function() {
     indicator_init();
