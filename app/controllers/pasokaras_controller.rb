@@ -51,7 +51,15 @@ class PasokarasController < ApplicationController
     type = params[:type] ? params[:type].to_sym : :webm
     status = type == :raw ? true : @pasokara.encoded?(type)
     respond_to do |format|
-      format.json {render :json => status.to_json}
+      format.json {
+        data = {
+          :id => @pasokara.id,
+          :path => @pasokara.encode_filepath(type),
+          :type => type,
+          :status => status
+        }
+        render :json => data.to_json
+      }
     end
   end
 
@@ -94,14 +102,15 @@ class PasokarasController < ApplicationController
     @queue = QueuedFile.deq
     if @queue
       @pasokara = @queue.pasokara_file
-      unless @pasokara.encoded?(:webm)
-        @pasokara.do_encode(nil, :webm)
+      @type = request.smart_phone? ? :safari : :webm
+      unless @pasokara.encoded?(@type)
+        @pasokara.do_encode(nil, @type)
       end
-      @movie_path = @pasokara.encode_filepath(:webm)
+      @movie_path = @pasokara.encode_filepath(@type)
 
       respond_to do |format|
         format.html { render :action => "play", :layout => false }
-        format.json { render :json => {:id => @pasokara.id, :path => @movie_path}.to_json }
+        format.json { render :json => {:id => @pasokara.id, :path => @movie_path, :type => @type}.to_json }
       end
     else
       respond_to do |format|

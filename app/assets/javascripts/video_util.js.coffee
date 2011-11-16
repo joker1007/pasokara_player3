@@ -1,4 +1,4 @@
-@check_encode_status = (id, path, type, count, callback) ->
+@check_encode_status = (pasokara, count, callback) ->
   count = count + 1
   if count > 150
     alert "Video Loading Failed"
@@ -7,24 +7,24 @@
   $.ajax {
     type: "GET"
     dataType: "json"
-    url: "/pasokaras/" + id + "/encode_status.json?type=#{type}"
+    url: "/pasokaras/" + pasokara.id + "/encode_status.json?type=#{pasokara.type}"
     success: (data) ->
-      if data
-        callback(id, path) if callback
+      if data.status
+        callback(data) if callback
         if window.canvas_indicator?
           window.canvas_indicator.hide()
       else
         setTimeout(->
-          check_encode_status(id, path, count, callback)
+          check_encode_status({id: data.id, path: data.path, type: data.type}, count, callback)
         , 2000)
     error: (xhr) ->
       setTimeout(->
-        check_encode_status(id, path, count, callback)
+        check_encode_status({id: data.id, path: data.path, type: data.type}, count, callback)
       , 2000)
   }
 
 @check_next = (deque) ->
-  if deque?
+  if deque
     url = "/pasokaras/play.json?deque=1"
   else
     url = "/pasokaras/play.json"
@@ -33,32 +33,32 @@
     type: "GET"
     dataType: "json"
     url: url
-    success: (data) ->
-      check_encode_status(data["id"], data["path"], 0, add_play_video_tag)
+    success: (pasokara) ->
+      check_encode_status(pasokara, 0, add_play_video_tag)
     error: (xhr) ->
       setTimeout(->
-        check_next()
+        check_next(false)
       , 2000)
   }
 
-@add_play_video_tag = (id, path, size...) ->
-  size[0] = 640 unless size[0]?
-  size[1] = 480 unless size[1]?
-  video = $("<video>").attr("id", "video-#{id}").attr("width", size[0]).attr("height", size[1]).attr("controls", "controls").attr("autoplay", "autoplay").attr("src", path)
+@add_play_video_tag = (pasokara) ->
+  width = 640
+  height = 480
+  video = $("<video>").attr("id", "video-#{pasokara.id}").attr("width", width).attr("height", height).attr("controls", "controls").attr("autoplay", "autoplay").attr("src", pasokara.path)
   video.addClass("fullscreen")
   video.bind("ended", ->
     $(this).remove()
-    window.canvas_indicator.reshow()
+    window.canvas_indicator.reshow() if window.canvas_indicator?
     setTimeout(->
       check_next(true)
     , 5000)
   )
   $("#video").append(video)
 
-@add_preview_video_tag = (id, path, size...) ->
-  size[0] = 640 unless size[0]?
-  size[1] = 480 unless size[1]?
-  video = $("<video>").attr("id", "video-#{id}").attr("width", size[0]).attr("height", size[1]).attr("controls", "controls").attr("autoplay", "autoplay").attr("src", path)
+@add_preview_video_tag = (pasokara) ->
+  width = 640
+  height = 480
+  video = $("<video>").attr("id", "video-#{pasokara.id}").attr("width", width).attr("height", height).attr("controls", "controls").attr("autoplay", "autoplay").attr("src", pasokara.path)
   $("#video").append(video)
 
 @indicator_init = ->

@@ -16,13 +16,13 @@
       :javascript
         $(document).ready(function() {
           indicator_init();
-          check_encode_status("#{@pasokara.id}", "#{@movie_path}", 0, add_play_video_tag);
+          check_encode_status({id: "#{@pasokara.id}", path: "#{@movie_path}", type: "#{@type}"}, 0, add_play_video_tag);
         });
     - else
       :javascript
         $(document).ready(function() {
           indicator_init();
-          check_next();
+          check_next(false);
         });
     %body
       %div#indicator{:style => "padding-left: 220px;"}
