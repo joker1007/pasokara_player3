@@ -1,0 +1,9 @@
+rails_env = ENV['RAILS_ENV'] || "development"
+
+worker_processes 4
+
+preload_app true
+
+timeout 30
+
+listen 8000, :tcp_nodelay => true

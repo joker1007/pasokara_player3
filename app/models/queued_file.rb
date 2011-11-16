@@ -13,6 +13,8 @@ class QueuedFile
   validates_presence_of :name
   validates_presence_of :pasokara_file_id
 
+  default_scope order_by([[:created_at, :asc]])
+
   paginates_per 50
 
   def self.enq(pasokara, user = nil)
@@ -22,7 +24,7 @@ class QueuedFile
   end
 
   def self.deq
-    queue = QueuedFile.order_by("created_at desc").first
+    queue = QueuedFile.first
     if queue and !(queue.pasokara_file.encoding)
       SingLog.create(name:queue.name, user_name:queue.user_name, pasokara_file_id: queue.pasokara_file_id, user: queue.user_id)
       queue

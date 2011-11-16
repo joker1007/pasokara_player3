@@ -1,0 +1,32 @@
+!!! 5
+%html
+  %head
+    %meta{:content => "text/html;charset=UTF-8", "http-equiv" => "content-type"}/
+    %meta{:content => "noindex,nofollow", :name => "robots"}/
+    = stylesheet_link_tag "application"
+    = javascript_include_tag "application"
+    = csrf_meta_tag
+    - if request.iphone?
+      %meta{:content => "width=640, initial-scale=0.5", :name => "viewport"}/
+    - elsif request.ipad?
+      %meta{:content => "width=640, initial-scale=1.0", :name => "viewport"}/
+    %title PasokaraPlayer - Play
+
+    %script{:id => "videoTemplate", :type => "text/x-jquery-tmpl"}
+      %video{:id => "videoPlayer", :width => "640", :height => "480", :controls => "controls", :autoplay => "autoplay", :src => "{{=path}}"}
+    - if @pasokara
+      :javascript
+        $(document).ready(function() {
+          indicator_init(true);
+          check_encode_status({id: "#{@pasokara.id}", path: "#{@movie_path}", type: "#{@type}"}, 0, add_play_video_tag);
+        });
+    - else
+      :javascript
+        $(document).ready(function() {
+          indicator_init(true);
+          check_next(false);
+        });
+    %body
+      %div#indicator{:style => "padding-left: 220px;"}
+      #video
+

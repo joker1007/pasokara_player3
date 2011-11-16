@@ -100,16 +100,24 @@ class PasokaraFile
     "http://www.nicovideo.jp/watch/" + nico_name
   end
 
-  def stream_prefix
-    "#{id}-stream"
+  def encode_prefix(type = :safari)
+    "#{id}-#{type}"
   end
 
-  def m3u8_filename
-    "#{stream_prefix}.m3u8"
+  def encode_filename(type = :safari)
+    prefix = encode_prefix(type)
+    case type
+    when :safari
+      prefix + ".mp4"
+    when :webm
+      prefix + ".webm"
+    when :stream
+      prefix + ".m3u8"
+    end
   end
 
-  def m3u8_path
-    File.join(VIDEO_PATH, m3u8_filename)
+  def encode_filepath(type = :safari)
+    VIDEO_PATH + "/" + encode_filename(type)
   end
 
   def exist?
@@ -141,8 +149,8 @@ class PasokaraFile
     end
   end
 
-  def encoded?
-    File.exist?(File.join(Rails.root, "public", m3u8_path))
+  def encoded?(type = :safari)
+    !encoding && File.exist?(File.join(Rails.root, "public", encode_filepath(type)))
   end
 
   def tag_list
@@ -150,21 +158,8 @@ class PasokaraFile
     @tag_list
   end
 
-  def do_encode(host)
-    Resque.enqueue(Job::VideoEncoder, id, host)
-  end
-
-  def stream_path(host, force = false)
-    if !force and mp4?
-      path = movie_path
-    else
-      path = m3u8_path
-      unless encoded?
-        do_encode(host)
-        sleep 1
-      end
-    end
-    path
+  def do_encode(host, type = :safari)
+    Resque.enqueue(Job::VideoEncoder, id, host, type)
   end
 
   def parse_info_file

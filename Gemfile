@@ -33,7 +33,7 @@ gem "autotest-rails", :group => :test
 gem "webrat", :group => [:test, :development]
 gem "capybara", '~> 1.0.0', :group => [:test, :development]
 gem "capybara-webkit", :git => 'git://github.com/thoughtbot/capybara-webkit.git', :group => [:test, :development]
-gem "cucumber", :group => [:test, :development]
+gem "cucumber", "1.1.0", :group => [:test, :development]
 gem "cucumber-rails", :group => [:test, :development]
 gem "launchy", :group => [:test, :development]
 gem "jquery-rails"

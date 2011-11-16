@@ -40,7 +40,9 @@ PasokaraPlayerRails3::Application.routes.draw do
       get 'thumb'
       get 'queue'
       get 'preview'
-      get 'get_stream'
+      get 'raw_file'
+      get 'movie_path'
+      get 'encode_status'
       get 'add_favorite'
       get 'remove_favorite'
     end
@@ -50,6 +52,7 @@ PasokaraPlayerRails3::Application.routes.draw do
       post 'search'
       get 'favorite'
       post 'favorite'
+      get 'play'
     end
   end
 

@@ -86,7 +86,6 @@ describe PasokaraFile do
 
   describe "値を取得するメソッド " do
     subject {FactoryGirl.create(:siawase_gyaku)}
-    let(:pasokara_test) {Factory(:pasokara_file)}
 
     describe "#name()" do
 
@@ -106,7 +105,6 @@ describe PasokaraFile do
 
     describe "#extname" do
       its(:extname) {should == ".flv"}
-      it {pasokara_test.extname.should == ".mp4"}
     end
 
     describe "#movie_path" do
@@ -142,21 +140,30 @@ describe PasokaraFile do
       end
     end
 
-    describe "#stream_prefix" do
-      it "\"{id}-stream\"という文字列を返すこと" do
-        subject.stream_prefix.should == "#{subject.id}-stream"
+    describe "#encode_prefix" do
+      context "引数が無い場合" do
+        it { subject.encode_prefix.should == "#{subject.id}-safari" }
+      end
+      context "引数が'stream'の場合" do
+        it { subject.encode_prefix(:stream).should == "#{subject.id}-stream" }
       end
     end
 
-    describe "#m3u8_filename" do
-      it "\"{stream_prefix}.m3u8\"という文字列を返すこと" do
-        subject.m3u8_filename.should == "#{subject.stream_prefix}.m3u8"
+    describe "#encode_filename" do
+      context "引数が無い場合" do
+        it { subject.encode_filename.should == "#{subject.id}-safari.mp4" }
+      end
+      context "引数が'stream'の場合" do
+        it { subject.encode_filename(:stream).should == "#{subject.id}-stream.m3u8" }
+      end
+      context "引数が'webm'の場合" do
+        it { subject.encode_filename(:webm).should == "#{subject.id}-webm.webm" }
       end
     end
 
-    describe "#m3u8_path" do
-      it "\"/video/{m3u8_filename}\"という文字列を返すこと" do
-        subject.m3u8_path.should == "/video/#{subject.m3u8_filename}"
+    describe "#encode_filepath" do
+      it "\"/video/{encode_filename}\"という文字列を返すこと" do
+        subject.encode_filepath.should == "/video/#{subject.encode_filename}"
       end
     end
   end
@@ -244,17 +251,20 @@ describe PasokaraFile do
     end
 
     describe "#encoded?" do
-      subject {mp4_file}
-      context "エンコードが開始され、m3u8ファイルが存在している時" do
-        before do
-          subject.stub!(:id).and_return("0000")
+      subject {create(:pasokara_file, :id => "000000000000000000000000")}
+      context "エンコードが開始され、ファイルが存在している時" do
+        context "引数が無い時" do
+          its(:encoded?) {should be_true}
         end
-
-        its(:encoded?) {should be_true}
+        context "引数が:webmの時" do
+          it {subject.encoded?(:webm).should be_true}
+        end
       end
 
-      context "m3u8ファイルが存在しない時" do
+      context "ファイルが存在しない時" do
+        subject {create(:pasokara_file, :id => "000000000000000000000001")}
         its(:encoded?) {should be_false}
+        it {subject.encoded?(:webm).should be_false}
       end
     end
 
@@ -274,10 +284,20 @@ describe PasokaraFile do
   end
 
   describe "#do_encode(host)" do
-    before {@flv_file = Factory(:pasokara_file, name: "test002.flv")}
-    it "Resqueクラスにエンコードジョブがenqueueされること" do
-      Resque.should_receive(:enqueue).with(Job::VideoEncoder, @flv_file.id, "host:port")
-      @flv_file.do_encode("host:port")
+    context "ファイル形式の指定が無い時" do
+      subject { create(:pasokara_file, name: "test002.flv") }
+      it "Resqueクラスにエンコードジョブがenqueueされること" do
+        Resque.should_receive(:enqueue).with(Job::VideoEncoder, subject.id, "host:port", :safari)
+        subject.do_encode("host:port")
+      end
+    end
+
+    context "ファイル形式の指定がある時" do
+      subject { create(:pasokara_file, name: "test002.flv") }
+      it "Resqueクラスにエンコードジョブがenqueueされること" do
+        Resque.should_receive(:enqueue).with(Job::VideoEncoder, subject.id, "host:port", :chrome)
+        subject.do_encode("host:port", :chrome)
+      end
     end
   end
 

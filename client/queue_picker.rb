@@ -99,7 +99,7 @@ class QueuePicker
             if @local
               @file_path = @db.get_first_value("select filepath from path_table where hash = \"#{queue["md5_hash"]}\"")
             else
-              @file_path = "http://#{@server}:#{@port}/video/#{queue["_id"]}#{File.extname(queue["fullpath"])}"
+              @file_path = "http://#{@server}:#{@port}/pasokaras/#{queue["_id"]}/raw_file"
             end
             puts "file path: #{@file_path}"
             puts "player command: #{play_cmd}"
@@ -206,7 +206,12 @@ else
   server = STDIN.gets.chomp
 end
 
+if ARGV[1]
+  port = ARGV[1].to_i
+else
+  port = 80
+end
 
-client = QueuePicker.new(server, local)
+client = QueuePicker.new(server, local, port)
 puts "Start Queue Picker Client"
 client.play_loop

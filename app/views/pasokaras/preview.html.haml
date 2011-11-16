@@ -1,5 +1,13 @@
-%h1= h @pasokara.name
-#video
-  = embed_player(@pasokara)
+%script{:id => "videoTemplate", :type => "text/x-jquery-tmpl"}
+  %video{:id => "videoPlayer", :width => "640", :height => "480", :controls => "controls", :autoplay => "autoplay", :src => "{{=path}}"}
 
-/ END OF THE PLAYER EMBEDDING
+:javascript
+  $(document).ready(function() {
+    indicator_init();
+    check_encode_status({id: "#{@pasokara.id}", path: "#{@movie_path}", type: "#{@type}"}, 0, add_preview_video_tag);
+  });
+
+%h1= h @pasokara.name
+%div#indicator{:style => "padding-left: 220px;"}
+#video{:style => "margin-left: 30px;"}
+

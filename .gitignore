@@ -11,6 +11,7 @@ capybara-*.html
 .rspec
 config/database.yml
 config/deploy.rb
+config/unicorn.rb
 config/*.yml
 db/schema.rb
 vendor/bundle
