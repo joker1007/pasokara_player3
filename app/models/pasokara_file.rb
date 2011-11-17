@@ -86,18 +86,19 @@ class PasokaraFile
           filepath, parent_dir = file_queue.deq
 
           if filepath =~ MOVIE_REGEXP
-            puts "#{filepath}を読み込み開始" unless Rails.env == "test"
-            md5_hash = File.open(filepath, "rb:ASCII-8BIT") {|f| Digest::MD5.hexdigest(f.read(300 * 1024))}
-            pasokara = PasokaraFile.find_or_initialize_by(:md5_hash => md5_hash)
-            pasokara.attributes = {:name => File.basename(filepath), :fullpath => filepath, :md5_hash => md5_hash}
-            pasokara.parse_info_file
-            pasokara.update_thumbnail
-            pasokara.directory = parent_dir
-            if pasokara.new_record?
-              pasokara.save ? pasokara.id : nil
-            else
-              pasokara.save if pasokara.changed?
-              pasokara.id
+            unless PasokaraFile.saved_file?(filepath)
+              puts "#{filepath}を読み込み開始" unless Rails.env == "test"
+              md5_hash = File.open(filepath, "rb:ASCII-8BIT") {|f| Digest::MD5.hexdigest(f.read(300 * 1024))}
+              pasokara = PasokaraFile.find_or_initialize_by(:md5_hash => md5_hash)
+              pasokara.attributes = {:name => File.basename(filepath), :fullpath => filepath, :md5_hash => md5_hash}
+              pasokara.parse_info_file
+              pasokara.update_thumbnail
+              pasokara.directory = parent_dir
+              if pasokara.new_record?
+                pasokara.save ? pasokara.id : nil
+              else
+                pasokara.save if pasokara.changed?
+              end
             end
           end
         end
@@ -129,6 +130,7 @@ class PasokaraFile
       if file_queue.empty? && dir_queue.empty? && dir_queue.num_waiting == 2
         sleep 1
         if file_queue.empty? && dir_queue.empty? && dir_queue.num_waiting == 2
+          Sunspot.commit
           return
         end
       end
