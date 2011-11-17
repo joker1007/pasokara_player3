@@ -17,6 +17,7 @@ db/schema.rb
 vendor/bundle
 public/system/*
 public/video/*
+public/thumbnails/*
 coverage/
 spec/tmp/*
 **.orig

@@ -20,10 +20,9 @@ describe Directory do
     end
   end
 
-  describe "Method Test" do
+  describe "#entities" do
     subject {create(:directory)}
 
     it {should have(4).entities}
   end
-
 end

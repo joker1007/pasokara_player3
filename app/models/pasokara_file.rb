@@ -56,11 +56,83 @@ class PasokaraFile
 
   VIDEO_PATH = "/video"
   PREVIEW_PATH = "/pasokaras/preview"
+  MOVIE_REGEXP = /(mpe?g|avi|flv|ogm|mkv|mp4|wmv|mov|rmvb|asf|webm|f4v|m4v)$/i
 
   paginates_per 50
 
   def self.saved_file?(fullpath)
     only(:fullpath).where(:fullpath => fullpath).first
+  end
+
+  def self.load_dir(path)
+    file_queue = Queue.new
+    dir_queue = Queue.new
+
+    Dir.open(path).entries.select {|e| e[0] != "."}.each do |filename|
+      next_path = File.join(path, filename)
+      if File.directory?(next_path)
+        dir_queue.enq([next_path, nil])
+      else
+        file_queue.enq([next_path, nil])
+      end
+    end
+
+    file_workers = []
+    dir_workers = []
+
+    2.times do
+      file_workers << Thread.new do
+        loop do
+          filepath, parent_dir = file_queue.deq
+
+          if filepath =~ MOVIE_REGEXP
+            puts "#{filepath}を読み込み開始" unless Rails.env == "test"
+            md5_hash = File.open(filepath, "rb:ASCII-8BIT") {|f| Digest::MD5.hexdigest(f.read(300 * 1024))}
+            pasokara = PasokaraFile.find_or_initialize_by(:md5_hash => md5_hash)
+            pasokara.attributes = {:name => File.basename(filepath), :fullpath => filepath, :md5_hash => md5_hash}
+            pasokara.parse_info_file
+            pasokara.update_thumbnail
+            pasokara.directory = parent_dir
+            if pasokara.new_record?
+              pasokara.save ? pasokara.id : nil
+            else
+              pasokara.save if pasokara.changed?
+              pasokara.id
+            end
+          end
+        end
+      end
+    end
+
+    2.times do
+      dir_workers << Thread.new do
+        loop do
+          dirpath, parent_dir = dir_queue.deq
+          puts "#{dirpath}を読み込み開始" unless Rails.env == "test"
+          directory = Directory.find_or_initialize_by(:name => File.basename(dirpath))
+          directory.directory = parent_dir
+          directory.save if directory.new_record? || directory.changed?
+
+          Dir.open(dirpath).entries.select {|e| e[0] != "."}.each do |filename|
+            next_path = File.join(dirpath, filename)
+            if File.directory?(next_path)
+              dir_queue.enq([next_path, directory])
+            else
+              file_queue.enq([next_path, directory])
+            end
+          end
+        end
+      end
+    end
+
+    loop do
+      if file_queue.empty? && dir_queue.empty? && dir_queue.num_waiting == 2
+        sleep 1
+        if file_queue.empty? && dir_queue.empty? && dir_queue.num_waiting == 2
+          return
+        end
+      end
+    end
   end
 
   alias _name name
@@ -71,6 +143,10 @@ class PasokaraFile
   # Sunspot dummy
   def name_str
     nil
+  end
+
+  def calc_md5
+    File.open(fullpath, "rb:ASCII-8BIT") {|f| Digest::MD5.hexdigest(f.read(300 * 1024))}
   end
 
   def extname

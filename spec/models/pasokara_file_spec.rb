@@ -72,6 +72,37 @@ describe PasokaraFile do
     end
   end
 
+  describe "ディレクトリからファイルを読み込む" do
+    subject { PasokaraFile }
+
+    it {
+      expect {
+        subject.load_dir(File.join(File.dirname(__FILE__), "..", "datas"))
+      }.to change {PasokaraFile.count}.from(0).to(3)
+    }
+
+    it {
+      subject.load_dir(File.join(File.dirname(__FILE__), "..", "datas"))
+      PasokaraFile.where(:nico_name => "sm99999999").count.should == 1
+    }
+
+    it {
+      subject.load_dir(File.join(File.dirname(__FILE__), "..", "datas"))
+      pasokara = PasokaraFile.where(:name => "test001.mp4")[0]
+      pasokara.thumbnail.size.should == 5872
+    }
+
+    context "既にファイルが登録されている時" do
+      before do
+        subject.load_dir(File.join(File.dirname(__FILE__), "..", "datas"))
+      end
+
+      it {
+        PasokaraFile.where(:nico_name => "sm99999999").count.should == 1
+      }
+    end
+  end
+
   it "ディレクトリに含まれることができる" do
     directory = FactoryGirl.create(:directory)
     pasokara = FactoryGirl.create(:pasokara_file)
@@ -80,7 +111,6 @@ describe PasokaraFile do
     expect {
       directory.pasokara_files << pasokara
       directory.pasokara_files << pasokara2
-      p directory.pasokara_files
     }.to change { directory.pasokara_files.length }.from(0).to(2)
   end
 
