@@ -72,6 +72,12 @@ li.queue {
   background-color: #BDFF7F;
 }
 
+li.nothing {
+  @include longbox;
+  padding-right: 10px;
+  background-color: #A9A9A9;
+}
+
 
 li.tag {
   @include longbox;
