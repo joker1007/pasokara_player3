@@ -1,5 +1,7 @@
 # coding: utf-8
 require "job/video_encoder"
+require "ffmpeg_info"
+require "ffmpeg_thumbnailer"
 require "carrierwave/orm/mongoid"
 class PasokaraFile
   include Mongoid::Document
@@ -216,6 +218,13 @@ class PasokaraFile
 
   def exist_thumbnail?
     File.exist?(fullpath.gsub(/#{Regexp.escape(File.extname(fullpath))}$/, ".jpg"))
+  end
+
+  def create_thumbnail
+    info = FFmpegInfo.getinfo(fullpath)
+    duration = info[:duration] ? info[:duration] : 0
+    ss = (info[:duration] / 10.0).round
+    FFmpegThumbnailer.create(fullpath, ss)
   end
 
   def update_thumbnail(force = false)
