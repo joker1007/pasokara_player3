@@ -7,6 +7,7 @@ module FFmpegInfo
   def self.getinfo(input)
     video = {}
     audio = {}
+    duration = 0
     stdin, stdout_and_stderr = *Open3.popen2e("#{FFMPEG} -i #{Shellwords.shellescape(input)}")
     stdout_and_stderr.each_line do |line|
       case line
@@ -18,6 +19,8 @@ module FFmpegInfo
         audio[:codec] = $1
         audio[:rate] = $2.to_i
         audio[:channels] = $3
+      when /Duration: (\d\d):(\d\d):(\d\d)\.(\d\d),/
+        duration = $1.to_i * 3600 + $2.to_i * 60 + $3.to_i
       end
     end
 
@@ -28,6 +31,6 @@ module FFmpegInfo
       video[:aspect] = sprintf("%1.4f", $1.to_f / $2.to_f)
     end
 
-    {:video => video, :audio => audio}
+    {:video => video, :audio => audio, :duration => duration}
   end
 end
