@@ -66,6 +66,25 @@ class PasokaraFile
     only(:fullpath).where(:fullpath => fullpath).first
   end
 
+  def self.load_file(path, parent_dir = nil)
+    return nil unless path =~ MOVIE_REGEXP
+    return nil if PasokaraFile.saved_file?(path)
+
+    puts "#{path}を読み込み開始" unless Rails.env == "test"
+    md5_hash = File.open(path, "rb:ASCII-8BIT") {|f| Digest::MD5.hexdigest(f.read(300 * 1024))}
+    pasokara = PasokaraFile.find_or_initialize_by(:md5_hash => md5_hash)
+    pasokara.attributes = {:name => File.basename(path), :fullpath => path, :md5_hash => md5_hash}
+    pasokara.parse_info_file
+    pasokara.update_thumbnail
+    pasokara.directory = parent_dir
+    if pasokara.new_record?
+      pasokara.save ? pasokara.id : nil
+    else
+      pasokara.save if pasokara.changed?
+    end
+    pasokara
+  end
+
   def self.load_dir(path)
     file_queue = Queue.new
     dir_queue = Queue.new
@@ -87,22 +106,7 @@ class PasokaraFile
         loop do
           filepath, parent_dir = file_queue.deq
 
-          if filepath =~ MOVIE_REGEXP
-            unless PasokaraFile.saved_file?(filepath)
-              puts "#{filepath}を読み込み開始" unless Rails.env == "test"
-              md5_hash = File.open(filepath, "rb:ASCII-8BIT") {|f| Digest::MD5.hexdigest(f.read(300 * 1024))}
-              pasokara = PasokaraFile.find_or_initialize_by(:md5_hash => md5_hash)
-              pasokara.attributes = {:name => File.basename(filepath), :fullpath => filepath, :md5_hash => md5_hash}
-              pasokara.parse_info_file
-              pasokara.update_thumbnail
-              pasokara.directory = parent_dir
-              if pasokara.new_record?
-                pasokara.save ? pasokara.id : nil
-              else
-                pasokara.save if pasokara.changed?
-              end
-            end
-          end
+          self.load_file(filepath, parent_dir)
         end
       end
     end
@@ -111,11 +115,8 @@ class PasokaraFile
       dir_workers << Thread.new do
         loop do
           dirpath, parent_dir = dir_queue.deq
-          puts "#{dirpath}を読み込み開始" unless Rails.env == "test"
-          directory = Directory.find_or_initialize_by(:name => File.basename(dirpath))
-          directory.directory = parent_dir
-          directory.save if directory.new_record? || directory.changed?
 
+          directory = Directory.load_dir(dirpath, parent_dir)
           Dir.open(dirpath).entries.select {|e| e[0] != "."}.each do |filename|
             next_path = File.join(dirpath, filename)
             if File.directory?(next_path)
@@ -131,7 +132,7 @@ class PasokaraFile
     loop do
       if file_queue.empty? && dir_queue.empty? && dir_queue.num_waiting == 2
         sleep 1
-        if file_queue.empty? && dir_queue.empty? && dir_queue.num_waiting == 2
+        if file_queue.empty? && dir_queue.empty?
           Sunspot.commit
           return
         end

@@ -72,6 +72,13 @@ describe PasokaraFile do
     end
   end
 
+  describe "ファイルから読み込む" do
+    before { @pasokara = PasokaraFile.load_file(File.join(File.dirname(__FILE__), "..", "datas", "testdir1", "test002.mp4")) }
+    subject { @pasokara }
+
+    its(:nico_name) { should == "sm99999999" }
+  end
+
   describe "ディレクトリからファイルを読み込む" do
     subject { PasokaraFile }
 
