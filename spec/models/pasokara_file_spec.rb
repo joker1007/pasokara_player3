@@ -356,6 +356,16 @@ describe PasokaraFile do
     end
   end
 
+  describe "サムネイルを作成する" do
+    subject {create(:pasokara_file)}
+
+    it "fullpathとdurationをベースにライブラリ関数が呼ばれること" do
+      FFmpegInfo.should_receive(:getinfo).with(subject.fullpath).and_return({:duration => subject.duration})
+      FFmpegThumbnailer.should_receive(:create).with(subject.fullpath, 25)
+      subject.create_thumbnail
+    end
+  end
+
   describe "サムネイルを更新する" do
     context "サムネイルが存在する時" do
       subject {create(:pasokara_file)}
