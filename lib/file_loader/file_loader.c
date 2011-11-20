@@ -43,10 +43,10 @@ int main (int argc, char* argv[]) {
 void getdir(const char *path, VALUE parent_dir) {
   DIR *dir;
   struct dirent *dp;
-  char filepath[512];
+  char filepath[1024];
   char buf[300*1024];
   char cDigest[32];
-  char evalBuf[512];
+  char evalBuf[2048];
 
   regex_t preg;
   size_t nmatch = 2;
