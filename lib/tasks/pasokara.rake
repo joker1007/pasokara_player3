@@ -1,13 +1,13 @@
 # _*_ coding: utf-8 _*_
 require File.dirname(__FILE__) + '/../../config/environment'
 
-namespace :nicokara do
-  desc 'download nicokara'
+namespace :niconico do
+  desc 'download nicokara movie'
   task :download do
     downloader = Util::NicoDownloader.new
-    setting = YAML.load_file(File.dirname(__FILE__) + '/../../config/nico_downloader.yml')
+    setting = YAML.load_file(File.dirname(__FILE__) + '/../../config/pasokara_player.yml')
     setting["url_list"].each do |url|
-      downloader.rss_download(url, setting["dir"])
+      downloader.rss_download(url, setting["download_dir"])
       sleep 15
     end
     Sunspot.commit
@@ -23,6 +23,12 @@ namespace :pasokara do
         puts "#{d.id} is deleted"
       end
     end
+  end
+
+  desc 'load data from root_dir'
+  task :load do
+    setting = YAML.load_file(File.dirname(__FILE__) + '/../../config/pasokara_player.yml')
+    PasokaraPlayer.load_dir(setting["root_dir"])
   end
 end
 
