@@ -11,7 +11,6 @@ namespace :nicokara do
       sleep 15
     end
     Sunspot.commit
-    Util::VideoLinker.create_links
   end
 end
 
