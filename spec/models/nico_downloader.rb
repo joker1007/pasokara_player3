@@ -9,13 +9,13 @@ describe Util::NicoDownloader do
     @nico_name1 = "sm5860640"
   end
 
-  it "#loginでニコニコ動画にログイン出来ること" do
+  it "#loginでニコニコ動画にログイン出来ること", :slow => true do
     @nico_downloader.login?.should be_false
     @nico_downloader.login
     @nico_downloader.login?.should be_true
   end
 
-  it "#get_rssで引数で与えたリストのrssを取得し、パース出来ること" do
+  it "#get_rssで引数で与えたリストのrssを取得し、パース出来ること", :slow => true do
     @nico_downloader.login
     @nico_downloader.login?.should be_true
     rss = @nico_downloader.get_rss @rss_url
@@ -23,7 +23,7 @@ describe Util::NicoDownloader do
     rss.items.empty?.should be_false
   end
 
-  it "#get_flv_urlで引数で与えたIDの動画のファイル本体のURLを取得する" do
+  it "#get_flv_urlで引数で与えたIDの動画のファイル本体のURLを取得する", :slow => true do
     @nico_downloader.login
     @nico_downloader.login?.should be_true
     url = @nico_downloader.get_flv_url(@nico_name1)
@@ -35,8 +35,10 @@ describe Util::NicoDownloader do
     @nico_downloader.login?.should be_true
     @nico_downloader.download(@nico_name1, "/tmp/nicomovie")
     File.exist?("/tmp/nicomovie/#{@nico_name1}/#{@nico_name1}.mp4").should be_true
+    File.exist?("/tmp/nicomovie/#{@nico_name1}/#{@nico_name1}.jpg").should be_true
     File.exist?("/tmp/nicomovie/#{@nico_name1}/#{@nico_name1}_info.xml").should be_true
     File.unlink("/tmp/nicomovie/#{@nico_name1}/#{@nico_name1}.mp4")
+    File.unlink("/tmp/nicomovie/#{@nico_name1}/#{@nico_name1}.jpg")
     File.unlink("/tmp/nicomovie/#{@nico_name1}/#{@nico_name1}_info.xml")
   end
 end

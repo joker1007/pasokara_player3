@@ -1,6 +1,8 @@
 # _*_ coding: utf-8 _*_
 
 require "rss"
+require "ffmpeg_info"
+require "ffmpeg_thumbnailer"
 
 module Util
   class NicoDownloader
@@ -100,12 +102,14 @@ module Util
       path = File.join(movie_dir, "#{nico_name}.#{video_type}")
       begin
         @logger.info "[INFO] download start: #{nico_name}"
-        File.open(path, "w") do  |file|
+        File.open(path, "wb:ASCII-8BIT") do  |file|
           file.write @agent.get_file(url)
         end
+        create_thumbnail(path)
         @logger.info "[INFO] download completed: #{nico_name}"
       rescue Exception
         @logger.fatal "[FATAL] download failed: #{nico_name} #{$!}"
+        @logger.fatal "[FATAL] #{$@}"
         @error_count += 1
         raise "download failed"
       end
@@ -114,12 +118,25 @@ module Util
 
       info_path = File.join(movie_dir, "#{nico_name}_info.xml")
       info = get_info(nico_name)
-      File.open(info_path, "w") do  |file|
+      File.open(info_path, "wb:ASCII-8BIT") do  |file|
         file.write info
       end
 
       @logger.info "[INFO] download sequence completed: #{nico_name}"
       @error_count = 0
+    end
+
+    def exist_thumbnail?(path)
+      File.exist?(path.gsub(/#{Regexp.escape(File.extname(path))}$/, ".jpg"))
+    end
+
+    def create_thumbnail(path)
+      unless exist_thumbnail?(path)
+        info = FFmpegInfo.getinfo(path)
+        duration = info[:duration] ? info[:duration] : 0
+        ss = (info[:duration] / 10.0).round
+        FFmpegThumbnailer.create(path, ss)
+      end
     end
 
     def rss_download(rss_url, dir = "/tmp/nicomovie")
@@ -144,7 +161,7 @@ module Util
           begin
             download(nico_name, dir)
             puts "Load directory #{File.join(dir, nico_name)}"
-            Util::DbStructer.new.crowl_dir(File.join(dir, nico_name))
+            PasokaraFile.load_dir(File.join(dir, nico_name))
           rescue
             if @error_count > 0 and @error_count <= 3
               puts "Sleep 10 seconds"

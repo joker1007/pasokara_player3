@@ -89,12 +89,13 @@ class PasokaraFile
     file_queue = Queue.new
     dir_queue = Queue.new
 
+    root_directory = Directory.where(:name => File.basename(path)).first
     Dir.open(path).entries.select {|e| e[0] != "."}.each do |filename|
       next_path = File.join(path, filename)
       if File.directory?(next_path)
-        dir_queue.enq([next_path, nil])
+        dir_queue.enq([next_path, root_directory])
       else
-        file_queue.enq([next_path, nil])
+        file_queue.enq([next_path, root_directory])
       end
     end
 
@@ -222,10 +223,12 @@ class PasokaraFile
   end
 
   def create_thumbnail
-    info = FFmpegInfo.getinfo(fullpath)
-    duration = info[:duration] ? info[:duration] : 0
-    ss = (info[:duration] / 10.0).round
-    FFmpegThumbnailer.create(fullpath, ss)
+    unless exist_thumbnail?
+      info = FFmpegInfo.getinfo(fullpath)
+      duration = info[:duration] ? info[:duration] : 0
+      ss = (info[:duration] / 10.0).round
+      FFmpegThumbnailer.create(fullpath, ss)
+    end
   end
 
   def update_thumbnail(force = false)

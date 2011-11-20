@@ -72,40 +72,52 @@ describe PasokaraFile do
     end
   end
 
-  describe "ファイルから読み込む" do
+  describe "ファイルから読み込む", :file_load => true do
     before { @pasokara = PasokaraFile.load_file(File.join(File.dirname(__FILE__), "..", "datas", "testdir1", "test002.mp4")) }
     subject { @pasokara }
 
     its(:nico_name) { should == "sm99999999" }
   end
 
-  describe "ディレクトリからファイルを読み込む" do
-    subject { PasokaraFile }
-
+  describe "ディレクトリからファイルを読み込む", :file_load => true do
     it {
       expect {
-        subject.load_dir(File.join(File.dirname(__FILE__), "..", "datas"))
+        PasokaraFile.load_dir(File.join(File.dirname(__FILE__), "..", "datas"))
       }.to change {PasokaraFile.count}.from(0).to(3)
     }
 
     it {
-      subject.load_dir(File.join(File.dirname(__FILE__), "..", "datas"))
-      PasokaraFile.where(:nico_name => "sm99999999").count.should == 1
+      PasokaraFile.load_dir(File.join(File.dirname(__FILE__), "..", "datas"))
+      pasokara = PasokaraFile.where(:nico_name => "sm99999999").first
+      pasokara.should_not be_nil
+      pasokara.directory.should_not be_nil
     }
 
     it {
-      subject.load_dir(File.join(File.dirname(__FILE__), "..", "datas"))
+      PasokaraFile.load_dir(File.join(File.dirname(__FILE__), "..", "datas"))
       pasokara = PasokaraFile.where(:name => "test001.mp4")[0]
       pasokara.thumbnail.size.should == 5872
+      pasokara.directory.should be_nil
     }
 
     context "既にファイルが登録されている時" do
       before do
-        subject.load_dir(File.join(File.dirname(__FILE__), "..", "datas"))
+        PasokaraFile.load_dir(File.join(File.dirname(__FILE__), "..", "datas"))
       end
 
       it {
         PasokaraFile.where(:nico_name => "sm99999999").count.should == 1
+      }
+    end
+
+    context "既にディレクトリが登録されている時" do
+      before { create(:directory, :name => "testdir1") }
+
+      it {
+        PasokaraFile.load_dir(File.join(File.dirname(__FILE__), "..", "datas", "testdir1"))
+        pasokara = PasokaraFile.where(:nico_name => "sm99999999").first
+        pasokara.should_not be_nil
+        pasokara.directory.should_not be_nil
       }
     end
   end
@@ -364,12 +376,22 @@ describe PasokaraFile do
   end
 
   describe "サムネイルを作成する" do
-    subject {create(:pasokara_file)}
+    context "サムネイルが存在する時" do
+      subject {create(:pasokara_file)}
+      it "サムネイル作成が行われないこと" do
+        FFmpegInfo.should_not_receive(:getinfo)
+        FFmpegThumbnailer.should_not_receive(:create)
+        subject.create_thumbnail
+      end
+    end
 
-    it "fullpathとdurationをベースにライブラリ関数が呼ばれること" do
-      FFmpegInfo.should_receive(:getinfo).with(subject.fullpath).and_return({:duration => subject.duration})
-      FFmpegThumbnailer.should_receive(:create).with(subject.fullpath, 25)
-      subject.create_thumbnail
+    context "サムネイルが存在しない時" do
+      subject {create(:pasokara_file2, :duration => 245)}
+      it "fullpathとdurationをベースにライブラリ関数が呼ばれること" do
+        FFmpegInfo.should_receive(:getinfo).with(subject.fullpath).and_return({:duration => subject.duration})
+        FFmpegThumbnailer.should_receive(:create).with(subject.fullpath, 25)
+        subject.create_thumbnail
+      end
     end
   end
 
