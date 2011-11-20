@@ -28,8 +28,23 @@ namespace :pasokara do
   desc 'load data from root_dir'
   task :load do
     setting = YAML.load_file(File.dirname(__FILE__) + '/../../config/pasokara_player.yml')
-    PasokaraPlayer.load_dir(setting["root_dir"])
+    begin
+      require "file_loader/file_loader"
+      FileLoader.load_dir(setting["root_dir"])
+    rescue LoadError
+      puts "Couldn't load file_loader"
+      PasokaraPlayer.load_dir(setting["root_dir"])
+    end
   end
+
+  desc 'all data clear'
+  task :clear do
+    PasokaraFile.delete_all
+    PasokaraFile.remove_all_from_index!
+    Directory.delete_all
+    Tag.delete_all
+  end
+
 end
 
 namespace :queue do

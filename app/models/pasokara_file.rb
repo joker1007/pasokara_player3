@@ -63,7 +63,7 @@ class PasokaraFile
   paginates_per 50
 
   def self.saved_file?(fullpath)
-    only(:fullpath).where(:fullpath => fullpath).first
+    !!(only(:fullpath).where(:fullpath => fullpath).first)
   end
 
   def self.load_file(path, parent_dir = nil)
@@ -77,10 +77,8 @@ class PasokaraFile
     pasokara.parse_info_file
     pasokara.update_thumbnail
     pasokara.directory = parent_dir
-    if pasokara.new_record?
-      pasokara.save ? pasokara.id : nil
-    else
-      pasokara.save if pasokara.changed?
+    if pasokara.new_record? or pasokara.changed?
+      pasokara.save
     end
     pasokara
   end
