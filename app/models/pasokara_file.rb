@@ -219,7 +219,7 @@ class PasokaraFile
   end
 
   def exist_thumbnail?
-    File.exist?(fullpath.gsub(/#{Regexp.escape(File.extname(fullpath))}$/, ".jpg"))
+    File.exist?(thumbnail_path)
   end
 
   def create_thumbnail

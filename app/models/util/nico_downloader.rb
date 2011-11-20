@@ -157,7 +157,7 @@ module Util
       rss.items.each do |item|
         item.link =~ /^http.*\/watch\/(.*)/
         nico_name = $1
-        unless PasokaraFile.find_by_nico_name(nico_name)
+        unless PasokaraFile.where(:nico_name => nico_name).first
           begin
             download(nico_name, dir)
             puts "Load directory #{File.join(dir, nico_name)}"
