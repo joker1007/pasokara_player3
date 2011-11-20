@@ -1,3 +1,4 @@
+# coding: utf-8
 class Directory
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -12,5 +13,13 @@ class Directory
 
   def entities
     (directories + pasokara_files)
+  end
+
+  def self.load_dir(path, parent_dir = nil)
+    puts "#{path}を読み込み開始" unless Rails.env == "test"
+    directory = Directory.find_or_initialize_by(:name => File.basename(path))
+    directory.directory = parent_dir
+    directory.save if directory.new_record? || directory.changed?
+    directory
   end
 end
