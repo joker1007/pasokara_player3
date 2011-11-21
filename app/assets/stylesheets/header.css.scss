@@ -25,6 +25,16 @@ div#user_info {
   }
 }
 
+div#launch_player {
+  margin-left: 10px;
+  margin-bottom: 10px;
+
+  a.player {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+}
+
 span.login_user {
   margin-right: 10px;
   color: #00ff66;

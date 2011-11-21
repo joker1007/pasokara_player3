@@ -47,6 +47,7 @@
   )
   video.addClass("fullscreen")
   video.bind("ended", ->
+    check_queue_status()
     $(this).remove()
     window.canvas_indicator.reshow() if window.canvas_indicator?
     setTimeout(->
@@ -61,6 +62,19 @@
   $("#video").html(
     $("#videoTemplate").render(pasokara)
   )
+
+@check_queue_status = () ->
+  $.ajax {
+    type: "GET"
+    dataType: "json"
+    url: "/queues"
+    success: (queues) ->
+      if queues.length > 0
+        queues.shift()
+      $("#queue_table ol").html(
+        $("#queueListTemplate").render(queues)
+      )
+  }
 
 @indicator_init = (position) ->
   console.log position
