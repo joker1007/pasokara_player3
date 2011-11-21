@@ -38,6 +38,14 @@ namespace :pasokara do
     end
   end
 
+  desc 'encoding status clear'
+  task :encoding_clear do
+    PasokaraFile.where(:encoding => true).each do |pasokara|
+      pasokara.encoding = false
+      pasokara.save
+    end
+  end
+
   desc 'all data clear'
   task :clear do
     PasokaraFile.delete_all
