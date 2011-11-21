@@ -31,6 +31,7 @@ namespace :pasokara do
     begin
       require "file_loader/file_loader"
       FileLoader.load_dir(setting["root_dir"])
+      Sunspot.commit
     rescue LoadError
       puts "Couldn't load file_loader"
       PasokaraPlayer.load_dir(setting["root_dir"])
