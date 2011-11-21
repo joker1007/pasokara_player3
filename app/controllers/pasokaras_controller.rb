@@ -100,6 +100,7 @@ class PasokarasController < ApplicationController
       QueuedFile.first.destroy
     end
     @queue = QueuedFile.deq
+    @queue_list = QueuedFile.scoped
     if @queue
       @pasokara = @queue.pasokara_file
       @type = request.smart_phone? ? :safari : :webm

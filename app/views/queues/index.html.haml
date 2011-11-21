@@ -9,4 +9,4 @@
       %li.nothing 予約なし
     - else
       - @queue_list.each do |queue|
-        %li.queue[queue]= image_tag("icon/music_48x48.png", :size => "36x36", :class=> "icon") + queue.pasokara_file.name + link_to("取消", queue_path(queue), :remote => true, :confirm => "本当に予約から削除しますか？", :method => :delete, :class => "queue_remove clearfix")
+        %li.queue[queue]= image_tag("icon/music_48x48.png", :size => "36x36", :class=> "icon") + queue.name + link_to("取消", queue_path(queue), :remote => true, :confirm => "本当に予約から削除しますか？", :method => :delete, :class => "queue_remove clearfix")
