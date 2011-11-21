@@ -24,7 +24,7 @@ module NicoParser
       end
 
       def text(text)
-        if @current_tag =~ /(video_id|title|first_retrieve|view_counter|mylist_counter|comment_num|description)/
+        if @current_tag =~ /(video_id|title|first_retrieve|view_counter|mylist_counter|comment_num|description|length)/
           if $1 == "video_id"
             key = "nico_name"
             val = text
@@ -37,6 +37,10 @@ module NicoParser
           elsif $1 == "description"
             key = "nico_description"
             val = text
+          elsif $1 == "length"
+            key = "duration"
+            text =~ /(\d+):(\d+)$/
+            val = $1.to_i * 60 + $2.to_i
           else 
             key = "nico_" + $1
             val = text.to_i
