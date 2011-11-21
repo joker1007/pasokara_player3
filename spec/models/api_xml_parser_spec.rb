@@ -16,6 +16,7 @@ describe NicoParser::ApiXmlParser do
     infos.should == {
       :nico_name => "sm9093985",
       :nico_post => "2009-12-14T21:29:11+09:00",
+      :duration => 259,
       :nico_view_counter => 318,
       :nico_comment_num => 6,
       :nico_mylist_counter => 10,
