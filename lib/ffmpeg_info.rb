@@ -31,6 +31,8 @@ module FFmpegInfo
       video[:height] = $2.to_i
       video[:aspect] = sprintf("%1.4f", $1.to_f / $2.to_f)
     end
+    stdin.close
+    stdout_and_stderr.close
 
     {:video => video, :audio => audio, :duration => duration}
   end

@@ -1,14 +1,14 @@
 .user_form_box
   %h2
-    Edit #{resource_name.to_s.humanize}
+    ユーザー情報の変更
   = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f|
     = devise_error_messages!
     %p
-      = f.label :name
+      = f.label :name, "ユーザーID"
       %br/
       = f.text_field :name
     %p
-      = f.label :nickname
+      = f.label :nickname, "表示名"
       %br/
       = f.text_field :nickname
     %p
@@ -16,21 +16,21 @@
       %br/
       = f.email_field :email
     %p
-      = f.label :password
-      %i (leave blank if you don't want to change it)
+      = f.label :password, "新しいパスワード"
+      %i (変更したくない場合は空欄に)
       %br/
       = f.password_field :password
     %p
-      = f.label :password_confirmation
+      = f.label :password_confirmation, "パスワード確認"
       %br/
       = f.password_field :password_confirmation
     %p
-      = f.label :current_password
-      %i (we need your current password to confirm your changes)
+      = f.label :current_password, "現在のパスワード"
+      %i (パスワードを変更する場合は、現在のパスワードを入力してください)
       %br/
       = f.password_field :current_password
-    %p= f.submit "Update"
-  %h3 Cancel my account
+    %p= f.submit "更新"
+  %h3 アカウントの削除
   %p
-    Unhappy? #{link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete}.
+    #{link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete}.
   = link_to "Back", :back

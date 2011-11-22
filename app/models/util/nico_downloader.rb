@@ -6,12 +6,16 @@ require "ffmpeg_thumbnailer"
 
 module Util
   class NicoDownloader
-    def initialize
+    def agent_init
       @agent = Mechanize.new
       @agent.read_timeout = 30
       @agent.open_timeout = 30
-      @agent.max_history = 1
+      @agent.max_history = 0
       @agent.user_agent_alias = 'Windows Mozilla'
+    end
+
+    def initialize
+      agent_init
       @logger = Logger.new(File.join(Rails.root.to_s, "log", "nico_downloader.log"))
       account = Pit.get("niconico", :require => {
         "mail" => "you email in niconico",
@@ -87,6 +91,11 @@ module Util
       url =~ /^http.*(?:nicovideo|smilevideo)\.jp\/smile\?(\w)=.*/
       video_type = video_type_table[$1] ? video_type_table[$1] : "flv"
       @logger.info "[INFO] download file type => #{video_type}"
+      if video_type == "swf"
+        @logger.info "[INFO] Not download swf file"
+        return
+      end
+
 
       begin
         @agent.get("http://www.nicovideo.jp/watch/#{nico_name}")
@@ -117,9 +126,16 @@ module Util
       sleep 5
 
       info_path = File.join(movie_dir, "#{nico_name}_info.xml")
-      info = get_info(nico_name)
-      File.open(info_path, "wb:ASCII-8BIT") do  |file|
-        file.write info
+      begin
+        info = get_info(nico_name)
+        File.open(info_path, "wb:ASCII-8BIT") do  |file|
+          file.write info
+        end
+      rescue Exception
+        @logger.fatal "[FATAL] info download failed: #{nico_name} #{$!}"
+        @logger.fatal "[FATAL] #{$@}"
+        @error_count += 1
+        raise "download failed"
       end
 
       @logger.info "[INFO] download sequence completed: #{nico_name}"
@@ -159,6 +175,8 @@ module Util
         nico_name = $1
         unless PasokaraFile.where(:nico_name => nico_name).first
           begin
+            next if nico_name[0, 2] == "nm"
+            @agent.history.clear
             download(nico_name, dir)
             puts "Load directory #{File.join(dir, nico_name)}"
             PasokaraFile.load_dir(File.join(dir, nico_name))

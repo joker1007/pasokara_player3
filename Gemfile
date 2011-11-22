@@ -57,7 +57,7 @@ group :test do
   gem 'turn', :require => false
 end
 
-gem "mechanize"
+gem "mechanize", "< 2.0.0"
 gem "pit"
 
 gem "open4"

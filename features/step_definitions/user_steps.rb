@@ -11,9 +11,9 @@ end
 
 前提 /^ユーザーID:"([^"]*)"、パスワード:"([^"]*)"でログインしている$/ do |login, password|
   visit new_user_session_path
-  fill_in("Name", :with => login)
-  fill_in("Password", :with => password)
-  click_button("Sign in")
+  fill_in("ユーザーID", :with => login)
+  fill_in("パスワード", :with => password)
+  click_button("ログイン")
 end
 
 Given /^the following users:$/ do |users|
