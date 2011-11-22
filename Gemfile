@@ -27,9 +27,6 @@ gem "factory_girl_rails", ">= 1.0.1", :group => :test
 gem "rspec", ">= 2.5.0", :group => [:test, :development]
 gem "rspec-rails", ">= 2.5.0", :group => [:test, :development]
 gem "spork", "~> 0.9.0rc", :group => [:test, :development]
-gem "ZenTest", :group => :test
-gem "autotest", :group => :test
-gem "autotest-rails", :group => :test
 gem "webrat", :group => [:test, :development]
 gem "capybara", '~> 1.0.0', :group => [:test, :development]
 gem "capybara-webkit", :git => 'git://github.com/thoughtbot/capybara-webkit.git', :group => [:test, :development]
@@ -60,9 +57,6 @@ end
 gem "mechanize", "< 2.0.0"
 gem "pit"
 
-gem "open4"
-gem "newbamboo-rvideo", "~> 0.9.6", :require => "rvideo"
-
 gem "sunspot_mongoid"
 gem "sunspot_rails"
 gem "sunspot_with_kaminari", '~> 0.1'
@@ -74,5 +68,3 @@ gem "devise"
 gem "resque", :require => "resque/server"
 
 gem "carrierwave", '= 0.5.4'
-
-gem "eventmachine"
