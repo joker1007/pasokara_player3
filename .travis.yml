@@ -1,6 +1,7 @@
 bundler_args: "--without development"
-script: "bundle exec rspec spec; bundle exec cucumber features -t \"~@selenium\""
+script: "bundle exec rspec spec; export DISPLAY=:99.0 && bundle exec cucumber features"
 before_script:
+  - "sh -e /etc/init.d/xvfb start"
   - "cp .rspec.example .rspec"
   - "cp config/mongoid.yml.example config/mongoid.yml"
   - "cp config/resque.yml.example config/resque.yml"
