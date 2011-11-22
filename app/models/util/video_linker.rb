@@ -9,10 +9,10 @@ module Util
 
       pasokaras.each do |pasokara|
         if pasokara.flv? || pasokara.mp4?
-          #subdir = File.join(video_dir, ((pasokara.id / 1000) * 1000).to_s)
-          #Dir.mkdir(subdir) unless File.exist?(subdir)
-          puts "#{pasokara.fullpath} => #{File.join(Rails.root, "public", pasokara.movie_path)}"
-          system("ln -s \"#{pasokara.fullpath}\" #{File.join(Rails.root, "public", pasokara.movie_path)}")
+          subdir = pasokara.id.to_s[0, 3]
+          Dir.mkdir(subdir) unless File.exist?(subdir)
+          puts "#{pasokara.fullpath} => #{File.join(Rails.root, "public", subdir, pasokara.movie_path)}"
+          system("ln -s \"#{pasokara.fullpath}\" #{File.join(Rails.root, "public", subdir, pasokara.movie_path)}")
         end
       end
     end
