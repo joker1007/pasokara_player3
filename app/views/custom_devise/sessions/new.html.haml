@@ -1,19 +1,15 @@
 .user_form_box
-  %h2 Sign in
+  %h2 ログイン
   = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
     %p
-      = f.label :name
+      = f.label :name, "ユーザーID"
       %br/
       = f.text_field :name
     %p
-      = f.label :password
+      = f.label :password, "パスワード"
       %br/
       = f.password_field :password
-    - if devise_mapping.rememberable?
-      %p
-        = f.check_box :remember_me
-        = f.label :remember_me
-    %p= f.submit "Sign in"
+    %p= f.submit "ログイン"
   = render :partial => "devise/shared/links"
 
 %hr
@@ -22,6 +18,8 @@
   - if @logined_users
     - @logined_users.each do |user|
       %li.user_list= link_to(user.nickname, switch_user_session_path(:id => user))
+  - else
+    %li.user_list なし
 
 %br
 = link_to("全員ログアウト", destroy_user_session_path, :confirm => "全員をログアウトしてもよろしいですか？")
