@@ -126,6 +126,10 @@ bundle exec rake pasokara:encoding_clear
 ```
 
 
+カラオケ機との接続方法
+--------------------------
+TODO: DAMとJOYについて書く
+
 ライセンス
 -------------------
 
