@@ -15,7 +15,7 @@ class ServeGridfsImage
   def process_request(env, key)
     begin
       Mongo::GridFileSystem.new(Mongoid.database).open(key, 'r') do |file|
-        [200, { 'Content-Type' => file.content_type }, [file.read]]
+        [200, { 'Content-Type' => file.content_type, 'Cache-control' => "max-age=#{3600*12}" }, [file.read]]
       end
     rescue
       [404, { 'Content-Type' => 'text/plain' }, ['File not found.']]
