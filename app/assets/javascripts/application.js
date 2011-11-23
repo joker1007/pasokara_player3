@@ -8,6 +8,6 @@
 //= require jquery_ujs
 //= require jsrender
 //= require jquery-fonteffect-1.0.0.min
-//= require jquery.lazyload.mini
+//= require jquery.lazyload
 //= require jquery.linkwrapper-1.0.3
 //= require_tree .
