@@ -1,11 +1,11 @@
 # _*_ coding: utf-8 _*_
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe NicoParser::NicoPlayerParser do
 
   before do
-    @tags = NicoParser::NicoPlayerParser.new.parse_tag File.expand_path(File.dirname(__FILE__) + '/../romio_nico_player_info.txt')
-    @infos = NicoParser::NicoPlayerParser.new.parse_info File.expand_path(File.dirname(__FILE__) + '/../romio_nico_player_info.txt')
+    @tags = NicoParser::NicoPlayerParser.new.parse_tag File.expand_path(File.dirname(__FILE__) + '/../../romio_nico_player_info.txt')
+    @infos = NicoParser::NicoPlayerParser.new.parse_info File.expand_path(File.dirname(__FILE__) + '/../../romio_nico_player_info.txt')
   end
 
   describe "タグのパース" do
