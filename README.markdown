@@ -65,6 +65,7 @@ cp config/resque.yml.example config/resque.yml
 cp config/sunspot.yml.example config/sunspot.yml
 cp config/unicorn.rb.example config/unicorn.rb
 cp config/cucumber.yml.example config/cucumber.yml.example
+bundle exec rake db:seed   # 初期ユーザーの作成
 ```
 
 pasokara_player.ymlには以下の内容を設定する必要があります。
