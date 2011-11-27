@@ -59,6 +59,7 @@ gem "pit"
 
 gem "sunspot_mongoid"
 gem "sunspot_rails"
+gem "sunspot_solr"
 gem "sunspot_with_kaminari", '~> 0.1'
 
 gem "kaminari"
