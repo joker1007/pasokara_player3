@@ -21,8 +21,11 @@ class PasokarasController < ApplicationController
       render :text => "パラメーターが不正です。", :status => 404 and return
     end
     QueuedFile.enq @pasokara, current_user
-    unless @pasokara.encoded?(:webm)
-      @pasokara.do_encode(request.raw_host_with_port, :webm) if Rails.env != "test"
+
+    if request.all_safari? && !@pasokara.encoded?(:safari)
+      @pasokara.do_encode(nil, :safari) if Rails.env != "test"
+    elsif !@pasokara.encoded?(:webm)
+      @pasokara.do_encode(nil, :webm) if Rails.env != "test"
     end
 
     @message = "#{@pasokara.name} の予約が完了しました"
@@ -78,7 +81,7 @@ class PasokarasController < ApplicationController
 
   def preview
     @pasokara = PasokaraFile.find(params[:id])
-    if request.smart_phone?
+    if request.all_safari?
       unless @pasokara.encoded?(:safari)
         @pasokara.do_encode(nil, :safari)
       end
@@ -103,7 +106,7 @@ class PasokarasController < ApplicationController
     @queue_list = QueuedFile.scoped
     if @queue
       @pasokara = @queue.pasokara_file
-      @type = request.smart_phone? ? :safari : :webm
+      @type = request.all_safari? ? :safari : :webm
       unless @pasokara.encoded?(@type)
         @pasokara.do_encode(nil, @type)
       end

@@ -8,7 +8,6 @@ require "active_resource/railtie"
 require "rails/test_unit/railtie"
 require "sprockets/railtie"
 require File.expand_path('../../lib/serve_gridfs_image', __FILE__)
-require File.expand_path('../../lib/mobile_check', __FILE__)
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
