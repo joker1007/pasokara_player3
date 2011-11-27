@@ -42,11 +42,10 @@
   }
 
 @add_play_video_tag = (pasokara) ->
-  video = $(
+  $("#video").append(
     $("#videoTemplate").render(pasokara)
   )
-  video.addClass("fullscreen")
-  video.bind("ended", ->
+  $("#videoPlayer").bind("ended", ->
     check_queue_status()
     $(this).remove()
     window.canvas_indicator.reshow() if window.canvas_indicator?
@@ -54,7 +53,6 @@
       check_next(true)
     , 5000)
   )
-  $("#video").append(video)
 
 @add_preview_video_tag = (pasokara) ->
   width = 640
