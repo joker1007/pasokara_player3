@@ -1,8 +1,6 @@
 %nav
   = render :partial => "layouts/navi_bar"
 %br
-#launch_player
-  = link_to "プレーヤー起動", play_pasokaras_path, :class => "player"
 = render :partial => "layouts/solr_search_form"
 - unless @no_tag_load || @header_tags.nil?
   = render :partial => "layouts/header_tag_list", :locals => {:tags => @header_tags}

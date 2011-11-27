@@ -6,3 +6,5 @@
     %li= link_to("お気に入り", favorite_pasokaras_path, :id => "favorite")
     %li= link_to("設定変更", edit_user_registration_path, :id => "user_edit")
   %li= link_to("使い方", help_usage_path, :id => "usage")
+  - if user_signed_in?
+    %li= link_to("再生開始", play_pasokaras_path, :id => "launch")
