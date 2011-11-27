@@ -23,4 +23,5 @@ spec/tmp/*
 **.orig
 rerun.txt
 solr/data
+solr/pids
 pasokara_player_setting.txt
