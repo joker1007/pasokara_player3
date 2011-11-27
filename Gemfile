@@ -68,3 +68,5 @@ gem "devise"
 gem "resque", :require => "resque/server"
 
 gem "carrierwave", '= 0.5.4'
+
+gem "which_browser", :git => 'git://github.com/joker1007/which_browser.git'

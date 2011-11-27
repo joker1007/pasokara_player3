@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/joker1007/which_browser.git
+  revision: 27f67a8882dd1ceb82f2151d8431f7199a316021
+  specs:
+    which_browser (0.1.2)
+      rack (>= 1.0.1)
+
+GIT
   remote: git://github.com/thoughtbot/capybara-webkit.git
   revision: 6ba9dcbf2b0bcab48cd971ec4fc8fe981625bf38
   specs:
@@ -335,3 +342,4 @@ DEPENDENCIES
   uglifier
   unicorn
   webrat
+  which_browser!
