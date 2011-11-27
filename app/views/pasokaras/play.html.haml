@@ -13,22 +13,26 @@
     %title PasokaraPlayer - Play
 
     %script{:id => "videoTemplate", :type => "text/x-jquery-tmpl"}
-      %video{:id => "videoPlayer", :width => "640", :height => "480", :controls => "controls", :autoplay => "autoplay", :src => "{{=path}}"}
+      %video{:id => "videoPlayer", :class => "fullscreen", :width => "640", :height => "480", :controls => "controls", :autoplay => "autoplay", :src => "{{=path}}"}
     %script{:id => "queueListTemplate", :type => "text/x-jquery-tmpl"}
       %li.queue= image_tag("icon/music_48x48.png", :size => "36x36", :class=> "icon") + "{{=name}}"
     - if @pasokara
       :javascript
         $(document).ready(function() {
           indicator_init(true);
-          check_queue_status();
-          check_encode_status({id: "#{@pasokara.id}", path: "#{@movie_path}", type: "#{@type}"}, 0, add_play_video_tag);
+          setTimeout(function() {
+            check_queue_status();
+            check_encode_status({id: "#{@pasokara.id}", path: "#{@movie_path}", type: "#{@type}"}, 0, add_play_video_tag);
+          }, 1000);
         });
     - else
       :javascript
         $(document).ready(function() {
           indicator_init(true);
-          check_queue_status();
-          check_next(false);
+          setTimeout(function() {
+            check_queue_status();
+            check_next(false);
+          }, 1000);
         });
     %body
       %div#indicator{:style => "padding-left: 220px;"}
