@@ -6,6 +6,8 @@ require "ffmpeg_thumbnailer"
 
 module Util
   class NicoDownloader
+    attr_accessor :agent
+
     def agent_init
       @agent = Mechanize.new
       @agent.read_timeout = 30

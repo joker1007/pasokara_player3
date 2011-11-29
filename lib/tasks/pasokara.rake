@@ -4,10 +4,11 @@ require File.dirname(__FILE__) + '/../../config/environment'
 namespace :niconico do
   desc 'download nicokara movie'
   task :download do
-    downloader = Util::NicoDownloader.new
     setting = YAML.load_file(File.dirname(__FILE__) + '/../../config/pasokara_player.yml')
     setting["url_list"].each do |url|
+      downloader = Util::NicoDownloader.new
       downloader.rss_download(url, setting["download_dir"])
+      downloader.agent = nil
       sleep 15
     end
     Sunspot.commit
