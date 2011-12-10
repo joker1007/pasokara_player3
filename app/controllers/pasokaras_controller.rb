@@ -22,9 +22,7 @@ class PasokarasController < ApplicationController
     end
     QueuedFile.enq @pasokara, current_user
 
-    if request.all_safari? && !@pasokara.encoded?(:safari)
-      @pasokara.do_encode(nil, :safari) if Rails.env != "test"
-    elsif !@pasokara.encoded?(:webm)
+    if !@pasokara.encoded?(:webm)
       @pasokara.do_encode(nil, :webm) if Rails.env != "test"
     end
 
