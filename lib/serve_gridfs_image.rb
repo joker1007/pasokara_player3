@@ -4,7 +4,7 @@ class ServeGridfsImage
   end
 
   def call(env)
-    if env["PATH_INFO"] =~ /^\/images\/(.+)$/
+    if env["PATH_INFO"] =~ /^\/gridfs\/(.+)$/
       process_request(env, $1)
     else
       @app.call(env)
