@@ -2,7 +2,7 @@
 require "job/video_encoder"
 require "ffmpeg_info"
 require "ffmpeg_thumbnailer"
-require "carrierwave/orm/mongoid"
+
 class PasokaraFile
   include Mongoid::Document
   include Mongoid::Timestamps
