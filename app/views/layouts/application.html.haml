@@ -39,9 +39,13 @@
       %span> P
       asokara Player
     #user_info
-      %span.login_user= "現在のログインユーザー: " + current_user.nickname if current_user
+      - if current_user
+        %span.login_user= "現在のログインユーザー: " + current_user.nickname
       = link_to("ユーザー切り替え", new_user_session_path, :class => "user_link") + ":"
       = link_to("ユーザー作成", new_user_registration_path, :class => "user_link") if current_user && current_user.name != "guest"
+    #encode_mode_info
+      %span.encode_mode 現在のモード: #{session[:encode_mode]}
+      = link_to "切り替え", change_encode_mode_pasokaras_path
       .clearfix
     - if flash[:notice]
       .notification= flash[:notice]

@@ -13,7 +13,7 @@ h1#site_title {
   }
 }
 
-div#user_info {
+@mixin header_info {
   font-size: 12px;
   line-height: 16px;
   margin-bottom: 20px;
@@ -23,6 +23,14 @@ div#user_info {
     color: #FFFFFF;
     text-decoration: underline;
   }
+}
+
+div#user_info {
+  @include header_info;
+}
+
+div#encode_mode_info {
+  @include header_info;
 }
 
 div#launch_player {
@@ -36,6 +44,11 @@ div#launch_player {
 }
 
 span.login_user {
+  margin-right: 10px;
+  color: #00ff66;
+}
+
+span.encode_mode {
   margin-right: 10px;
   color: #00ff66;
 }

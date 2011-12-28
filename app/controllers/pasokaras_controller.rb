@@ -22,8 +22,8 @@ class PasokarasController < ApplicationController
     end
     QueuedFile.enq @pasokara, current_user
 
-    if !@pasokara.encoded?(:webm)
-      @pasokara.do_encode(nil, :webm) if Rails.env != "test"
+    if !@pasokara.encoded?(session[:encode_mode])
+      @pasokara.do_encode(nil, session[:encode_mode]) if Rails.env != "test"
     end
 
     @message = "#{@pasokara.name} の予約が完了しました"
@@ -36,6 +36,11 @@ class PasokarasController < ApplicationController
       format.xml { render :xml => @message.to_xml }
       format.json { render :json => {:message => @message}.to_json }
     end
+  end
+
+  def change_encode_mode
+    session[:encode_mode] = session[:encode_mode] == :webm ? :safari : :webm
+    redirect_to root_url
   end
 
   def movie_path

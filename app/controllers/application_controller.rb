@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  before_filter :set_encode_mode
 
   protected
   def top_tag_load
@@ -18,5 +19,9 @@ class ApplicationController < ActionController::Base
 
   def no_tag_load
     @no_tag_load = true
+  end
+
+  def set_encode_mode
+    session[:encode_mode] ||= :webm
   end
 end

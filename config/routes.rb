@@ -53,6 +53,7 @@ PasokaraPlayerRails3::Application.routes.draw do
       get 'favorite'
       post 'favorite'
       get 'play'
+      get 'change_encode_mode'
     end
   end
 
