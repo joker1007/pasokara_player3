@@ -1,7 +1,10 @@
 
 %h1 ニコニコ動画ダウンロードリスト
 
-%table#dl_feed_table
+#new_nico_list
+  = link_to '新規リスト追加', new_nico_list_path
+
+%table#nico_list_table
   %thead
     %tr
       %th Url
@@ -19,7 +22,6 @@
 
 %br
 
-= link_to 'New Nico list', new_nico_list_path
 
 = javascript_include_tag 'jgrowl/jquery.jgrowl_compressed.js'
 = stylesheet_link_tag 'jquery.jgrowl.css'

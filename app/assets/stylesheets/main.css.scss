@@ -1,7 +1,7 @@
 /* Base Setting */
 body { 
-  background-image: url(../images/sitebg.jpg);
-  color: #333; 
+  background-image: url(sitebg.jpg);
+  color: #333;
 }
 
 body, p, ol, ul, td {
@@ -49,6 +49,11 @@ label {
   margin-left: 4px;
   margin-right: 4px;
   vertical-align: middle;
+}
+
+@mixin bold-underline {
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 
@@ -103,11 +108,17 @@ div.usage {
 div.login {
   @include padding-left-10;
 }
-div.dl_feed {
-  @include padding-left-10;
+
+#new_nico_list {
+  margin-left: 8px;
+  margin-bottom: 8px;
+
+  a {
+    @include bold-underline;
+  }
 }
 
-#dl_feed_table {
+#nico_list_table {
   margin-left: 8px;
   border: 1px solid #222222;
   border-collapse: collapse;
