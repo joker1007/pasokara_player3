@@ -107,12 +107,25 @@ div.dl_feed {
   @include padding-left-10;
 }
 
-table#dl_feed_table {
-  tr.even {
-    background-color: #BBBBEE;
-  }
+#dl_feed_table {
+  margin-left: 8px;
+  border: 1px solid #222222;
+  border-collapse: collapse;
+  box-shadow: 1px 1px 3px #000;
+
   th,td {
     padding: 8px;
+    text-align: center;
+  }
+
+  thead {
+    background-color: #888888;
+  }
+
+  tbody {
+    td {
+      border-top: 1px solid #AAAAAA;
+    }
   }
 }
 

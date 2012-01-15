@@ -1,18 +1,17 @@
 
-%h1 Listing nico_lists
+%h1 ニコニコ動画ダウンロードリスト
 
-%table
-  %tbody
+%table#dl_feed_table
+  %thead
     %tr
       %th Url
       %th Download
       %th
       %th
-      %th
-
+  %tbody
     - @nico_lists.each do |nico_list|
       = form_for nico_list, :format => :json, :remote => true do |f|
-        %tr
+        %tr{:id => "nico_list_#{nico_list.id}", :class => cycle("odd", "even")}
           %td= f.text_field :url, :class => "nico_list_url", :id => "nico_list_url_#{nico_list.id}", :size => 40
           %td= f.check_box :download, :class => "nico_list_download", :id => "nico_list_download_#{nico_list.id}"
           %td= submit_tag "Update"
@@ -32,11 +31,19 @@
     });
 
     $('form.edit_nico_list').bind('ajax:success', function(evt, data, status, xhr) {
-      $.jGrowl("更新完了<br>url: " + data.url + "<br>download: " + data.download);
+      $.gritter.add({
+        title: "更新完了",
+        text: "url: " + data.url + "<br>download: " + data.download,
+        time: 5000
+      });
     }).bind('ajax:error', function(evt, xhr, textStatus, thrown) {
       var error = $.parseJSON(xhr.responseText);
-      for (var i in  error) {
-        $.jGrowl("Errors:<br>" + i + error[i]);
+      for (var i in error) {
+        $.gritter.add({
+          title: "更新エラー",
+          text: i + error[i],
+          time: 5000
+        });
       }
     });
   });
