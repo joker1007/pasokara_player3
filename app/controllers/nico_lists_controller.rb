@@ -1,6 +1,7 @@
 # coding: utf-8
 class NicoListsController < ApplicationController
   before_filter :authenticate_user!
+  before_filter :admin_check
 
   # GET /nico_lists
   # GET /nico_lists.json
@@ -84,6 +85,14 @@ class NicoListsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(nico_lists_url) }
       format.json  { head :ok }
+    end
+  end
+
+  private
+  def admin_check
+    unless current_user.try(:admin)
+      redirect_to root_url
+      false
     end
   end
 end

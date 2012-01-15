@@ -38,15 +38,19 @@
     %h1#site_title
       %span> P
       asokara Player
+    - if current_user.try(:admin)
+      #nico_list_setting
+        = link_to("ダウンロードリスト編集", nico_lists_path)
     #user_info
       - if current_user
         %span.login_user= "現在のログインユーザー: " + current_user.nickname
       = link_to("ユーザー切り替え", new_user_session_path, :class => "user_link") + ":"
       = link_to("ユーザー作成", new_user_registration_path, :class => "user_link") if current_user && current_user.name != "guest"
-    #encode_mode_info
-      %span.encode_mode 現在のモード: #{session[:encode_mode]}
-      = link_to "切り替え", change_encode_mode_pasokaras_path
-      .clearfix
+    - if current_user.try(:admin)
+      #encode_mode_info
+        %span.encode_mode 現在のモード: #{session[:encode_mode]}
+        = link_to "切り替え", change_encode_mode_pasokaras_path
+        .clearfix
     - if flash[:notice]
       .notification= flash[:notice]
     - if flash[:error]

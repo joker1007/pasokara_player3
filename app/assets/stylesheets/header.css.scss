@@ -158,6 +158,18 @@ ul#menu li a {
   }
 }
 
+#nico_list_setting {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 10px;
+  margin-right: 5px;
+  font-size: 10px;
+  a {
+    color: white;
+  }
+}
+
 footer {
   display: block;
   padding-left: 20px;

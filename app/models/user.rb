@@ -11,6 +11,7 @@ class User
   field :tweeting, :type => Boolean
   field :twitter_access_token
   field :twitter_access_secret
+  field :admin, :type => Boolean
   has_one :favorite
   has_many :sing_logs
 
