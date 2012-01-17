@@ -1,0 +1,6 @@
+= form_for nico_list, :format => :json, :remote => true do |f|
+  %tr{:id => "nico_list_#{nico_list.id}"}
+    %td= f.text_field :url, :class => "nico_list_url", :id => "nico_list_url_#{nico_list.id}", :size => 40
+    %td= f.check_box :download, :class => "nico_list_download", :id => "nico_list_download_#{nico_list.id}"
+    %td= f.submit
+    %td= link_to '削除する', nico_list, :confirm => 'Are you sure?', :method => :delete

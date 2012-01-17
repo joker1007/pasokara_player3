@@ -6,6 +6,7 @@ class NicoListsController < ApplicationController
   # GET /nico_lists
   # GET /nico_lists.json
   def index
+    @nico_list = NicoList.new
     @nico_lists = NicoList.all
 
     respond_to do |format|
@@ -52,9 +53,14 @@ class NicoListsController < ApplicationController
           flash[:notice] = 'ダウンロードリストが追加されました'
           redirect_to(nico_lists_path)
         }
+        format.js {
+          html_str = render_to_string "_row", :locals => {:nico_list => @nico_list}
+          render :text => html_str
+        }
         format.json { render :json => @nico_list, :status => :created }
       else
         format.html { render :action => "new" }
+        format.js   { render :json => @nico_list.errors, :status => :unprocessable_entity }
         format.json { render :json => @nico_list.errors, :status => :unprocessable_entity  }
       end
     end

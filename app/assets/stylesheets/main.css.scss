@@ -109,7 +109,7 @@ div.login {
   @include padding-left-10;
 }
 
-#new_nico_list {
+#new_nico_list_box {
   margin-left: 8px;
   margin-bottom: 8px;
 
@@ -120,9 +120,14 @@ div.login {
 
 #nico_list_table {
   margin-left: 8px;
+  margin-bottom: 10px;
   border: 1px solid #222222;
   border-collapse: collapse;
   box-shadow: 1px 1px 3px #000;
+
+  &.new {
+    display: none;
+  }
 
   th,td {
     padding: 8px;
@@ -138,6 +143,11 @@ div.login {
       border-top: 1px solid #AAAAAA;
     }
   }
+}
+
+#new_nico_list_table {
+  @extend #nico_list_table;
+  display: none;
 }
 
 
