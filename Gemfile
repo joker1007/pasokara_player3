@@ -1,14 +1,14 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.3'
+gem 'rails', '3.2.1'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 group :assets do
-  gem 'sass-rails', "  ~> 3.1.0"
-  gem 'coffee-rails', "~> 3.1.0"
-  gem 'uglifier'
+  gem 'sass-rails', "  ~> 3.2.3"
+  gem 'coffee-rails', "~> 3.2.1"
+  gem 'uglifier', ">= 1.0.3"
 end
 gem 'therubyracer'
 
@@ -26,9 +26,8 @@ gem "rails3-generators"
 gem "factory_girl_rails", ">= 1.0.1", :group => :test
 gem "rspec", ">= 2.5.0", :group => [:test, :development]
 gem "rspec-rails", ">= 2.5.0", :group => [:test, :development]
-gem "spork", "~> 0.9.0rc", :group => [:test, :development]
-gem "webrat", :group => [:test, :development]
-gem "capybara", '~> 1.0.0', :group => [:test, :development]
+gem "spork", ">= 0.9.0", :group => [:test, :development]
+gem "capybara", '>= 1.0.0', :group => [:test, :development]
 gem "capybara-webkit", :git => 'git://github.com/thoughtbot/capybara-webkit.git', :group => [:test, :development]
 gem "cucumber", "1.1.0", :group => [:test, :development]
 gem "cucumber-rails", :group => [:test, :development]
@@ -37,10 +36,10 @@ gem "jquery-rails"
 gem "haml-rails"
 gem "erb2haml", "~> 0.1.2", :group => :development
 
-gem "mongoid", "~> 2.0"
-gem "mongoid-rspec", "~> 1.4.4", :group => :test
-gem "bson_ext", "~> 1.3"
-gem "database_cleaner", "~> 0.6.7"
+gem "mongoid", ">= 2.0"
+gem "mongoid-rspec", ">= 1.4.4", :group => :test
+gem "bson_ext", ">= 1.5.2"
+gem "database_cleaner", ">= 0.6.7"
 
 group :test do
   gem "simplecov", ">=0.3.8", :require => false
@@ -60,7 +59,7 @@ gem "pit"
 gem "sunspot_mongoid"
 gem "sunspot_rails"
 gem "sunspot_solr"
-gem "sunspot_with_kaminari", '~> 0.1'
+gem "sunspot_with_kaminari", '>= 0.1'
 
 gem "kaminari"
 
