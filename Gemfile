@@ -41,6 +41,8 @@ gem "mongoid-rspec", ">= 1.4.4", :group => :test
 gem "bson_ext", ">= 1.5.2"
 gem "database_cleaner", ">= 0.6.7"
 
+gem "pry-rails", :group => [:development, :test]
+
 group :test do
   gem "simplecov", ">=0.3.8", :require => false
   gem "rb-fsevent"
