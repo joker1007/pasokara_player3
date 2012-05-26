@@ -8,10 +8,17 @@ class User
   field :name
   field :email
   field :nickname
+  field :encrypted_password
   field :tweeting, :type => Boolean
   field :twitter_access_token
   field :twitter_access_secret
   field :admin, :type => Boolean
+  field :current_sign_in_at, :type => Time
+  field :current_sign_in_ip
+  field :last_sign_in_at, :type => Time
+  field :last_sign_in_ip
+  field :remember_created_at, :type => Time
+  field :sign_in_count, :type => Integer
   has_one :favorite
   has_many :sing_logs
 

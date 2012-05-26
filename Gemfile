@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.1'
+gem 'rails', '3.2.3'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -27,10 +27,10 @@ gem "factory_girl_rails", ">= 1.0.1", :group => :test
 gem "rspec", ">= 2.5.0", :group => [:test, :development]
 gem "rspec-rails", ">= 2.5.0", :group => [:test, :development]
 gem "spork", ">= 0.9.0", :group => [:test, :development]
-gem "capybara", '>= 1.0.0', :group => [:test, :development]
-gem "capybara-webkit", :git => 'git://github.com/thoughtbot/capybara-webkit.git', :group => [:test, :development]
-gem "cucumber", "1.1.0", :group => [:test, :development]
-gem "cucumber-rails", :group => [:test, :development]
+gem "capybara", '>= 1.0.0', :group => [:test]
+gem "capybara-webkit", :git => 'git://github.com/thoughtbot/capybara-webkit.git', :group => [:test]
+gem "cucumber", "1.1.0", :group => [:test]
+gem "cucumber-rails", :group => [:test]
 gem "launchy", :group => [:test, :development]
 gem "jquery-rails"
 gem "haml-rails"

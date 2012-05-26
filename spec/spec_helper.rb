@@ -84,7 +84,7 @@ Spork.prefork do
       DatabaseCleaner.clean
     end
 
-    config.include Factory::Syntax::Methods
+    config.include FactoryGirl::Syntax::Methods
   end
 
   ActiveSupport::Dependencies.clear
