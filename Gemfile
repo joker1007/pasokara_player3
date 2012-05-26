@@ -24,25 +24,35 @@ gem 'capistrano'
 
 gem "rails3-generators"
 gem "factory_girl_rails", ">= 1.0.1", :group => :test
-gem "rspec", ">= 2.5.0", :group => [:test, :development]
-gem "rspec-rails", ">= 2.5.0", :group => [:test, :development]
-gem "spork", ">= 0.9.0", :group => [:test, :development]
-gem "capybara", '>= 1.0.0', :group => [:test]
-gem "capybara-webkit", :git => 'git://github.com/thoughtbot/capybara-webkit.git', :group => [:test]
-gem "cucumber", "1.1.0", :group => [:test]
-gem "cucumber-rails", :group => [:test]
-gem "launchy", :group => [:test, :development]
 gem "jquery-rails"
 gem "haml-rails"
-gem "erb2haml", "~> 0.1.2", :group => :development
 
 gem "mongoid", ">= 2.0"
-gem "mongoid-rspec", ">= 1.4.4", :group => :test
 gem "bson_ext", ">= 1.5.2"
 gem "database_cleaner", ">= 0.6.7"
 
+
+group :development, :test do
+  gem "rspec", "~> 2.10.0"
+  gem "rspec-rails", "~> 2.10.0"
+  gem "rspec-parameterized"
+  gem "mongoid-rspec", ">= 1.4.4"
+  gem "cucumber-rails", :require => false
+  gem "spork", ">= 0.9.0"
+  gem "capybara"
+  gem "capybara-webkit"
+  gem "cucumber"
+  gem "minitest"
+  gem "launchy"
+  gem "pry-rails"
+  gem "ci_reporter"
+  gem "ruby_gntp"
+  gem "tapp"
+end
+
 group :test do
   gem "simplecov", ">=0.3.8", :require => false
+  gem "simplecov-rcov", :require => false
   gem "rb-fsevent"
   gem "guard-spork"
   gem "growl"
@@ -51,6 +61,7 @@ group :test do
 
   # Pretty printed test output
   gem 'turn', :require => false
+  gem "delorean"
 end
 
 gem "mechanize", "< 2.0.0"

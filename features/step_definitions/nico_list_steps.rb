@@ -11,7 +11,7 @@ end
 
 ならば /^ダウンロードリストの一覧が表示されていること$/ do
   nico_list = NicoList.all[0]
-  ならば %{入力項目"nico_list_url_#{nico_list.id}"に"http://www.first.com/"と表示されていること}
+  step %{入力項目"nico_list_url_#{nico_list.id}"に"http://www.first.com/"と表示されていること}
   nico_list = NicoList.all[1]
-  ならば %{入力項目"nico_list_url_#{nico_list.id}"に"http://www.second.com/"と表示されていること}
+  step %{入力項目"nico_list_url_#{nico_list.id}"に"http://www.second.com/"と表示されていること}
 end

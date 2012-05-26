@@ -5,9 +5,19 @@
 # files.
 
 require 'spork'
-require 'cucumber/rails'
+require 'cucumber/rspec/doubles'
 
 Spork.prefork do
+  require 'cucumber/rails'
+
+  # for SimpleCov
+  unless ENV['DRB']
+    require 'simplecov'
+    SimpleCov.merge_timeout 3600
+    SimpleCov.command_name 'cucumber'
+    SimpleCov.start 'rails'
+  end
+
   # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
   # order to ease the transition to Capybara we set the default here. If you'd
   # prefer to use XPath just remove this line and adjust any selectors in your
@@ -18,6 +28,19 @@ Spork.prefork do
 end
 
 Spork.each_run do
+  if Spork.using_spork?
+    ActiveSupport::Dependencies.clear
+  end
+
+  # This code will be run each time you run your specs.
+
+  # for SimpleCov
+  if ENV['DRB']
+    require 'simplecov'
+    SimpleCov.merge_timeout 3600
+    SimpleCov.command_name 'cucumber'
+    SimpleCov.start 'rails'
+  end
   # By default, any exception happening in your Rails application will bubble up
   # to Cucumber so that your scenario will fail. This is a different from how
   # your application behaves in the production environment, where an error page will
@@ -55,4 +78,7 @@ Spork.each_run do
   #     DatabaseCleaner.strategy = :transaction
   #   end
   #
+  Cucumber::Rails::Database.javascript_strategy = :truncation
+
+  FactoryGirl.reload
 end

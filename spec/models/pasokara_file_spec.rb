@@ -351,7 +351,7 @@ describe PasokaraFile do
   end
 
   describe "infoファイルのパース" do
-    subject {Factory.build(:pasokara_file2)}
+    subject {FactoryGirl.build(:pasokara_file2)}
     it "同じディレクトリにある、(ファイル名)_info.xmlをパースして情報を取得できること" do
       subject.nico_name.should be_nil
       subject.nico_post.should be_nil
