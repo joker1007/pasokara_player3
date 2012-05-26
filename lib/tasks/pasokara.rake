@@ -35,7 +35,7 @@ namespace :pasokara do
       Sunspot.commit
     rescue LoadError
       puts "Couldn't load file_loader"
-      PasokaraPlayer.load_dir(setting["root_dir"])
+      PasokaraFile.load_dir(setting["root_dir"])
     end
   end
 

@@ -1,7 +1,7 @@
 /* Base Setting */
 body { 
-  background-image: url(../images/sitebg.jpg);
-  color: #333; 
+  background-image: url(sitebg.jpg);
+  color: #333;
 }
 
 body, p, ol, ul, td {
@@ -49,6 +49,11 @@ label {
   margin-left: 4px;
   margin-right: 4px;
   vertical-align: middle;
+}
+
+@mixin bold-underline {
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 
@@ -103,17 +108,46 @@ div.usage {
 div.login {
   @include padding-left-10;
 }
-div.dl_feed {
-  @include padding-left-10;
+
+#new_nico_list_box {
+  margin-left: 8px;
+  margin-bottom: 8px;
+
+  a {
+    @include bold-underline;
+  }
 }
 
-table#dl_feed_table {
-  tr.even {
-    background-color: #BBBBEE;
+#nico_list_table {
+  margin-left: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #222222;
+  border-collapse: collapse;
+  box-shadow: 1px 1px 3px #000;
+
+  &.new {
+    display: none;
   }
+
   th,td {
     padding: 8px;
+    text-align: center;
   }
+
+  thead {
+    background-color: #888888;
+  }
+
+  tbody {
+    td {
+      border-top: 1px solid #AAAAAA;
+    }
+  }
+}
+
+#new_nico_list_table {
+  @extend #nico_list_table;
+  display: none;
 }
 
 

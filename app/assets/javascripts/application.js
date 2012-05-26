@@ -10,4 +10,5 @@
 //= require jquery-fonteffect-1.0.0.min
 //= require jquery.lazyload
 //= require jquery.linkwrapper-1.0.3
+//= require jquery.gritter
 //= require_tree .

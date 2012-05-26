@@ -55,6 +55,10 @@ module Util
       end
     end
 
+    def get_nico_list(nico_list)
+      get_rss(nico_list.url) if nico_list.download
+    end
+
     def get_flv_url(nico_name)
       begin
         get_api = "http://www.nicovideo.jp/api/getflv/#{nico_name}"
