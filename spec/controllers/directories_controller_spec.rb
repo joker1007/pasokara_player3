@@ -29,7 +29,7 @@ describe DirectoriesController do
 
   describe "GET index" do
     it "assigns all directories as @directories" do
-      directory = Factory(:directory)
+      directory = FactoryGirl.create(:directory)
       get :index
       assigns(:directories).should eq([directory])
     end
@@ -37,7 +37,7 @@ describe DirectoriesController do
 
   describe "GET show" do
     it "assigns the requested directory as @directory" do
-      directory = Factory(:directory)
+      directory = FactoryGirl.create(:directory)
       get :show, :id => directory.id.to_s
       assigns(:dir).should eq(directory)
     end

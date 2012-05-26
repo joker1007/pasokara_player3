@@ -218,11 +218,11 @@ describe PasokaraFile do
   end
 
   describe "Tagに関するメソッド" do
-    subject {Factory(:pasokara_file)}
+    subject {FactoryGirl.create(:pasokara_file)}
     before do
-      @tag1 = Factory(:tag, name: "Tag1", size: 1)
-      @tag2 = Factory(:tag, name: "Tag2", size: 1)
-      @tag3 = Factory(:tag, name: "Tag3", size: 1)
+      @tag1 = FactoryGirl.create(:tag, name: "Tag1", size: 1)
+      @tag2 = FactoryGirl.create(:tag, name: "Tag2", size: 1)
+      @tag3 = FactoryGirl.create(:tag, name: "Tag3", size: 1)
     end
 
     describe "#tag_list" do
@@ -272,10 +272,10 @@ describe PasokaraFile do
   end
 
   describe "状態を確認するメソッド " do
-    let(:mp4_file) {Factory(:pasokara_file)}
-    let(:flv_file) {Factory(:pasokara_file, name: "test002.flv")}
-    let(:no_exist_mp4_file) {Factory(:pasokara_file, name: "test003.mp4")}
-    let(:no_exist_flv_file) {Factory(:pasokara_file, name: "test004.flv")}
+    let(:mp4_file) {FactoryGirl.create(:pasokara_file)}
+    let(:flv_file) {FactoryGirl.create(:pasokara_file, name: "test002.flv")}
+    let(:no_exist_mp4_file) {FactoryGirl.create(:pasokara_file, name: "test003.mp4")}
+    let(:no_exist_flv_file) {FactoryGirl.create(:pasokara_file, name: "test004.flv")}
 
     describe "#mp4?" do
       context "ファイルが存在し、拡張子がmp4のファイルである時" do

@@ -2,9 +2,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe SingLog do
-  let(:pasokara) {Factory(:pasokara_file)}
-  let(:pasokara2) {Factory(:pasokara_file, name: "test002.flv")}
-  let(:user) {Factory(:user)}
+  let(:pasokara) {FactoryGirl.create(:pasokara_file)}
+  let(:pasokara2) {FactoryGirl.create(:pasokara_file, name: "test002.flv")}
+  let(:user) {FactoryGirl.create(:user)}
 
   before(:each) do
     @valid_attributes = {

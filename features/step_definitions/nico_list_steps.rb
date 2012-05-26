@@ -1,11 +1,11 @@
 # coding: utf-8
 前提 /登録済みのダウンロードリストが存在する/ do
-  Factory(:nico_list, :url => "http://www.first.com/")
-  Factory(:nico_list, :url => "http://www.second.com/")
+  FactoryGirl.create(:nico_list, :url => "http://www.first.com/")
+  FactoryGirl.create(:nico_list, :url => "http://www.second.com/")
 end
 
 もし /^ダウンロードリスト編集ページを表示する$/ do
-  nico_list = Factory(:nico_list)
+  nico_list = FactoryGirl.create(:nico_list)
   visit edit_nico_list_path(nico_list)
 end
 

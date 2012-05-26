@@ -29,7 +29,7 @@ describe TagsController do
 
   describe "GET index" do
     it "assigns all tags as @tags" do
-      tag = Factory(:tag) 
+      tag = FactoryGirl.create(:tag) 
       get :index
       assigns(:tags).should eq([tag])
     end
@@ -37,7 +37,7 @@ describe TagsController do
 
   describe "GET index" do
     it "should be successful" do
-      tag = Factory(:tag) 
+      tag = FactoryGirl.create(:tag) 
       get :search, :tag => tag.name
       assigns(:tags).should eq([tag])
     end

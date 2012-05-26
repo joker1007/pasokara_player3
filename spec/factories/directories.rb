@@ -12,13 +12,13 @@ FactoryGirl.define do
   factory :directory do
     name
 
-    after_build do |dir|
+    after(:build) do |dir|
       3.times do
-        child = Factory.build(:child_directory)
+        child = FactoryGirl.build(:child_directory)
         dir.directories << child
       end
 
-      pasokara_file = Factory.build(:pasokara_file)
+      pasokara_file = FactoryGirl.build(:pasokara_file)
       dir.directories << pasokara_file
     end
   end

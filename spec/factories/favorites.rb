@@ -2,6 +2,6 @@
 
 FactoryGirl.define do
   factory :favorite do |f|
-    pasokara_files {[Factory(:pasokara_file)]}
+    pasokara_files {[FactoryGirl.create(:pasokara_file)]}
   end
 end
