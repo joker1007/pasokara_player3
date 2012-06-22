@@ -9,7 +9,6 @@ before_script:
   - "cp config/cucumber.yml.example config/cucumber.yml"
   - "cp -f solr/conf/schema_for_test.xml solr/conf/schema.xml"
 rvm:
-  - 1.9.2
   - 1.9.3
 notifications:
   email:
