@@ -221,7 +221,7 @@ class PasokaraFile
   end
 
   def create_thumbnail
-    unless exist_thumbnail?
+    if !exist_thumbnail? || File.size(thumbnail_path) == 0
       info = FFmpegInfo.getinfo(fullpath)
       duration = info[:duration] ? info[:duration] : 0
       ss = (info[:duration] / 10.0).round
