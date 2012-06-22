@@ -1,3 +1,4 @@
+# coding: utf-8
 video = Hash.new{|h,k| h[k]=""}
 audio = Hash.new{|h,k| h[k]=""}
 

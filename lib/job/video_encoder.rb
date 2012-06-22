@@ -1,3 +1,4 @@
+# coding: utf-8
 module Job
   class VideoEncoder
     @queue = :pp3
