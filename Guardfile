@@ -9,7 +9,7 @@ guard 'spork', :wait => 35, :cucumber_env => { 'RAILS_ENV' => 'test' }, :rspec_e
   watch('spec/spec_helper.rb')
 end
 
-guard 'rspec', :version => 2, :cli => "--color --format d --tag \"~slow\" --drb" do
+guard 'rspec', :version => 2, :cli => "--color --format d --tag \"~slow\" --drb", :all_after_pass => false, :all_on_start => false do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
@@ -27,7 +27,7 @@ guard 'rspec', :version => 2, :cli => "--color --format d --tag \"~slow\" --drb"
   watch(%r{^app/views/(.+)/.*\.(erb|haml)$})          { |m| "spec/requests/#{m[1]}_spec.rb" }
 end
 
-guard 'cucumber', :cli => "--format pretty --strict --no-profile --drb" do
+guard 'cucumber', :cli => "--format pretty --strict --no-profile --drb", :all_after_pass => false, :all_on_start => false do
   watch(%r{^features/.+\.feature$})
   watch(%r{^features/support/.+$})          { 'features' }
   watch(%r{^features/step_definitions/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'features' }
