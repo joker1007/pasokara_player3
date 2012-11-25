@@ -5,7 +5,7 @@ class SingLog
   field :name
   field :user_name
 
-  index :created_at
+  index(created_at: 1)
 
   belongs_to :pasokara_file, :index => true
   belongs_to :user, :index => true

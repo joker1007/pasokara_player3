@@ -2,8 +2,8 @@ class Tag
   include Mongoid::Document
   field :name, :type => String
   field :size, :type => Integer, :default => 0
-  index :name, :unique => true
-  index :size
+  index({name: 1}, {unique: true})
+  index({size: 1})
 
   validates_presence_of :name
 

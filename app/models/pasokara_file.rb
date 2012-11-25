@@ -21,9 +21,9 @@ class PasokaraFile
   field :encoding, :type => Boolean, :default => false
   field :tags, :type => Array, :default => []
 
-  index :md5_hash, :unique => true
-  index :fullpath, :unique => true
-  index :tags
+  index({md5_hash: 1}, {unique: true})
+  index({fullpath: 1}, {unique: true})
+  index({tags: 1})
 
   mount_uploader :thumbnail, ThumbnailUploader
 
