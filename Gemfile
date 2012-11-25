@@ -80,6 +80,7 @@ gem "devise"
 gem "resque", :require => "resque/server"
 
 gem "carrierwave"
-gem "carrierwave-mongoid", :require => 'carrierwave/mongoid'
+gem "carrierwave-mongoid"
+gem "fog", "~> 1.3.1"
 
 gem "which_browser", :git => 'git://github.com/joker1007/which_browser.git'
