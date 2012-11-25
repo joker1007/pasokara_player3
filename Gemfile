@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.6'
+gem 'rails', '3.2.9'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -27,13 +27,15 @@ gem "factory_girl_rails", ">= 1.0.1", :group => :test
 gem "jquery-rails"
 gem "haml-rails"
 
-gem "mongoid", ">= 2.0"
-gem "bson_ext", ">= 1.5.2"
+gem "origin"
+gem "moped"
+gem "mongoid", "~> 3.0"
+gem "bson_ext"
 gem "database_cleaner", ">= 0.6.7"
 
 group :development, :test do
-  gem "rspec", "~> 2.10.0"
-  gem "rspec-rails", "~> 2.10.0"
+  gem "rspec", "~> 2.11.0"
+  gem "rspec-rails", "~> 2.11.0"
   gem "rspec-parameterized"
   gem "mongoid-rspec", ">= 1.4.4"
   gem "cucumber-rails", :require => false
@@ -63,7 +65,7 @@ group :test do
   gem "delorean"
 end
 
-gem "mechanize", "< 2.0.0"
+gem "mechanize"
 gem "pit"
 
 gem "sunspot_mongoid"

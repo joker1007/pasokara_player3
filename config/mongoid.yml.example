@@ -1,18 +1,26 @@
 development:
-  host: localhost
-  database: pasokara_player_rails3_development
+  sessions:
+    default:
+      hosts:
+        - localhost
+      database: pasokara_player_rails3_development
 
 test:
-  host: localhost
-  database: pasokara_player_rails3_test
+  sessions:
+    default:
+      hosts:
+        - localhost
+      database: pasokara_player_rails3_test
 
 # set these environment variables on your prod server
 production:
-  host: <%= ENV['MONGOID_HOST'] %>
-  port: <%= ENV['MONGOID_PORT'] %>
-  username: <%= ENV['MONGOID_USERNAME'] %>
-  password: <%= ENV['MONGOID_PASSWORD'] %>
-  database: <%= ENV['MONGOID_DATABASE'] %>
+  sessions:
+    default:
+      hosts:
+        - <%= ENV['MONGOID_HOST'] %>
+      username: <%= ENV['MONGOID_USERNAME'] %>
+      password: <%= ENV['MONGOID_PASSWORD'] %>
+      database: <%= ENV['MONGOID_DATABASE'] %>
   # slaves:
   #   - host: slave1.local
   #     port: 27018
