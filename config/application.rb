@@ -7,11 +7,10 @@ require "action_mailer/railtie"
 require "active_resource/railtie"
 require "rails/test_unit/railtie"
 require "sprockets/railtie"
-require File.expand_path('../../lib/serve_gridfs_image', __FILE__)
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
-  Bundler.require *Rails.groups(:assets => %w(development test))
+  Bundler.require(*Rails.groups(:assets => %w(development test)))
   # If you want your assets lazily compiled in production, use this line
   # Bundler.require(:default, :assets, Rails.env)
 end
@@ -21,6 +20,7 @@ module PasokaraPlayerRails3
   class Application < Rails::Application
   
     config.generators do |g|
+      g.template_engine :haml
       g.test_framework :rspec, :fixture => true
       g.fixture_replacement :factory_girl, :dir => "spec/factories"
       g.integration_tool :rspec, :fixture => true, :views => true
@@ -59,8 +59,6 @@ module PasokaraPlayerRails3
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
-
-    config.middleware.use "ServeGridfsImage"
 
     ### Part of a Spork hack. See http://bit.ly/arY19y
     if Rails.env.test? && defined?(Spork) && Spork.using_spork?
