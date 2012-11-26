@@ -86,7 +86,7 @@ describe QueuedFile do
     QueuedFile.count.should == 0
     QueuedFile.enq(pasokara2, user)
     dequeued = QueuedFile.deq
-    history = SingLog.find(:last)
+    history = SingLog.last
     history.pasokara_file.should == dequeued.pasokara_file
     history.name.should == dequeued.pasokara_file.name
     history.user.should == dequeued.user
