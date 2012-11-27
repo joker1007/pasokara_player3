@@ -114,7 +114,7 @@ describe PasokaraFile do
       before { create(:directory, :name => "testdir1") }
 
       it {
-        PasokaraFile.load_dir(File.join(File.dirname(__FILE__), "..", "datas", "testdir1"))
+        PasokaraFile.load_dir(File.join(File.dirname(__FILE__), "..", "datas"))
         pasokara = PasokaraFile.where(:nico_name => "sm99999999").first
         pasokara.should_not be_nil
         pasokara.directory.should_not be_nil

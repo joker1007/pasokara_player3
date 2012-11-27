@@ -62,79 +62,112 @@ class PasokaraFile
 
   paginates_per 50
 
-  def self.saved_file?(fullpath)
-    !!(only(:fullpath).where(:fullpath => fullpath).first)
-  end
-
-  def self.load_file(path, parent_dir = nil)
-    return nil unless path =~ MOVIE_REGEXP
-    return nil if PasokaraFile.saved_file?(path)
-
-    puts "#{path}を読み込み開始" unless Rails.env == "test"
-    md5_hash = File.open(path, "rb:ASCII-8BIT") {|f| Digest::MD5.hexdigest(f.read(300 * 1024))}
-    pasokara = PasokaraFile.find_or_initialize_by(:md5_hash => md5_hash)
-    pasokara.attributes = {:name => File.basename(path), :fullpath => path, :md5_hash => md5_hash}
-    pasokara.parse_info_file
-    pasokara.update_thumbnail
-    pasokara.directory = parent_dir
-    if pasokara.new_record? or pasokara.changed?
-      pasokara.save
+  class << self
+    def saved_file?(fullpath)
+      !!(only(:fullpath).where(:fullpath => fullpath).first)
     end
-    pasokara
-  end
 
-  def self.load_dir(path)
-    file_queue = Queue.new
-    dir_queue = Queue.new
+    def load_file(path, parent_dir = nil)
+      return nil unless path =~ MOVIE_REGEXP
+      return nil if PasokaraFile.saved_file?(path)
 
-    root_directory = Directory.where(:name => File.basename(path)).first
-    Dir.open(path).entries.select {|e| e[0] != "."}.each do |filename|
-      next_path = File.join(path, filename)
-      if File.directory?(next_path)
-        dir_queue.enq([next_path, root_directory])
-      else
-        file_queue.enq([next_path, root_directory])
+      puts "#{path}を読み込み開始" unless Rails.env == "test"
+      md5_hash = File.open(path, "rb:ASCII-8BIT") {|f| Digest::MD5.hexdigest(f.read(300 * 1024))}
+      pasokara = PasokaraFile.find_or_initialize_by(:md5_hash => md5_hash)
+      pasokara.attributes = {:name => File.basename(path), :fullpath => path, :md5_hash => md5_hash}
+      pasokara.parse_info_file
+      pasokara.update_thumbnail
+      pasokara.directory = parent_dir
+      if pasokara.new_record? or pasokara.changed?
+        pasokara.save
       end
+      pasokara
     end
 
-    file_workers = []
-    dir_workers = []
+    def load_dir(path)
+      file_queue = []
+      file_queue.extend(MonitorMixin)
+      file_empty_cond = file_queue.new_cond
+      dir_queue = []
+      dir_queue.extend(MonitorMixin)
+      dir_empty_cond = dir_queue.new_cond
 
-    2.times do
-      file_workers << Thread.new do
-        loop do
-          filepath, parent_dir = file_queue.deq
+      file_workers = []
+      dir_workers = []
 
-          self.load_file(filepath, parent_dir)
+      2.times do
+        file_workers << Thread.new do
+          loop do
+            deque_file(file_queue, file_empty_cond)
+          end
         end
       end
+
+      2.times do
+        dir_workers << Thread.new do
+          loop do
+            deque_dir(dir_queue, dir_empty_cond, file_queue, file_empty_cond)
+          end
+        end
+      end
+
+      push_dir(path, nil, dir_queue, dir_empty_cond, file_queue, file_empty_cond)
+
+      sleep 1
+
+      loop do
+        if dir_queue.empty? && dir_workers.all?(&:stop?)
+          dir_workers.each(&:kill)
+          break
+        end
+        sleep 1
+      end
+
+      loop do
+        if file_queue.empty?
+          file_workers.each(&:kill)
+          break
+        end
+        sleep 1
+      end
+
+      Sunspot.commit
     end
 
-    2.times do
-      dir_workers << Thread.new do
-        loop do
-          dirpath, parent_dir = dir_queue.deq
-
-          directory = Directory.load_dir(dirpath, parent_dir)
-          Dir.open(dirpath).entries.select {|e| e[0] != "."}.each do |filename|
-            next_path = File.join(dirpath, filename)
-            if File.directory?(next_path)
-              dir_queue.enq([next_path, directory])
-            else
-              file_queue.enq([next_path, directory])
-            end
+    private
+    def push_dir(dirpath, parent_dir, dir_queue, dir_empty_cond, file_queue, file_empty_cond)
+      Dir.open(dirpath).entries.select {|e| e[0] != "."}.each do |filename|
+        next_path = File.join(dirpath, filename)
+        if File.directory?(next_path)
+          dir_queue.synchronize do
+            dir_queue.push([next_path, parent_dir])
+            dir_empty_cond.signal
+          end
+        else
+          file_queue.synchronize do
+            file_queue.push([next_path, parent_dir])
+            file_empty_cond.signal
           end
         end
       end
     end
 
-    loop do
-      if file_queue.empty? && dir_queue.empty? && dir_queue.num_waiting == 2
-        sleep 1
-        if file_queue.empty? && dir_queue.empty?
-          Sunspot.commit
-          return
-        end
+    def deque_file(file_queue, file_empty_cond)
+      file_queue.synchronize do
+        file_empty_cond.wait_while { file_queue.empty? }
+        filepath, parent_dir = file_queue.shift
+
+        load_file(filepath, parent_dir)
+      end
+    end
+
+    def deque_dir(dir_queue, dir_empty_cond, file_queue, file_empty_cond)
+      dir_queue.synchronize do
+        dir_empty_cond.wait_while { dir_queue.empty? }
+        dirpath, parent_dir = dir_queue.shift
+
+        directory = Directory.load_dir(dirpath, parent_dir)
+        push_dir(dirpath, directory, dir_queue, dir_empty_cond, file_queue, file_empty_cond)
       end
     end
   end
@@ -230,7 +263,7 @@ class PasokaraFile
   end
 
   def update_thumbnail(force = false)
-    if exist_thumbnail? && (force or self.thumbnail.size == 0)
+    if exist_thumbnail? && (force or thumbnail.size == 0)
       self.thumbnail = File.open(thumbnail_path)
       save
     else
